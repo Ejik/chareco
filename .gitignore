@@ -1,5 +1,8 @@
+docs/
+ProbaDLL
 *.dcu
 *.obj
+*.dof
 *.log
 *.dsk
 *.exe
