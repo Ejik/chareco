@@ -1,0 +1,11 @@
+*.dcu
+*.obj
+*.log
+*.dsk
+*.exe
+*.dll
+*.cbk
+*.drc
+dunit.ini
+*.gex
+*.rsm
