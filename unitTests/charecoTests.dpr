@@ -7,8 +7,10 @@ uses
   GUITestRunner,
   TextTestRunner,
   Forms,
-  TestsMainView in 'TestsMainView.pas',
-  mainViewMock in 'mainViewMock.pas';
+  TestsMainViewPresenter in 'TestsMainViewPresenter.pas',
+  mainViewMock in 'mainViewMock.pas',
+  userInputServiceMock in 'userInputServiceMock.pas',
+  mainViewModel in '..\src\mainViewModel.pas';
 
 {$R *.res}
 

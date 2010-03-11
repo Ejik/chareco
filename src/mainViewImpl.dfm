@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 192
-  Top = 175
-  Width = 1142
-  Height = 656
-  Caption = 'Form1'
+  Left = 469
+  Top = 269
+  Width = 600
+  Height = 398
+  Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1074#1072#1085#1080#1077' '#1089#1080#1084#1074#1086#1083#1086#1074
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,9 +15,24 @@ object Form1: TForm1
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object workspaceImage: TImage
+    Left = 0
+    Top = 0
+    Width = 584
+    Height = 321
+    Align = alClient
+    Center = True
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 321
+    Width = 584
+    Height = 19
+    Panels = <>
+  end
   object MainMenu1: TMainMenu
-    Left = 155
-    Top = 100
+    Left = 25
+    Top = 15
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
       object N4: TMenuItem
