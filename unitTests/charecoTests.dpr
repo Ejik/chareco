@@ -10,7 +10,9 @@ uses
   TestsMainViewPresenter in 'TestsMainViewPresenter.pas',
   mainViewMock in 'mainViewMock.pas',
   userInputServiceMock in 'userInputServiceMock.pas',
-  mainViewModel in '..\src\mainViewModel.pas';
+  mainViewModelMock in 'mainViewModelMock.pas',
+  imageGeneratorServiceMock in 'imageGeneratorServiceMock.pas',
+  MBC.Classes in '..\src\MBC.Classes.pas';
 
 {$R *.res}
 

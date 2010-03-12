@@ -11,11 +11,14 @@ type
         fMainView : IMainView;
         fMainViewModel : IMainViewModel;
         fUserInputService : IUserInputService;
-        fImageGenerator : IImageGeneratorService; 
+        fImageGeneratorService : IImageGeneratorService;
 
     public
         constructor create(const mainView : IMainView;
-            const userInputService : IUserInputService); overload;
+            const model : IMainViewModel;
+            const userInputService : IUserInputService;
+            const ImageGeneratorService : IImageGeneratorService ); overload;
+        destructor destroy();
         procedure bindView(const mainView: IMainView);
         procedure generateNumber();
         procedure openFile();
@@ -35,10 +38,19 @@ begin
 end;
 
 constructor TMainViewPresenter.create(const mainView: IMainView;
-    const userInputService : IUserInputService);
+    const model : IMainViewModel;
+    const userInputService : IUserInputService;
+    const ImageGeneratorService : IImageGeneratorService );
 begin
     fMainView := mainView;
     fUserInputService := userInputService;
+    fMainViewModel := model;
+    fImageGeneratorService := ImageGeneratorService;
+end;
+
+destructor TMainViewPresenter.destroy;
+begin
+
 end;
 
 procedure TMainViewPresenter.exit;
@@ -54,7 +66,7 @@ begin
     if (s <> '') then
     begin
         fMainViewModel.currentNumber := StringReplace(s, ' ', '', [rfReplaceAll]);        
-        fMainViewModel.currentNumberBitmap := fImageGenerator.generate(fMainViewModel.currentNumber);
+        fMainViewModel.currentNumberBitmap := fImageGeneratorService.generate(fMainViewModel.currentNumber);
         fMainView.setupWorkspace(fMainViewModel.currentNumberBitmap);
     end;
 end;

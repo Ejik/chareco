@@ -6,14 +6,14 @@ uses
     UserInputService;
 type
     TUserInputServiceMock = class (TInterfacedObject, IUserInputService)
-         function inputNumber() : wideString;
+         function inputNumber() : string;
     end;
 
 implementation
 
 { TUserInputServiceMock }
 
-function TUserInputServiceMock.inputNumber: wideString;
+function TUserInputServiceMock.inputNumber: string;
 begin
     result := 'a111aa';
 end;

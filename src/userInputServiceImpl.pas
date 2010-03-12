@@ -6,7 +6,7 @@ uses
     EBInjectable, EBDIRegistry, EBDependencyInjection, userInputService;
 type
     TUserInputService = class(TInjectable, IUserInputService)
-        function inputNumber(): wideString;
+        function inputNumber(): string;
     end;
 
 implementation
@@ -17,7 +17,7 @@ uses
 
 { TUserInputService }
 
-function TUserInputService.inputNumber: wideString;
+function TUserInputService.inputNumber: string;
 var
     inputNumDld: TfmInputNumDlg;
 begin

@@ -3,7 +3,7 @@ unit mainViewMock;
 interface
 
 uses
-    mainView;
+    Graphics, mainView;
 
 type
     //IMainViewMock = interface
@@ -11,11 +11,18 @@ type
     //end;
 
     TMainViewMock = class(TInterfacedObject, IMainView)
-        
+        procedure setupWorkspace(bitmap : TBitmap);
     end;
 
 
 implementation
+
+{ TMainViewMock }
+
+procedure TMainViewMock.setupWorkspace(bitmap: TBitmap);
+begin
+    
+end;
 
 end.
  
