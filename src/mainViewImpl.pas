@@ -102,7 +102,7 @@ end;
 
 procedure TForm1.viewOnlyMenuItemClick(Sender: TObject);
 begin
-    presenter.setViewOnlyMode(viewOnlyMenuItem.Checked);    
+    presenter.setViewOnlyMode(viewOnlyMenuItem.Checked);
 end;
 
 end.

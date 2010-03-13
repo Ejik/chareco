@@ -12,7 +12,8 @@ type
         fMainViewModel: IMainViewModel;
         fUserInputService: IUserInputService;
         fImageGeneratorService: IImageGeneratorService;
-
+        procedure setMainViewOnlyMode();
+        procedure setMainViewAndSetupLayoutMode();
     public
         constructor create(const mainView: IMainView;
             const model: IMainViewModel;
@@ -29,7 +30,7 @@ type
 
 implementation
 
-uses SysUtils, Dialogs;
+uses SysUtils, Dialogs, Controls;
 
 { TMainViewPresenterImpl }
 
@@ -111,6 +112,7 @@ begin
     begin
         fMainViewModel.currentNumberBitmap.LoadFromFile(openDialog.FileName);
         fMainViewModel.currentNumber := '';
+        fMainView.getWorkspace().setWorkspace(fMainViewModel.currentNumberBitmap);
         fMainView.getStatusBar().setStatus('Изображение открыто', 2000);
     end;
 
@@ -142,9 +144,33 @@ begin
     FreeAndNil(saveFileDlg);
 end;
 
+procedure TMainViewPresenter.setMainViewAndSetupLayoutMode;
+var
+    ws: IGUIWorkspace;
+    cursor: TCursor;
+begin
+    ws := fMainView.getWorkspace();
+    ws.setCursor(crCross);
+
+end;
+
+procedure TMainViewPresenter.setMainViewOnlyMode;
+var
+    ws: IGUIWorkspace;
+    cursor: TCursor;
+begin
+    ws := fMainView.getWorkspace();
+    ws.setCursor(crDefault);
+end;
+
 procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
 begin
     fMainViewModel.viewOnlyMode := boolValue;
+    case fMainViewModel.viewOnlyMode of
+        false: setMainViewAndSetupLayoutMode();
+    else
+        setMainViewOnlyMode();
+    end;
 end;
 
 initialization

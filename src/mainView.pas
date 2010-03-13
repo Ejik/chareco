@@ -3,7 +3,7 @@ unit mainView;
 interface
 
 uses
-    Graphics, Forms;
+    Graphics, Forms, Controls;
 
 type
     IGUIBaseInterface = interface
@@ -17,6 +17,10 @@ type
 
     IGUIWorkspace = interface(IGUIBaseInterface)
         ['{0E9C98BC-FD12-401D-890A-43F729F53218}']
+
+        function getCursor() : TCursor;
+
+        procedure setCursor(cursor : TCursor);
         procedure setWorkspace(bitmap: TBitmap);
     end;
 
