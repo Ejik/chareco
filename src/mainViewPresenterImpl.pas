@@ -8,16 +8,16 @@ uses
 type
     TMainViewPresenter = class(TInjectable, IMainViewPresenter)
     private
-        fMainView : IMainView;
-        fMainViewModel : IMainViewModel;
-        fUserInputService : IUserInputService;
-        fImageGeneratorService : IImageGeneratorService;
+        fMainView: IMainView;
+        fMainViewModel: IMainViewModel;
+        fUserInputService: IUserInputService;
+        fImageGeneratorService: IImageGeneratorService;
 
     public
-        constructor create(const mainView : IMainView;
-            const model : IMainViewModel;
-            const userInputService : IUserInputService;
-            const ImageGeneratorService : IImageGeneratorService ); overload;
+        constructor create(const mainView: IMainView;
+            const model: IMainViewModel;
+            const userInputService: IUserInputService;
+            const ImageGeneratorService: IImageGeneratorService); overload;
         destructor destroy(); override;
         procedure bindView(const mainView: IMainView);
         procedure generateNumber();
@@ -28,19 +28,34 @@ type
 
 implementation
 
-uses SysUtils;
+uses SysUtils, Dialogs;
 
 { TMainViewPresenterImpl }
+
+{*------------------------------------------------------------------------------
+  Метод для связывания presenter и mainview
+  @param mainView   ParameterDescription
+  @return ResultDescription
+------------------------------------------------------------------------------*}
 
 procedure TMainViewPresenter.bindView(const mainView: IMainView);
 begin
     fMainView := mainView;
 end;
 
+{*------------------------------------------------------------------------------
+    Констуктор
+  @param mainView   главное окно
+  @param model   модель данных галвного вида
+  @param userInputService   сервис для ввода номера
+  @param ImageGeneratorService   сервис для генерации номера
+  @return
+------------------------------------------------------------------------------*}
+
 constructor TMainViewPresenter.create(const mainView: IMainView;
-    const model : IMainViewModel;
-    const userInputService : IUserInputService;
-    const ImageGeneratorService : IImageGeneratorService );
+    const model: IMainViewModel;
+    const userInputService: IUserInputService;
+    const ImageGeneratorService: IImageGeneratorService);
 begin
     fMainView := mainView;
     fUserInputService := userInputService;
@@ -58,27 +73,68 @@ begin
 
 end;
 
+{*------------------------------------------------------------------------------
+    Метод генерации номера
+  @return
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.generateNumber;
 var
-    s : wideString;
+    s: wideString;
 begin
     s := fUserInputService.inputNumber();
     if (s <> '') then
     begin
-        fMainViewModel.currentNumber := StringReplace(s, ' ', '', [rfReplaceAll]);        
+        fMainViewModel.currentNumber := StringReplace(s, ' ', '', [rfReplaceAll]);
         fMainViewModel.currentNumberBitmap := fImageGeneratorService.generate(fMainViewModel.currentNumber);
         fMainView.getWorkspace().setWorkspace(fMainViewModel.currentNumberBitmap);
     end;
 end;
 
+{*------------------------------------------------------------------------------
+    Метод загрузки изображения номера из файла
+  @return ResultDescription
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.openFile;
+var
+    openDialog : TOpenDialog;
 begin
+    openDialog := TOpenDialog.Create(fMainView.getView);
+    openDialog.InitialDir := getCurrentDir();
+    openDialog.Options := [ofFileMustExist];
+    openDialog.Filter := 'Файлы изображений|*.bmp';
+    openDialog.FilterIndex := 1;
+
+    if (openDialog.execute()) then
+    begin
+        fMainViewModel.currentNumberBitmap.LoadFromFile(openDialog.FileName);
+        fMainViewModel.currentNumber := '';
+        fMainView.getStatusBar().setStatus('Изображение открыто', 2000);
+    end;
 
 end;
 
+{*------------------------------------------------------------------------------
+    Метод сохранения изображения номера в файл
+  @return ResultDescription
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.saveFile;
+var
+    saveFileDlg: TSaveDialog;
 begin
+    saveFileDlg := TSaveDialog.Create(fMainView.getView);
+    saveFileDlg.Title := 'Сохранение номера';
+    saveFileDlg.InitialDir := getCurrentDir();
+    saveFileDlg.Filter := 'Файлы изображений|*.bmp';
+    saveFileDlg.DefaultExt := 'bmp';
+    saveFileDlg.FilterIndex := 1;
+    saveFileDlg.FileName := fMainViewModel.currentNumber;
 
+    if (saveFileDlg.Execute()) then
+    begin
+        fMainViewModel.currentNumberBitmap.SaveToFile(saveFileDlg.FileName);
+        fMainView.getStatusBar().setStatus('Изображение сохранено', 2000);
+    end;
+    FreeAndNil(saveFileDlg);
 end;
 
 initialization

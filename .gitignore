@@ -13,3 +13,4 @@ dunit.ini
 *.gex
 *.rsm
 bin/*.txt
+bin/*.bmp

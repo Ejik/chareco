@@ -35,6 +35,7 @@ type
 
     public
     { Public declarations }
+        function getView() : TForm;
         function getStatusBar() : IGUIStatusBar;
         function getWorkspace() : IGUIWorkspace;
 
@@ -90,6 +91,11 @@ end;
 function TForm1.getWorkspace: IGUIWorkspace;
 begin
     result := IWorkspace;
+end;
+
+function TForm1.getView: TForm;
+begin
+    result := self;
 end;
 
 end.
