@@ -12,6 +12,7 @@ type
         procedure generateNumber();
         procedure openFile();
         procedure saveFile();
+        procedure setViewOnlyMode(boolValue : boolean);
         procedure exit;
     end;
 

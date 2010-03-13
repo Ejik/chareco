@@ -3,7 +3,7 @@ unit mainViewMock;
 interface
 
 uses
-    Graphics, mainView;
+    Graphics, mainView, Forms;
 
 type
 
@@ -14,6 +14,7 @@ type
         constructor create();
         function getStatusBar(): IGUIStatusBar;
         function getWorkspace(): IGUIWorkspace;
+        function getView() : TForm;
     end;
 
 
@@ -32,6 +33,11 @@ end;
 function TMainViewMock.getStatusBar: IGUIStatusBar;
 begin
 
+end;
+
+function TMainViewMock.getView: TForm;
+begin
+    
 end;
 
 function TMainViewMock.getWorkspace: IGUIWorkspace;

@@ -53,6 +53,12 @@ object Form1: TForm1
     end
     object N2: TMenuItem
       Caption = #1057#1077#1088#1074#1080#1089
+      object viewOnlyMenuItem: TMenuItem
+        AutoCheck = True
+        Caption = #1058#1086#1083#1100#1082#1086' '#1087#1088#1086#1089#1084#1086#1090#1088
+        Checked = True
+        OnClick = viewOnlyMenuItemClick
+      end
       object N3: TMenuItem
         Caption = #1057#1075#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100' '#1085#1086#1084#1077#1088
         OnClick = N3Click

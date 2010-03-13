@@ -21,6 +21,7 @@ type
         procedure testCreateDestroy;
         procedure testBingView();
         procedure testGenerateNumber();
+        procedure testSetupViewModes();
     end;
 
 
@@ -98,6 +99,24 @@ begin
     CheckEquals('a111aa', mockModel.currentNumber);
 end;
 
+
+procedure TTestMainViewPresenter.testSetupViewModes;
+var
+    presenter : IMainViewPresenter;
+begin
+    presenter := TMainViewPresenter.create(mockView,
+        mockModel,
+        mockUserInputService,
+        mockImageGeneratorService);
+
+    presenter.setViewOnlyMode(true);
+
+    CheckTrue(mockModel.viewOnlyMode);
+
+    presenter.setViewOnlyMode(false);
+    CheckFalse(mockModel.viewOnlyMode);
+    
+end;
 
 initialization
     TestFramework.RegisterTest(TTestMainViewPresenter.Suite);

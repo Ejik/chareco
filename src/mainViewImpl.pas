@@ -18,11 +18,13 @@ type
         N7: TMenuItem;
     StatusBar: TStatusBar;
     workspaceImage: TImage;
+    viewOnlyMenuItem: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
         procedure N5Click(Sender: TObject);
         procedure N6Click(Sender: TObject);
+    procedure viewOnlyMenuItemClick(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -96,6 +98,11 @@ end;
 function TForm1.getView: TForm;
 begin
     result := self;
+end;
+
+procedure TForm1.viewOnlyMenuItemClick(Sender: TObject);
+begin
+    presenter.setViewOnlyMode(viewOnlyMenuItem.Checked);    
 end;
 
 end.

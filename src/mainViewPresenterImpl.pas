@@ -23,6 +23,7 @@ type
         procedure generateNumber();
         procedure openFile();
         procedure saveFile();
+        procedure setViewOnlyMode(boolValue: boolean);
         procedure exit;
     end;
 
@@ -77,6 +78,7 @@ end;
     Метод генерации номера
   @return
 ------------------------------------------------------------------------------*}
+
 procedure TMainViewPresenter.generateNumber;
 var
     s: wideString;
@@ -94,9 +96,10 @@ end;
     Метод загрузки изображения номера из файла
   @return ResultDescription
 ------------------------------------------------------------------------------*}
+
 procedure TMainViewPresenter.openFile;
 var
-    openDialog : TOpenDialog;
+    openDialog: TOpenDialog;
 begin
     openDialog := TOpenDialog.Create(fMainView.getView);
     openDialog.InitialDir := getCurrentDir();
@@ -111,12 +114,14 @@ begin
         fMainView.getStatusBar().setStatus('Изображение открыто', 2000);
     end;
 
+    freeAndNil(openDialog);
 end;
 
 {*------------------------------------------------------------------------------
     Метод сохранения изображения номера в файл
   @return ResultDescription
 ------------------------------------------------------------------------------*}
+
 procedure TMainViewPresenter.saveFile;
 var
     saveFileDlg: TSaveDialog;
@@ -135,6 +140,11 @@ begin
         fMainView.getStatusBar().setStatus('Изображение сохранено', 2000);
     end;
     FreeAndNil(saveFileDlg);
+end;
+
+procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
+begin
+    fMainViewModel.viewOnlyMode := boolValue;
 end;
 
 initialization
