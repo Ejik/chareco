@@ -6,23 +6,40 @@ uses
     Graphics, mainView;
 
 type
-    //IMainViewMock = interface
-    //['{54C8BD95-C208-4E96-8EFE-1175842A6CB5}']
-    //end;
 
     TMainViewMock = class(TInterfacedObject, IMainView)
-        procedure setupWorkspace(bitmap : TBitmap);
+    private
+        IWorkspace : IGUIWorkspace;
+    public
+        constructor create();
+        function getStatusBar(): IGUIStatusBar;
+        function getWorkspace(): IGUIWorkspace;
     end;
 
 
 implementation
 
+uses
+  guiWorkspaceMock;
+
 { TMainViewMock }
 
-procedure TMainViewMock.setupWorkspace(bitmap: TBitmap);
+constructor TMainViewMock.create;
 begin
-    
+    IWorkspace := TGUIWorkspaceMock.create();
 end;
 
+function TMainViewMock.getStatusBar: IGUIStatusBar;
+begin
+
+end;
+
+function TMainViewMock.getWorkspace: IGUIWorkspace;
+begin
+    result := IWorkspace;    
+end;
+
+
 end.
+
  

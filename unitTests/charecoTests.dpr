@@ -12,7 +12,8 @@ uses
   userInputServiceMock in 'userInputServiceMock.pas',
   mainViewModelMock in 'mainViewModelMock.pas',
   imageGeneratorServiceMock in 'imageGeneratorServiceMock.pas',
-  MBC.Classes in '..\src\MBC.Classes.pas';
+  MBC.Classes in '..\src\MBC.Classes.pas',
+  guiWorkspaceMock in 'guiWorkspaceMock.pas';
 
 {$R *.res}
 

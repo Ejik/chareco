@@ -18,7 +18,7 @@ type
             const model : IMainViewModel;
             const userInputService : IUserInputService;
             const ImageGeneratorService : IImageGeneratorService ); overload;
-        destructor destroy();
+        destructor destroy(); override;
         procedure bindView(const mainView: IMainView);
         procedure generateNumber();
         procedure openFile();
@@ -67,7 +67,7 @@ begin
     begin
         fMainViewModel.currentNumber := StringReplace(s, ' ', '', [rfReplaceAll]);        
         fMainViewModel.currentNumberBitmap := fImageGeneratorService.generate(fMainViewModel.currentNumber);
-        fMainView.setupWorkspace(fMainViewModel.currentNumberBitmap);
+        fMainView.getWorkspace().setWorkspace(fMainViewModel.currentNumberBitmap);
     end;
 end;
 

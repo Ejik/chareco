@@ -23,7 +23,7 @@ object Form1: TForm1
     Align = alClient
     Center = True
   end
-  object StatusBar1: TStatusBar
+  object StatusBar: TStatusBar
     Left = 0
     Top = 321
     Width = 584

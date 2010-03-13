@@ -16,7 +16,7 @@ type
         N5: TMenuItem;
         N6: TMenuItem;
         N7: TMenuItem;
-    StatusBar1: TStatusBar;
+    StatusBar: TStatusBar;
     workspaceImage: TImage;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
@@ -27,9 +27,16 @@ type
     { Private declarations }
         presenter: IMainViewPresenter;
         model : IMainViewModel;
+
+    protected
+
+        IStatusBar : IGUIStatusBar;
+        IWorkspace : IGUIWorkspace;
+
     public
     { Public declarations }
-         procedure setupWorkspace(bitmap : TBitmap);
+        function getStatusBar() : IGUIStatusBar;
+        function getWorkspace() : IGUIWorkspace;
 
     end;
 
@@ -37,6 +44,9 @@ var
     Form1: TForm1;
 
 implementation
+
+uses
+  guiWorkspaceImpl, guiStatusBarImpl;
 
 
 {$R *.dfm}
@@ -49,6 +59,10 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
     InjectDependencies(self);
+
+    IWorkspace := TGUIWorkspace.create(workspaceImage);
+    IStatusBar := TGUIStatusBar.create(StatusBar);
+
     presenter.bindView(self);
 end;
 
@@ -68,9 +82,14 @@ begin
     close();
 end;
 
-procedure TForm1.setupWorkspace(bitmap: TBitmap);
+function TForm1.getStatusBar: IGUIStatusBar;
 begin
-    workspaceImage.Picture.Graphic := bitmap;
+    result := IStatusBar;
+end;
+
+function TForm1.getWorkspace: IGUIWorkspace;
+begin
+    result := IWorkspace;
 end;
 
 end.
