@@ -25,6 +25,8 @@ type
         procedure N5Click(Sender: TObject);
         procedure N6Click(Sender: TObject);
         procedure viewOnlyMenuItemClick(Sender: TObject);
+    procedure workspaceImageMouseMove(Sender: TObject; Shift: TShiftState;
+      X, Y: Integer);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -120,6 +122,12 @@ end;
 function TMainView.getWorkspace: IGUIWorkspace;
 begin
      result := IWorkspace;
+end;
+
+procedure TForm1.workspaceImageMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    presenter.workSpaceImageMouseMove(x, y);
 end;
 
 initialization

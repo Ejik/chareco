@@ -12,7 +12,7 @@ type
         procedure delay(ms: longint);
     public
         constructor create(customStatusBar: TStatusBar);
-        procedure setStatus(const msg: string; timeout: integer);
+        procedure setStatus(const msg: string; timeout: integer = 0);
     end;
 
 implementation
@@ -40,8 +40,11 @@ end;
 procedure TGUIStatusBar.setStatus(const msg: string; timeout: integer);
 begin
     fStatusBar.SimpleText := msg;
-    delay(timeout);
-    fStatusBar.SimpleText := '';
+    if (timeout > 0) then
+    begin
+        delay(timeout);
+        fStatusBar.SimpleText := '';
+    end;
 end;
 
 end.

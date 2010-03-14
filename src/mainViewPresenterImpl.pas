@@ -12,20 +12,24 @@ type
         fMainViewModel: IMainViewModel;
         fUserInputService: IUserInputService;
         fImageGeneratorService: IImageGeneratorService;
+
         procedure setMainViewOnlyMode();
         procedure setMainViewAndSetupLayoutMode();
+
     public
         constructor create(const mainView: IMainView;
             const model: IMainViewModel;
             const userInputService: IUserInputService;
             const ImageGeneratorService: IImageGeneratorService); overload;
         destructor destroy(); override;
+
         procedure bindView(const mainView: IMainView);
+        procedure exit;
         procedure generateNumber();
         procedure openFile();
         procedure saveFile();
         procedure setViewOnlyMode(boolValue: boolean);
-        procedure exit;
+        procedure workSpaceImageMouseMove(x, y: integer);
     end;
 
 implementation
@@ -151,7 +155,6 @@ var
 begin
     ws := fMainView.getWorkspace();
     ws.setCursor(crCross);
-
 end;
 
 procedure TMainViewPresenter.setMainViewOnlyMode;
@@ -170,6 +173,18 @@ begin
         false: setMainViewAndSetupLayoutMode();
     else
         setMainViewOnlyMode();
+    end;
+end;
+
+procedure TMainViewPresenter.workSpaceImageMouseMove(x, y: integer);
+var
+    ws: IGUIWorkspace;
+    statusBar: IGUIStatusBar;
+begin
+    if (not fMainViewModel.viewOnlyMode) then
+    begin
+        statusBar := fMainView.getStatusBar();
+        statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
     end;
 end;
 

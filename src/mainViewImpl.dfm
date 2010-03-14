@@ -22,6 +22,7 @@ object Form1: TForm1
     Height = 321
     Align = alClient
     Center = True
+    OnMouseMove = workspaceImageMouseMove
   end
   object StatusBar: TStatusBar
     Left = 0
