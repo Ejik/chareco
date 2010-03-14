@@ -28,7 +28,6 @@ type
     private
     { Private declarations }
         presenter: IMainViewPresenter;
-        model : IMainViewModel;
 
     protected
 
@@ -37,6 +36,7 @@ type
 
     public
     { Public declarations }
+        destructor destroy(); override;
         function getView() : TForm;
         function getStatusBar() : IGUIStatusBar;
         function getWorkspace() : IGUIWorkspace;
@@ -56,7 +56,7 @@ uses
 
 procedure TForm1.N3Click(Sender: TObject);
 begin
-    presenter.generateNumber();
+   presenter.generateNumber();
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -81,7 +81,7 @@ end;
 
 procedure TForm1.N6Click(Sender: TObject);
 begin
-    presenter.exit();
+//    presenter.exit();
     close();
 end;
 
@@ -103,6 +103,12 @@ end;
 procedure TForm1.viewOnlyMenuItemClick(Sender: TObject);
 begin
     presenter.setViewOnlyMode(viewOnlyMenuItem.Checked);
+end;
+
+destructor TForm1.destroy;
+begin
+
+  inherited;
 end;
 
 end.

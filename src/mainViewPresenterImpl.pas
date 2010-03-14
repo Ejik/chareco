@@ -67,7 +67,7 @@ end;
 
 destructor TMainViewPresenter.destroy;
 begin
-
+    inherited;
 end;
 
 procedure TMainViewPresenter.exit;
