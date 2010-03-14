@@ -102,7 +102,7 @@ procedure TMainViewPresenter.openFile;
 var
     openDialog: TOpenDialog;
 begin
-    openDialog := TOpenDialog.Create(fMainView.getView);
+    openDialog := TOpenDialog.Create(fMainView.getObject);
     openDialog.InitialDir := getCurrentDir();
     openDialog.Options := [ofFileMustExist];
     openDialog.Filter := 'Файлы изображений|*.bmp';
@@ -128,7 +128,7 @@ procedure TMainViewPresenter.saveFile;
 var
     saveFileDlg: TSaveDialog;
 begin
-    saveFileDlg := TSaveDialog.Create(fMainView.getView);
+    saveFileDlg := TSaveDialog.Create(fMainView.getObject);
     saveFileDlg.Title := 'Сохранение номера';
     saveFileDlg.InitialDir := getCurrentDir();
     saveFileDlg.Filter := 'Файлы изображений|*.bmp';

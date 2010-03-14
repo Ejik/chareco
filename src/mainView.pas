@@ -4,6 +4,8 @@ interface
 
 uses
     Graphics, Forms, Controls;
+const
+    kernel = 'kernel32.dll';
 
 type
     IGUIBaseInterface = interface
@@ -18,20 +20,21 @@ type
     IGUIWorkspace = interface(IGUIBaseInterface)
         ['{0E9C98BC-FD12-401D-890A-43F729F53218}']
 
-        function getCursor() : TCursor;
+        function getCursor(): TCursor;
 
-        procedure setCursor(cursor : TCursor);
+        procedure setCursor(cursor: TCursor);
         procedure setWorkspace(bitmap: TBitmap);
     end;
 
     IMainView = interface
         ['{5D732046-6966-4000-98AB-BDC7CB5D0B07}']
-        function getView() : TForm;
-        function getStatusBar() : IGUIStatusBar;
-        function getWorkspace() : IGUIWorkspace;
+        function getObject(): TForm;
+        function getStatusBar(): IGUIStatusBar;
+        function getWorkspace(): IGUIWorkspace;
     end;
 
 implementation
+
 
 end.
 

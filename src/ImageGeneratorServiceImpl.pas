@@ -14,7 +14,7 @@ type
 
         procedure loadTemplates();
     public
-        destructor destroy();
+        destructor destroy(); override;
         function generate(const strNumber: string): TBitmap;
     end;
 
@@ -34,7 +34,6 @@ function TImageGeneratorService.generate(
 var
     bmp: TBitmap;
     buffer : TBitmap;
-    i : integer;
     strImgPath : string;
 begin
     loadTemplates();
@@ -77,6 +76,7 @@ begin
     buffer.LoadFromFile(strImgPath);
     bmp.Canvas.Draw(264, 32, buffer);
 
+    freeAndNil(buffer);
     result := bmp;
 end;
 

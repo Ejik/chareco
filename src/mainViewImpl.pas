@@ -7,7 +7,7 @@ uses
     Dialogs, mainView, mainViewPresenter, Menus,
     EBDIRegistry, EBDependencyInjection, mainViewModel, ExtCtrls, ComCtrls;
 type
-    TForm1 = class(TForm, IMainView)
+    TForm1 = class(TForm)
         MainMenu1: TMainMenu;
         N1: TMenuItem;
         N2: TMenuItem;
@@ -16,31 +16,36 @@ type
         N5: TMenuItem;
         N6: TMenuItem;
         N7: TMenuItem;
-    StatusBar: TStatusBar;
-    workspaceImage: TImage;
-    viewOnlyMenuItem: TMenuItem;
+        StatusBar: TStatusBar;
+        workspaceImage: TImage;
+        viewOnlyMenuItem: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
         procedure N5Click(Sender: TObject);
         procedure N6Click(Sender: TObject);
-    procedure viewOnlyMenuItemClick(Sender: TObject);
+        procedure viewOnlyMenuItemClick(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
-
-    protected
-
-        IStatusBar : IGUIStatusBar;
-        IWorkspace : IGUIWorkspace;
-
     public
     { Public declarations }
-        destructor destroy(); override;
-        function getView() : TForm;
-        function getStatusBar() : IGUIStatusBar;
-        function getWorkspace() : IGUIWorkspace;
+    end;
 
+    TMainView = class(TInterfacedObject, IMainView)
+    private
+        fView: TForm1;
+        { Private declarations }
+    protected
+        IStatusBar: IGUIStatusBar;
+        IWorkspace: IGUIWorkspace;
+    public
+    { Public declarations }
+        constructor create();
+        destructor destroy(); override;
+        function getObject(): TForm;
+        function getStatusBar(): IGUIStatusBar;
+        function getWorkspace(): IGUIWorkspace;
     end;
 
 var
@@ -49,24 +54,18 @@ var
 implementation
 
 uses
-  guiWorkspaceImpl, guiStatusBarImpl;
-
+    guiWorkspaceImpl, guiStatusBarImpl;
 
 {$R *.dfm}
 
 procedure TForm1.N3Click(Sender: TObject);
 begin
-   presenter.generateNumber();
+    presenter.generateNumber();
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
     InjectDependencies(self);
-
-    IWorkspace := TGUIWorkspace.create(workspaceImage);
-    IStatusBar := TGUIStatusBar.create(StatusBar);
-
-    presenter.bindView(self);
 end;
 
 procedure TForm1.N4Click(Sender: TObject);
@@ -85,31 +84,46 @@ begin
     close();
 end;
 
-function TForm1.getStatusBar: IGUIStatusBar;
-begin
-    result := IStatusBar;
-end;
-
-function TForm1.getWorkspace: IGUIWorkspace;
-begin
-    result := IWorkspace;
-end;
-
-function TForm1.getView: TForm;
-begin
-    result := self;
-end;
-
 procedure TForm1.viewOnlyMenuItemClick(Sender: TObject);
 begin
     presenter.setViewOnlyMode(viewOnlyMenuItem.Checked);
 end;
 
-destructor TForm1.destroy;
-begin
 
-  inherited;
+{ TMainView }
+
+constructor TMainView.create;
+begin
+    fView := Form1;
+
+    IWorkspace := TGUIWorkspace.create(fView.workspaceImage);
+    IStatusBar := TGUIStatusBar.create(fView.StatusBar);
+
+    InjectDependencies(self);
 end;
+
+destructor TMainView.destroy;
+begin
+    inherited;
+end;
+
+function TMainView.getStatusBar: IGUIStatusBar;
+begin
+    result := IStatusBar;
+end;
+
+function TMainView.getObject: TForm;
+begin
+    result := fView;
+end;
+
+function TMainView.getWorkspace: IGUIWorkspace;
+begin
+     result := IWorkspace;
+end;
+
+initialization
+    GetDIRegistry.RegisterFactorySingleton(IMainView, TMainView, @TMainView.Create);
 
 end.
 
