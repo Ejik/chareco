@@ -33,8 +33,8 @@ function TImageGeneratorService.generate(
     const strNumber: string): TBitmap;
 var
     bmp: TBitmap;
-    buffer : TBitmap;
-    strImgPath : string;
+    buffer: TBitmap;
+    strImgPath: string;
 begin
     loadTemplates();
 
@@ -85,62 +85,29 @@ var
     i: integer;
     //bmp: TBitmap;
 begin
-    sl := TStringList.create();
-    sl.Add('a=images\tpl_a.bmp');
-    sl.Add('b=images\tpl_b.bmp');
-    sl.Add('e=images\tpl_e.bmp');
-    sl.Add('k=images\tpl_k.bmp');
-    sl.Add('m=images\tpl_m.bmp');
-    sl.Add('h=images\tpl_h.bmp');
-    sl.Add('o=images\tpl_o.bmp');
-    sl.Add('c=images\tpl_c.bmp');
-    sl.Add('t=images\tpl_t.bmp');
-    sl.Add('y=images\tpl_y.bmp');
-    sl.Add('x=images\tpl_x.bmp');
-    sl.Add('d=images\tpl_d.bmp');
-    sl.Add('r=images\tpl_tr.bmp');
-
-    for i := 0 to 9 do
+    if (sl = nil) then
     begin
-        sl.Add(IntToStr(i) + '=images\tpl_' + intToStr(i) + '.bmp');
+        sl := TStringList.create();
+        sl.Add('a=images\tpl_a.bmp');
+        sl.Add('b=images\tpl_b.bmp');
+        sl.Add('e=images\tpl_e.bmp');
+        sl.Add('k=images\tpl_k.bmp');
+        sl.Add('m=images\tpl_m.bmp');
+        sl.Add('h=images\tpl_h.bmp');
+        sl.Add('o=images\tpl_o.bmp');
+        sl.Add('c=images\tpl_c.bmp');
+        sl.Add('t=images\tpl_t.bmp');
+        sl.Add('y=images\tpl_y.bmp');
+        sl.Add('x=images\tpl_x.bmp');
+        sl.Add('d=images\tpl_d.bmp');
+        sl.Add('r=images\tpl_tr.bmp');
+
+        for i := 0 to 9 do
+        begin
+            sl.Add(IntToStr(i) + '=images\tpl_' + intToStr(i) + '.bmp');
         //imageList.Add(bmp, nil);
+        end;
     end;
-
-    {imageList := TImageList.Create(nil);
-    bmp.LoadFromFile('\images\tpl_a.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_b.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_e.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_k.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_m.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_h.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_o.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_p.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_c.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_t.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_y.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_x.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_d.bmp');
-    imageList.Add(bmp, nil);
-    bmp.LoadFromFile('\images\tpl_tr.bmp');
-    imageList.Add(bmp, nil);
-
-    for i := 0 to 9 do
-    begin
-        bmp.LoadFromFile('\images\tpl_' + intToStr(i) + '.bmp');
-        imageList.Add(bmp, nil);
-    end;                    }
 end;
 
 initialization

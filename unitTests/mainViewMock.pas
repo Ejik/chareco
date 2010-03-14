@@ -14,7 +14,7 @@ type
         constructor create();
         function getStatusBar(): IGUIStatusBar;
         function getWorkspace(): IGUIWorkspace;
-        function getView() : TForm;
+        function getObject() : TForm;
     end;
 
 
@@ -35,7 +35,7 @@ begin
 
 end;
 
-function TMainViewMock.getView: TForm;
+function TMainViewMock.getObject: TForm;
 begin
     
 end;

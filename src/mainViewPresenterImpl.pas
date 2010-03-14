@@ -87,7 +87,7 @@ begin
     s := fUserInputService.inputNumber();
     if (s <> '') then
     begin
-        fMainViewModel.currentNumber := StringReplace(s, ' ', '', [rfReplaceAll]);
+        fMainViewModel.currentNumber := s;
         fMainViewModel.currentNumberBitmap := fImageGeneratorService.generate(fMainViewModel.currentNumber);
         fMainView.getWorkspace().setWorkspace(fMainViewModel.currentNumberBitmap);
     end;

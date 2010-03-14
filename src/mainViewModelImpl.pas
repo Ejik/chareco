@@ -31,7 +31,7 @@ type
     end;
 implementation
 
-uses SysUtils;
+uses SysUtils, Variants;
 
 { TMainViewModel }
 
@@ -72,6 +72,8 @@ end;
 
 procedure TMainViewModel.setCurrentNumberBitmap(bitmap: TBitmap);
 begin
+    if (fCurrentNumberBitmap <> nil) then
+        freeAndNil(fCurrentNumberBitmap);
     fCurrentNumberBitmap := bitmap;
 end;
 
