@@ -337,7 +337,7 @@ begin
             buffer.Canvas.LineTo(x - left0, numberHeight);
 
             statusBar := fMainView.getStatusBar();
-            statusBar.setStatus('x:' + intToStr(x - left0));
+            statusBar.setStatus('x:' + intToStr(x - left0), 0,false);
             //statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
         end;
 

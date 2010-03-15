@@ -14,7 +14,7 @@ type
 
     IGUIStatusBar = interface(IGUIBaseInterface)
         ['{77294803-AF91-4FD1-9035-B38F08A4641E}']
-        procedure setStatus(const msg: string; timeout: integer = 0);
+        procedure setStatus(const msg: string; timeout: integer = 0; threaded: boolean = true);
     end;
 
     IGUIWorkspace = interface(IGUIBaseInterface)

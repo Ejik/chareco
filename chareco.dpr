@@ -18,7 +18,8 @@ uses
   guiWorkspaceImpl in 'src\guiWorkspaceImpl.pas',
   number in 'src\number.pas',
   numberImpl in 'src\numberImpl.pas',
-  systemConsts in 'src\systemConsts.pas';
+  systemConsts in 'src\systemConsts.pas',
+  guiThreadImpl in 'src\guiThreadImpl.pas';
 
 {$R *.res}
 

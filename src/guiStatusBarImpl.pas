@@ -9,16 +9,16 @@ type
     TGUIStatusBar = class(TInterfacedObject, IGUIStatusBar)
     private
         fStatusBar: TStatusBar;
-        procedure delay(ms: longint);
+        procedure delay(ms: Integer);
     public
         constructor create(customStatusBar: TStatusBar);
-        procedure setStatus(const msg: string; timeout: integer = 0);
+        procedure setStatus(const msg: string; timeout: integer = 0; threaded: boolean = true);
     end;
 
 implementation
 
 uses
-  Windows, Forms;
+    Windows, Forms, guiThreadImpl;
 
 { TGUIStatusBar }
 
@@ -34,16 +34,28 @@ begin
     TheTime := getTickCount() + ms;
     while GetTickCount < TheTime do
         Application.ProcessMessages;
+
 end;
 
-
-procedure TGUIStatusBar.setStatus(const msg: string; timeout: integer);
+procedure TGUIStatusBar.setStatus(const msg: string; timeout: integer = 0; threaded: boolean = true);
+var
+    guiThread: TGUIThread;
 begin
-    fStatusBar.SimpleText := msg;
-    if (timeout > 0) then
+    if (threaded) then
     begin
-        delay(timeout);
-        fStatusBar.SimpleText := '';
+        guiThread := TGUIThread.create(true, msg, timeout);
+        guiThread.bindStatusBar(fStatusBar);
+        guiThread.FreeOnTerminate := true;
+        guiThread.Resume;
+    end
+    else
+    begin
+        fStatusBar.SimpleText := msg;
+        if (timeout > 0) then
+        begin
+            delay(timeout);
+            fStatusBar.SimpleText := '';
+        end;
     end;
 end;
 
