@@ -3,8 +3,8 @@ object fmInputNumDlg: TfmInputNumDlg
   Top = 248
   BorderStyle = bsDialog
   Caption = #1044#1080#1072#1083#1086#1075' '#1074#1074#1086#1076#1072' '#1085#1086#1084#1077#1088#1072
-  ClientHeight = 92
-  ClientWidth = 233
+  ClientHeight = 106
+  ClientWidth = 312
   Color = clBtnFace
   ParentFont = True
   OldCreateOrder = True
@@ -20,7 +20,7 @@ object fmInputNumDlg: TfmInputNumDlg
   end
   object OKBtn: TButton
     Left = 70
-    Top = 59
+    Top = 74
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -30,23 +30,33 @@ object fmInputNumDlg: TfmInputNumDlg
   end
   object CancelBtn: TButton
     Left = 150
-    Top = 59
+    Top = 74
     Width = 75
     Height = 25
     Cancel = True
-    Caption = 'Cancel'
+    Caption = #1054#1090#1084#1077#1085#1072
     ModalResult = 2
     TabOrder = 1
   end
   object MaskEdit: TMaskEdit
     Left = 10
     Top = 30
-    Width = 205
+    Width = 296
     Height = 21
-    EditMask = 'L 000 LL;1;_'
+    EditMask = 'L 000 LL 000;1;_'
     ImeName = 'Russian'
-    MaxLength = 8
+    MaxLength = 12
     TabOrder = 2
-    Text = 'x 777 aa'
+    Text = 'x 777 aa 177'
+  end
+  object Button1: TButton
+    Left = 230
+    Top = 74
+    Width = 75
+    Height = 25
+    Cancel = True
+    Caption = #1055#1086#1084#1086#1097#1100
+    ModalResult = 2
+    TabOrder = 3
   end
 end

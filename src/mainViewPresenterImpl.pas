@@ -65,7 +65,7 @@ var
     i: integer;
 begin
     fMainViewModel.layoutStep := 0;
-    for i := 0 to 4 do
+    for i := 0 to NumberLength - 1 do
         fMainViewModel.layoutPoint[i] := 0;
     if (fMainViewModel.autoLayoutMode) then
     begin
@@ -228,7 +228,7 @@ var
     i : integer;
 begin
      // Накладываем разметку
-    for i := 0 to 4 do
+    for i := 0 to NumberLength - 1 do
     begin
         if (fMainViewModel.layoutPoint[i] > 0) then
         begin

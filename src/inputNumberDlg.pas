@@ -1,4 +1,4 @@
-unit inputNumberDlg;
+    unit inputNumberDlg;
 
 interface
 
@@ -11,6 +11,7 @@ type
     OKBtn: TButton;
     CancelBtn: TButton;
     MaskEdit: TMaskEdit;
+    Button1: TButton;
   private
     { Private declarations }
   public

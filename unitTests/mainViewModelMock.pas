@@ -3,7 +3,7 @@ unit mainViewModelMock;
 interface
 
 uses
-    mainViewModel, Graphics, number;
+    mainViewModel, Graphics, number, systemConsts;
 
 type
     TMainViewModelMock = class(TInterfacedObject, IMainViewModel)
@@ -12,7 +12,7 @@ type
         fCurrentNumberBitmapWithLayout: TBitmap;
         fIdentifiedNumber: string;
         fViewOnlyMode: boolean;
-        fLayoutPoints: array[0..4] of integer;
+        fLayoutPoints: array[0..NumberLength - 1] of integer;
 
     public
         constructor create(number: INumber); overload;
@@ -126,7 +126,7 @@ var
     i: integer;
 begin
     fCurrentNumber := number;
-    for i := 0 to 4 do
+    for i := 0 to NumberLength - 1 do
         fLayoutPoints[i] := 0;
 end;
 

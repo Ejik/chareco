@@ -4,7 +4,7 @@ interface
 
 uses
     EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewModel, Graphics,
-    number;
+    number, systemConsts;
 
 type
     TMainViewModel = class(TInterfacedObject, IMainViewModel)
@@ -15,7 +15,7 @@ type
         fCurrentNumberBitmapWithLayout: TBitmap;
         fIdentifiedNumber: string;
         fViewOnlyMode: boolean;
-        fLayoutPoints: array[0..4] of integer;
+        fLayoutPoints: array[0..NumberLength - 1] of integer;
 
     public
         constructor create();
@@ -51,7 +51,7 @@ type
     end;
 implementation
 
-uses SysUtils, Variants, systemConsts;
+uses SysUtils, Variants;
 
 { TMainViewModel }
 
@@ -156,8 +156,7 @@ begin
     fAutoLayoutMode := boolValue;
     if (fAutoLayoutMode) then
     begin
-        layoutStep := 5;
-        for i := 0 to 4 do
+        for i := 0 to NumberLength - 1 do
             layoutPoint[i] := arrAutoLayout[i];
     end;
 end;

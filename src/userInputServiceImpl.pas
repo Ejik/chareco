@@ -16,7 +16,7 @@ type
 implementation
 
 uses
-    inputNumberDlg, Forms, Controls, SysUtils;
+    inputNumberDlg, Forms, Controls, SysUtils, Dialogs;
 
 
 { TUserInputService }
@@ -73,9 +73,13 @@ begin
         begin
             strNumber := StringReplace(inputNumDld.MaskEdit.Text, ' ', '', [rfReplaceAll]);
             isCorrect := checkNumber(strNumber);
-
+            if (not isCorrect) then
+                ShowMessage('Не корректный номер');
             result := strNumber;
-        end;
+        end
+        else
+            result := '';
+
     until isCorrect or (mr = mrCancel);
     freeAndNil(inputNumDld);
 end;
