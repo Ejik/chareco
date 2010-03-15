@@ -95,6 +95,7 @@ begin
         sl.Add('m=images\tpl_m.bmp');
         sl.Add('h=images\tpl_h.bmp');
         sl.Add('o=images\tpl_o.bmp');
+        sl.Add('p=images\tpl_p.bmp');
         sl.Add('c=images\tpl_c.bmp');
         sl.Add('t=images\tpl_t.bmp');
         sl.Add('y=images\tpl_y.bmp');

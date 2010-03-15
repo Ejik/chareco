@@ -18,7 +18,6 @@ type
         procedure setupLayout();
         procedure updateView();
 
-
     public
         constructor create(const mainView: IMainView;
             const model: IMainViewModel;
@@ -68,7 +67,13 @@ begin
     fMainViewModel.layoutStep := 0;
     for i := 0 to 4 do
         fMainViewModel.layoutPoint[i] := 0;
-    fMainView.getWorkspace().setWorkspaceBitmap(fMainViewModel.currentNumberBitmap);
+    if (fMainViewModel.autoLayoutMode) then
+    begin
+        fMainViewModel.autoLayoutMode := true;
+        updateView();
+    end
+    else
+        fMainView.getWorkspace().setWorkspaceBitmap(fMainViewModel.currentNumberBitmap);
 end;
 
 {*------------------------------------------------------------------------------
@@ -116,6 +121,7 @@ begin
         fMainViewModel.currentNumberName := s;
         fMainViewModel.currentNumberBitmap := fImageGeneratorService.generate(s);
         fMainView.getWorkspace().setWorkspaceBitmap(fMainViewModel.currentNumberBitmap);
+        updateView();
     end;
 end;
 
@@ -140,6 +146,7 @@ begin
         fMainViewModel.currentNumberName := '';
         fMainView.getWorkspace().setWorkspaceBitmap(fMainViewModel.currentNumberBitmap);
         fMainView.getStatusBar().setStatus('Изображение открыто', 2000);
+        updateView();
     end;
 
     freeAndNil(openDialog);
@@ -176,6 +183,8 @@ end;
 ------------------------------------------------------------------------------*}
 
 procedure TMainViewPresenter.setAutoLayoutMode(boolValue: boolean);
+var
+    i : integer;
 begin
     fMainViewModel.autoLayoutMode := boolValue;
     updateView();
@@ -230,6 +239,11 @@ begin
     end;
 end;
 
+{*------------------------------------------------------------------------------
+  Метод установки режима только просмотра                                                                              
+  @param boolValue   ParameterDescription
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
 begin
     fMainViewModel.viewOnlyMode := boolValue;
@@ -246,7 +260,6 @@ end;
 ------------------------------------------------------------------------------*}
 
 procedure TMainViewPresenter.updateView;
-
 begin
     fMainViewModel.currentNumberBitmapWithLayout.Assign(fMainViewModel.currentNumberBitmap);
     setupLayout();

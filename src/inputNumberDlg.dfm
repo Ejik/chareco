@@ -1,6 +1,6 @@
 object fmInputNumDlg: TfmInputNumDlg
-  Left = 473
-  Top = 244
+  Left = 479
+  Top = 248
   BorderStyle = bsDialog
   Caption = #1044#1080#1072#1083#1086#1075' '#1074#1074#1086#1076#1072' '#1085#1086#1084#1077#1088#1072
   ClientHeight = 92

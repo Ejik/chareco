@@ -9,7 +9,7 @@ uses
 type
     TMainViewModel = class(TInterfacedObject, IMainViewModel)
     private
-        fAutoLayoutMode : boolean;
+        fAutoLayoutMode: boolean;
         fCurrentNumber: INumber;
         fCurrentLayoutStep: integer;
         fCurrentNumberBitmapWithLayout: TBitmap;
@@ -21,7 +21,7 @@ type
         constructor create();
         destructor destroy(); override;
 
-        function getAutoLayoutMode() : boolean;
+        function getAutoLayoutMode(): boolean;
         function getCurrentNumberName(): string;
         function getCurrentNumberBitmap(): TBitmap;
         function getCurrentNumberBitmapWithLayout(): TBitmap;
@@ -51,7 +51,7 @@ type
     end;
 implementation
 
-uses SysUtils, Variants;
+uses SysUtils, Variants, systemConsts;
 
 { TMainViewModel }
 
@@ -60,7 +60,7 @@ constructor TMainViewModel.create;
 begin
     InjectDependencies(self);
     fViewOnlyMode := true;
-    fAutoLayoutMode := true;
+    setAutoLayoutMode(true);
 end;
 
 destructor TMainViewModel.destroy;
@@ -150,8 +150,16 @@ begin
 end;
 
 procedure TMainViewModel.setAutoLayoutMode(boolValue: boolean);
+var
+    i: integer;
 begin
     fAutoLayoutMode := boolValue;
+    if (fAutoLayoutMode) then
+    begin
+        layoutStep := 5;
+        for i := 0 to 4 do
+            layoutPoint[i] := arrAutoLayout[i];
+    end;
 end;
 
 initialization
