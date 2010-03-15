@@ -20,7 +20,7 @@ type
 
 implementation
 
-uses SysUtils;
+uses SysUtils, systemConsts;
 
 { TImageGeneratorService }
 
@@ -41,8 +41,8 @@ begin
     bmp := TBitmap.Create;
     buffer := TBitmap.Create;
 
-    bmp.Width := 312;
-    bmp.Height := 90;
+    bmp.Width := NumberWidth;
+    bmp.Height := NumberHeight;
     buffer.Width := 58;
     buffer.Height := bmp.Height;
 

@@ -10,6 +10,7 @@ type
     TMainViewMock = class(TInterfacedObject, IMainView)
     private
         IWorkspace : IGUIWorkspace;
+        IStatusBar : IGUIStatusBar;
     public
         constructor create();
         function getStatusBar(): IGUIStatusBar;
@@ -21,18 +22,19 @@ type
 implementation
 
 uses
-  guiWorkspaceMock;
+  guiWorkspaceMock, guiStatusBarMock;
 
 { TMainViewMock }
 
 constructor TMainViewMock.create;
 begin
     IWorkspace := TGUIWorkspaceMock.create();
+    IStatusBar := TGUIStatusBarMock.create();
 end;
 
 function TMainViewMock.getStatusBar: IGUIStatusBar;
 begin
-
+    result := IStatusBar;
 end;
 
 function TMainViewMock.getObject: TForm;

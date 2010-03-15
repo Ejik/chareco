@@ -3,22 +3,34 @@ unit guiWorkspaceMock;
 interface
 
 uses
-    mainView, Graphics, Forms, Controls;
+    mainView, Graphics, Forms, Controls, WinTypes;
 
 type
     TGUIWorkspaceMock = class(TInterfacedObject, IGUIWorkspace)
 
+        function getClientArea() : TRect;
         function getCursor(): TCursor;
+        function getWorkspaceBitmap() : Graphics.TBitmap;
 
         procedure setCursor(cursor: TCursor);
-        procedure setWorkspace(bitmap: TBitmap);
+        procedure setWorkspaceBitmap(bitmap: Graphics.TBitmap);
     end;
 
 implementation
 
 { TGUIWorkspaceMock }
 
+function TGUIWorkspaceMock.getClientArea: TRect;
+begin
+
+end;
+
 function TGUIWorkspaceMock.getCursor: TCursor;
+begin
+
+end;
+
+function TGUIWorkspaceMock.getWorkspaceBitmap: Graphics.TBitmap;
 begin
 
 end;
@@ -28,7 +40,7 @@ begin
 
 end;
 
-procedure TGUIWorkspaceMock.setWorkspace(bitmap: TBitmap);
+procedure TGUIWorkspaceMock.setWorkspaceBitmap(bitmap: Graphics.TBitmap);
 begin
 
 end;

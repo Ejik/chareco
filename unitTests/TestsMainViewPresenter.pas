@@ -30,7 +30,7 @@ implementation
 uses
     SysUtils, mainViewPresenter, mainViewPresenterImpl, mainViewMock,
     userInputServiceImpl, userInputServiceMock, mainViewModelMock,
-    ImageGeneratorServiceImpl, imageGeneratorServiceMock;
+    ImageGeneratorServiceImpl, imageGeneratorServiceMock, numberMock;
 
 { TTestMainView }
 
@@ -39,7 +39,7 @@ begin
     inherited;
 
     mockView := TMainViewMock.create();
-    mockModel := TMainViewModelMock.create();
+    mockModel := TMainViewModelMock.create(TNumberMock.create);
     mockUserInputService := TUserInputServiceMock.create();
     mockImageGeneratorService := TImageGeneratorServiceMock.create();
 end;
@@ -47,11 +47,6 @@ end;
 procedure TTestMainViewPresenter.TearDown;
 begin
     inherited;
-
-    mockImageGeneratorService := nil;
-    mockUserInputService := nil;
-    mockModel := nil;
-    mockView := nil;
 end;
 
 procedure TTestMainViewPresenter.testBingView;
@@ -96,7 +91,7 @@ begin
         mockImageGeneratorService);
 
     presenter.generateNumber();
-    CheckEquals('a111aa', mockModel.currentNumber);
+    CheckEquals('a111aa', mockModel.currentNumberName);
 end;
 
 

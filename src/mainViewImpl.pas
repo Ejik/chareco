@@ -19,6 +19,8 @@ type
         StatusBar: TStatusBar;
         workspaceImage: TImage;
         viewOnlyMenuItem: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
@@ -27,6 +29,9 @@ type
         procedure viewOnlyMenuItemClick(Sender: TObject);
     procedure workspaceImageMouseMove(Sender: TObject; Shift: TShiftState;
       X, Y: Integer);
+    procedure workspaceImageMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure N9Click(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -128,6 +133,17 @@ procedure TForm1.workspaceImageMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     presenter.workSpaceImageMouseMove(x, y);
+end;
+
+procedure TForm1.workspaceImageMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+    presenter.workSpaceImageMouseDown(x, y);
+end;
+
+procedure TForm1.N9Click(Sender: TObject);
+begin
+    presenter.clearLayout();
 end;
 
 initialization

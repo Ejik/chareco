@@ -3,32 +3,45 @@ unit mainViewModelImpl;
 interface
 
 uses
-    EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewModel, Graphics;
+    EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewModel, Graphics,
+    number;
 
 type
     TMainViewModel = class(TInterfacedObject, IMainViewModel)
     private
-        fCurrentNumber: string;
-        fCurrentNumberBitmap: TBitmap;
+        fCurrentNumber: INumber;
+        fCurrentLayoutStep : integer;
+        fCurrentNumberBitmapWithLayout: TBitmap;
         fIdentifiedNumber: string;
         fViewOnlyMode: boolean;
+        fLayoutPoints: array[0..4] of integer;
 
     public
         constructor create();
         destructor destroy(); override;
-        function getCurrentNumber(): string;
+        function getCurrentNumberName(): string;
         function getCurrentNumberBitmap(): TBitmap;
+        function getCurrentNumberBitmapWithLayout(): TBitmap;
         function getIdentifiedNumber(): string;
+        function getLayoutPoint(index: integer): integer;
+        function getLayoutStep() : integer;
         function getViewOnlyMode(): boolean;
 
-        procedure setCurrentNumber(const strNumber: string);
+
+        procedure setCurrentNumberName(const strNumber: string);
         procedure setCurrentNumberBitmap(bitmap: TBitmap);
+        procedure setCurrentNumberBitmapWithLayout(bitmap: TBitmap);
         procedure setIdentifiedNumber(const strNumber: string);
+        procedure setLayoutPoint(index, value: integer);
+        procedure setLayoutStep(iValue: integer);
         procedure setViewOnlyMode(boolValue: boolean);
 
-        property currentNumber: string read getCurrentNumber write setCurrentNumber;
+        property currentNumberName: string read getCurrentNumberName write setCurrentNumberName;
         property currentNumberBitmap: TBitmap read getCurrentNumberBitmap write setCurrentNumberBitmap;
+        property currentNumberBitmapWithLayout: TBitmap read getCurrentNumberBitmapWithLayout write setCurrentNumberBitmapWithLayout;
         property identifiedNumber: string read getIdentifiedNumber write setIdentifiedNumber;
+        property layoutPoint[index: integer]: integer read getLayoutPoint write setLayoutPoint;
+        property layoutStep : integer read getLayoutStep write setLayoutStep;
     end;
 implementation
 
@@ -39,26 +52,32 @@ uses SysUtils, Variants;
 
 constructor TMainViewModel.create;
 begin
+    InjectDependencies(self);
     fViewOnlyMode := true;
 end;
 
 destructor TMainViewModel.destroy;
 begin
-    FreeAndNil(fCurrentNumberBitmap);
+    freeAndNil(fCurrentNumberBitmapWithLayout);
     inherited;
 end;
 
-function TMainViewModel.getCurrentNumber: string;
+function TMainViewModel.getCurrentNumberName: string;
 begin
-    result := fCurrentNumber;
+    result := fCurrentNumber.name;
 end;
 
 function TMainViewModel.getCurrentNumberBitmap: TBitmap;
 begin
-    if (fCurrentNumberBitmap = nil) then
-        fCurrentNumberBitmap := TBitmap.create;
+    result := fCurrentNumber.bitmap;
+end;
 
-    result := fCurrentNumberBitmap;
+function TMainViewModel.getCurrentNumberBitmapWithLayout: TBitmap;
+begin
+    if (fCurrentNumberBitmapWithLayout = nil) then
+        fCurrentNumberBitmapWithLayout := TBitmap.create;
+
+    result := fCurrentNumberBitmapWithLayout;
 end;
 
 function TMainViewModel.getIdentifiedNumber: string;
@@ -66,21 +85,31 @@ begin
     result := fIdentifiedNumber;
 end;
 
+function TMainViewModel.getLayoutPoint(index: integer): integer;
+begin
+    result := fLayoutPoints[index];
+end;
+
 function TMainViewModel.getViewOnlyMode: boolean;
 begin
     result := fViewOnlyMode;
 end;
 
-procedure TMainViewModel.setCurrentNumber(const strNumber: string);
+procedure TMainViewModel.setCurrentNumberName(const strNumber: string);
 begin
-    fCurrentNumber := strNumber;
+    fCurrentNumber.name := strNumber;
 end;
 
 procedure TMainViewModel.setCurrentNumberBitmap(bitmap: TBitmap);
 begin
-    if (fCurrentNumberBitmap <> nil) then
-        freeAndNil(fCurrentNumberBitmap);
-    fCurrentNumberBitmap := bitmap;
+    fCurrentNumber.bitmap := bitmap;
+end;
+
+procedure TMainViewModel.setCurrentNumberBitmapWithLayout(bitmap: TBitmap);
+begin
+    if (fCurrentNumberBitmapWithLayout <> nil) then
+        freeAndNil(fCurrentNumberBitmapWithLayout);
+    fCurrentNumberBitmapWithLayout := bitmap;
 end;
 
 procedure TMainViewModel.setIdentifiedNumber(const strNumber: string);
@@ -88,9 +117,24 @@ begin
     fIdentifiedNumber := strNumber;
 end;
 
+procedure TMainViewModel.setLayoutPoint(index, value: integer);
+begin
+    fLayoutPoints[index] := value;
+end;
+
 procedure TMainViewModel.setViewOnlyMode(boolValue: boolean);
 begin
     fViewOnlyMode := boolValue;
+end;
+
+function TMainViewModel.getLayoutStep: integer;
+begin
+    result := fCurrentLayoutStep;
+end;
+
+procedure TMainViewModel.setLayoutStep(iValue: integer);
+begin
+    fCurrentLayoutStep := iValue; 
 end;
 
 initialization

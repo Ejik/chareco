@@ -21,10 +21,11 @@ type
         ['{0E9C98BC-FD12-401D-890A-43F729F53218}']
 
         function getCursor(): TCursor;
-        function getClientArea() : TRect; 
+        function getClientArea() : TRect;
+        function getWorkspaceBitmap() : Graphics.TBitmap;
 
         procedure setCursor(cursor: TCursor);
-        procedure setWorkspace(bitmap: Graphics.TBitmap);
+        procedure setWorkspaceBitmap(bitmap: Graphics.TBitmap);
     end;
 
     IMainView = interface

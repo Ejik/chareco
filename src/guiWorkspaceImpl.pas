@@ -14,9 +14,10 @@ type
 
         function getCursor(): TCursor;
         function getClientArea(): TRect;
+        function getWorkspaceBitmap(): Graphics.TBitmap;
 
         procedure setCursor(cursor: TCursor);
-        procedure setWorkspace(bitmap: Graphics.TBitmap);
+        procedure setWorkspaceBitmap(bitmap: Graphics.TBitmap);
     end;
 
 implementation
@@ -38,12 +39,17 @@ begin
     result := fWorkspace.Cursor;
 end;
 
+function TGUIWorkspace.getWorkspaceBitmap: Graphics.TBitmap;
+begin
+    result := fWorkspace.Picture.Bitmap;
+end;
+
 procedure TGUIWorkspace.setCursor(cursor: TCursor);
 begin
     fWorkspace.Cursor := cursor;
 end;
 
-procedure TGUIWorkspace.setWorkspace(bitmap: TBitmap);
+procedure TGUIWorkspace.setWorkspaceBitmap(bitmap: TBitmap);
 begin
     fWorkspace.Picture.Graphic := bitmap;
 end;

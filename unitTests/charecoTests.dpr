@@ -14,7 +14,10 @@ uses
   imageGeneratorServiceMock in 'imageGeneratorServiceMock.pas',
   MBC.Classes in '..\src\MBC.Classes.pas',
   guiWorkspaceMock in 'guiWorkspaceMock.pas',
-  testsUserInputService in 'testsUserInputService.pas';
+  testsUserInputService in 'testsUserInputService.pas',
+  guiStatusBarMock in 'guiStatusBarMock.pas',
+  numberMock in 'numberMock.pas',
+  testsNumber in 'testsNumber.pas';
 
 {$R *.res}
 

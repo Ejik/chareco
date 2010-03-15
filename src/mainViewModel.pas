@@ -3,25 +3,34 @@ unit mainViewModel;
 interface
 
 uses
-    Graphics;
+    Graphics, number;
 
 type
     IMainViewModel = interface
         ['{2E9B820D-1C02-4D44-8043-636EBE86FF15}']
-        function getCurrentNumber(): string;
+        function getCurrentNumberName(): string;
         function getCurrentNumberBitmap(): TBitmap;
+        function getCurrentNumberBitmapWithLayout(): TBitmap;
         function getIdentifiedNumber(): string;
+        function getLayoutPoint(index : integer) : integer;
+        function getLayoutStep() : integer;
         function getViewOnlyMode(): boolean;
 
-        procedure setCurrentNumber(const strNumber: string);
+        procedure setCurrentNumberName(const strNumber: string);
         procedure setCurrentNumberBitmap(bitmap: TBitmap);
+        procedure setCurrentNumberBitmapWithLayout(bitmap: TBitmap);
         procedure setIdentifiedNumber(const strNumber: string);
+        procedure setLayoutPoint(index: integer; iValue: integer);
+        procedure setLayoutStep(iValue: integer);
         procedure setViewOnlyMode(boolValue: boolean);
 
-        property currentNumber: string read getCurrentNumber write setCurrentNumber;
+        property currentNumberName: string read getCurrentNumberName write setCurrentNumberName;
         property currentNumberBitmap: TBitmap read getCurrentNumberBitmap write setCurrentNumberBitmap;
+        property currentNumberBitmapWithLayout: TBitmap read getCurrentNumberBitmapWithLayout write setCurrentNumberBitmapWithLayout;
         property identifiedNumber: string read getIdentifiedNumber write setIdentifiedNumber;
         property viewOnlyMode: boolean read getViewOnlyMode write setViewOnlyMode;
+        property layoutPoint[index : integer] : integer read getLayoutPoint write setLayoutPoint;
+        property layoutStep : integer read getLayoutStep write setLayoutStep;
     end;
 
 implementation

@@ -3,28 +3,32 @@ unit mainViewModelMock;
 interface
 
 uses
-    mainViewModel, Graphics;
+    mainViewModel, Graphics, number;
 
 type
     TMainViewModelMock = class(TInterfacedObject, IMainViewModel)
     private
-        fCurrentNumber: string;
-        fCurrentNumberBitmap: TBitmap;
+        fCurrentNumber: INumber;
         fIdentifiedNumber: string;
-        fViewOnlyMode : boolean;
+        fViewOnlyMode: boolean;
     public
+        constructor create(number : INumber); overload;
         destructor destroy(); override;
-        function getCurrentNumber(): string;
+        function getCurrentNumberName(): string;
         function getCurrentNumberBitmap(): TBitmap;
+        function getCurrentNumberBitmapWithLayout(): TBitmap;
         function getIdentifiedNumber(): string;
+        function getlayoutPoint(index : integer) : integer;
         function getViewOnlyMode(): boolean;
 
-        procedure setCurrentNumber(const strNumber: string);
+        procedure setCurrentNumberName(const strNumber: string);
         procedure setCurrentNumberBitmap(bitmap: TBitmap);
+        procedure setCurrentNumberBitmapWithLayout(bitmap: TBitmap);
         procedure setIdentifiedNumber(const strNumber: string);
+        procedure setlayoutPoint(index : integer; value : integer);
         procedure setViewOnlyMode(boolValue: boolean);
 
-        property currentNumber: string read getCurrentNumber write setCurrentNumber;
+        property currentNumberName: string read getCurrentNumberName write setCurrentNumberName;
         property currentNumberBitmap: TBitmap read getCurrentNumberBitmap write setCurrentNumberBitmap;
         property identifiedNumber: string read getIdentifiedNumber write setIdentifiedNumber;
         property viewOnlyMode: boolean read getViewOnlyMode write setViewOnlyMode;
@@ -40,18 +44,17 @@ uses
 
 destructor TMainViewModelMock.destroy;
 begin
-    FreeAndNil(fCurrentNumberBitmap);
     inherited;
 end;
 
-function TMainViewModelMock.getCurrentNumber: string;
+function TMainViewModelMock.getCurrentNumberName: string;
 begin
-    result := fCurrentNumber;
+    result := fCurrentNumber.name;
 end;
 
 function TMainViewModelMock.getCurrentNumberBitmap: TBitmap;
 begin
-    result := fCurrentNumberBitmap;
+    result := fCurrentNumber.bitmap;
 end;
 
 function TMainViewModelMock.getIdentifiedNumber: string;
@@ -64,14 +67,14 @@ begin
     result := fViewOnlyMode;
 end;
 
-procedure TMainViewModelMock.setCurrentNumber(const strNumber: string);
+procedure TMainViewModelMock.setCurrentNumberName(const strNumber: string);
 begin
-    fCurrentNumber := strNumber;
+    fCurrentNumber.name := strNumber;
 end;
 
 procedure TMainViewModelMock.setCurrentNumberBitmap(bitmap: TBitmap);
 begin
-    fCurrentNumberBitmap := bitmap;
+    fCurrentNumber.bitmap := bitmap;
 end;
 
 procedure TMainViewModelMock.setIdentifiedNumber(const strNumber: string);
@@ -82,6 +85,32 @@ end;
 procedure TMainViewModelMock.setViewOnlyMode(boolValue: boolean);
 begin
     fViewOnlyMode := boolValue;
+end;
+
+function TMainViewModelMock.getCurrentNumberBitmapWithLayout: TBitmap;
+begin
+
+end;
+
+function TMainViewModelMock.getlayoutPoint(index: integer): integer;
+begin
+
+end;
+
+procedure TMainViewModelMock.setCurrentNumberBitmapWithLayout(
+  bitmap: TBitmap);
+begin
+
+end;
+
+procedure TMainViewModelMock.setlayoutPoint(index, value: integer);
+begin
+
+end;
+
+constructor TMainViewModelMock.create(number: INumber);
+begin
+    fCurrentNumber := number;
 end;
 
 end.
