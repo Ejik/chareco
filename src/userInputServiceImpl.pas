@@ -16,7 +16,7 @@ type
 implementation
 
 uses
-    inputNumberDlg, Forms, Controls, SysUtils, Dialogs;
+    inputNumberDlg, Forms, Controls, SysUtils, Dialogs, systemConsts;
 
 
 { TUserInputService }
@@ -28,7 +28,7 @@ var
     boolOK: boolean;
 begin
     result := false;
-    if (length(strNumber) > 6) then
+    if (length(strNumber) > NumberLength) then
         exit;
     for i := 1 to length(strNumber) do
     begin

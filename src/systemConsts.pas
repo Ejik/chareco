@@ -10,11 +10,11 @@ unit systemConsts;
 interface
 
 const
-    NumberLength = 8;
+    NumberLength = 9;
     NumberHeight = 90;
-    NumberWidth = 312;
+    NumberWidth = 500;
 
-    arrAutoLayout : array [0..NumberLength - 1] of integer = (45, 103, 161, 219, 264, 0, 0, 0);
+    arrAutoLayout : array [0..NumberLength - 2] of integer = (45, 45 + 58, 45 + 58 + 58, 45 + 58 + 58 + 58, 45 + 58 + 58 + 58 + 45, 320, 378, 436);
 
 implementation
 

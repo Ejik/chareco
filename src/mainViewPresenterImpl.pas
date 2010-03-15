@@ -293,7 +293,7 @@ begin
         if (x >= left0) and (y >= top0) and
             (x <= left0 + numberWidth) and (y <= top0 + numberHeight) then
         begin
-            if (fMainViewModel.layoutStep < 5) then
+          if (fMainViewModel.layoutStep < NumberLength - 1) then
             begin
                 fMainViewModel.layoutPoint[fMainViewModel.layoutStep] := x - left0;
                 fMainViewModel.layoutStep := fMainViewModel.layoutStep + 1;

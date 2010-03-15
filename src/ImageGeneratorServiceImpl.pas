@@ -54,27 +54,45 @@ begin
     // 7 width = 58
     strImgPath := sl.Values[strNumber[2]];
     buffer.LoadFromFile(strImgPath);
-    bmp.Canvas.Draw(45, 0, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[0], 0, buffer);
 
     // 7
     strImgPath := sl.Values[strNumber[3]];
     buffer.LoadFromFile(strImgPath);
-    bmp.Canvas.Draw(103, 0, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[1], 0, buffer);
 
     // 7
     strImgPath := sl.Values[strNumber[4]];
     buffer.LoadFromFile(strImgPath);
-    bmp.Canvas.Draw(161, 0, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[2], 0, buffer);
 
     // a
     strImgPath := sl.Values[strNumber[5]];
     buffer.LoadFromFile(strImgPath);
-    bmp.Canvas.Draw(219, 32, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[3], 32, buffer);
 
     // a
     strImgPath := sl.Values[strNumber[6]];
     buffer.LoadFromFile(strImgPath);
-    bmp.Canvas.Draw(264, 32, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[4], 32, buffer);
+
+    // 1
+    if (strNumber[7] = '0') then
+        strImgPath := sl.Values['bl']
+    else
+        strImgPath := sl.Values[strNumber[7]];
+    buffer.LoadFromFile(strImgPath);
+    bmp.Canvas.Draw(arrAutoLayout[5], 0, buffer);
+
+    // 7
+    strImgPath := sl.Values[strNumber[8]];
+    buffer.LoadFromFile(strImgPath);
+    bmp.Canvas.Draw(arrAutoLayout[6], 0, buffer);
+
+    // 8
+    strImgPath := sl.Values[strNumber[9]];
+    buffer.LoadFromFile(strImgPath);
+    bmp.Canvas.Draw(arrAutoLayout[7], 0, buffer);
 
     freeAndNil(buffer);
     result := bmp;
@@ -102,6 +120,7 @@ begin
         sl.Add('x=images\tpl_x.bmp');
         sl.Add('d=images\tpl_d.bmp');
         sl.Add('r=images\tpl_tr.bmp');
+        sl.Add('bl=images\tpl_blank.bmp');
 
         for i := 0 to 9 do
         begin
