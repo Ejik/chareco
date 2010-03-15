@@ -65,6 +65,12 @@ object Form1: TForm1
         Caption = #1054#1095#1080#1089#1090#1080#1090#1100' '#1088#1072#1079#1084#1077#1090#1082#1091
         OnClick = N9Click
       end
+      object autoLayoutMenuItem: TMenuItem
+        AutoCheck = True
+        Caption = #1040#1074#1090#1086#1088#1072#1079#1084#1077#1090#1082#1072
+        Checked = True
+        OnClick = autoLayoutMenuItemClick
+      end
       object N8: TMenuItem
         Caption = '-'
       end

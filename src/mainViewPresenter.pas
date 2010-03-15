@@ -15,6 +15,7 @@ type
         procedure openFile();
         procedure saveFile();
         procedure setViewOnlyMode(boolValue: boolean);
+        procedure setAutoLayoutMode(boolValue: boolean);
         procedure workSpaceImageMouseMove(x, y: integer);
         procedure workSpaceImageMouseDown(x, y: integer);
     end;

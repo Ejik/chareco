@@ -21,6 +21,7 @@ type
         viewOnlyMenuItem: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
+    autoLayoutMenuItem: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
@@ -32,6 +33,7 @@ type
     procedure workspaceImageMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure N9Click(Sender: TObject);
+    procedure autoLayoutMenuItemClick(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -144,6 +146,11 @@ end;
 procedure TForm1.N9Click(Sender: TObject);
 begin
     presenter.clearLayout();
+end;
+
+procedure TForm1.autoLayoutMenuItemClick(Sender: TObject);
+begin
+    presenter.setAutoLayoutMode(autoLayoutMenuItem.Checked);
 end;
 
 initialization

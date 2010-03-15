@@ -9,8 +9,9 @@ uses
 type
     TMainViewModel = class(TInterfacedObject, IMainViewModel)
     private
+        fAutoLayoutMode : boolean;
         fCurrentNumber: INumber;
-        fCurrentLayoutStep : integer;
+        fCurrentLayoutStep: integer;
         fCurrentNumberBitmapWithLayout: TBitmap;
         fIdentifiedNumber: string;
         fViewOnlyMode: boolean;
@@ -19,15 +20,18 @@ type
     public
         constructor create();
         destructor destroy(); override;
+
+        function getAutoLayoutMode() : boolean;
         function getCurrentNumberName(): string;
         function getCurrentNumberBitmap(): TBitmap;
         function getCurrentNumberBitmapWithLayout(): TBitmap;
         function getIdentifiedNumber(): string;
         function getLayoutPoint(index: integer): integer;
-        function getLayoutStep() : integer;
+        function getLayoutStep(): integer;
         function getViewOnlyMode(): boolean;
 
 
+        procedure setAutoLayoutMode(boolValue: boolean);
         procedure setCurrentNumberName(const strNumber: string);
         procedure setCurrentNumberBitmap(bitmap: TBitmap);
         procedure setCurrentNumberBitmapWithLayout(bitmap: TBitmap);
@@ -36,12 +40,14 @@ type
         procedure setLayoutStep(iValue: integer);
         procedure setViewOnlyMode(boolValue: boolean);
 
+        property autoLayoutMode: boolean read getAutoLayoutMode write setAutoLayoutMode;
         property currentNumberName: string read getCurrentNumberName write setCurrentNumberName;
         property currentNumberBitmap: TBitmap read getCurrentNumberBitmap write setCurrentNumberBitmap;
         property currentNumberBitmapWithLayout: TBitmap read getCurrentNumberBitmapWithLayout write setCurrentNumberBitmapWithLayout;
         property identifiedNumber: string read getIdentifiedNumber write setIdentifiedNumber;
         property layoutPoint[index: integer]: integer read getLayoutPoint write setLayoutPoint;
-        property layoutStep : integer read getLayoutStep write setLayoutStep;
+        property layoutStep: integer read getLayoutStep write setLayoutStep;
+        property viewOnlyMode: boolean read getViewOnlyMode write setViewOnlyMode;
     end;
 implementation
 
@@ -54,6 +60,7 @@ constructor TMainViewModel.create;
 begin
     InjectDependencies(self);
     fViewOnlyMode := true;
+    fAutoLayoutMode := true;
 end;
 
 destructor TMainViewModel.destroy;
@@ -134,7 +141,17 @@ end;
 
 procedure TMainViewModel.setLayoutStep(iValue: integer);
 begin
-    fCurrentLayoutStep := iValue; 
+    fCurrentLayoutStep := iValue;
+end;
+
+function TMainViewModel.getAutoLayoutMode: boolean;
+begin
+    result := fAutoLayoutMode;
+end;
+
+procedure TMainViewModel.setAutoLayoutMode(boolValue: boolean);
+begin
+    fAutoLayoutMode := boolValue;
 end;
 
 initialization

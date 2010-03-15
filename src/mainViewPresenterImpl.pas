@@ -15,6 +15,9 @@ type
 
         procedure setMainViewOnlyMode();
         procedure setMainViewAndSetupLayoutMode();
+        procedure setupLayout();
+        procedure updateView();
+
 
     public
         constructor create(const mainView: IMainView;
@@ -30,6 +33,7 @@ type
         procedure openFile();
         procedure saveFile();
         procedure setViewOnlyMode(boolValue: boolean);
+        procedure setAutoLayoutMode(boolValue: boolean);
         procedure workSpaceImageMouseDown(x, y: integer);
         procedure workSpaceImageMouseMove(x, y: integer);
     end;
@@ -171,6 +175,12 @@ end;
   @return ResultDescription
 ------------------------------------------------------------------------------*}
 
+procedure TMainViewPresenter.setAutoLayoutMode(boolValue: boolean);
+begin
+    fMainViewModel.autoLayoutMode := boolValue;
+    updateView();
+end;
+
 procedure TMainViewPresenter.setMainViewAndSetupLayoutMode;
 var
     ws: IGUIWorkspace;
@@ -204,6 +214,22 @@ end;
   @return ResultDescription
 ------------------------------------------------------------------------------*}
 
+procedure TMainViewPresenter.setupLayout;
+var
+    i : integer;
+begin
+     // Ќакладываем разметку
+    for i := 0 to 4 do
+    begin
+        if (fMainViewModel.layoutPoint[i] > 0) then
+        begin
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.Pen.Style := psDot;
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.MoveTo(fMainViewModel.layoutPoint[i], 0);
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.LineTo(fMainViewModel.layoutPoint[i], numberHeight);
+        end;
+    end;
+end;
+
 procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
 begin
     fMainViewModel.viewOnlyMode := boolValue;
@@ -213,6 +239,20 @@ begin
         setMainViewOnlyMode();
     end;
 end;
+
+{*------------------------------------------------------------------------------
+  ћетод обновлени€ оборажени€
+  @return ResultDescription
+------------------------------------------------------------------------------*}
+
+procedure TMainViewPresenter.updateView;
+
+begin
+    fMainViewModel.currentNumberBitmapWithLayout.Assign(fMainViewModel.currentNumberBitmap);
+    setupLayout();
+    fMainView.getWorkspace.setWorkspaceBitmap(fMainViewModel.currentNumberBitmapWithLayout);
+end;
+
 
 {*------------------------------------------------------------------------------
   ћетод отображени€ результатов при перемещении мыши над рабочей областью
@@ -266,18 +306,14 @@ begin
         left0 := w div 2 - numberWidth div 2;
         top0 := h div 2 - numberHeight div 2;
 
+        // ќбновл€ем отображение. иначе не будет видно номера
+        updateView();
+
         buffer := TBitmap.create();
-        buffer.Assign(fMainViewModel.currentNumberBitmap);
+        buffer.Assign(fMainViewModel.currentNumberBitmapWithLayout);
+
         // Ќакладываем разметку
-        for i := 0 to 4 do
-        begin
-            if (fMainViewModel.layoutPoint[i] > 0) then
-            begin
-                buffer.Canvas.Pen.Style := psDot;
-                buffer.Canvas.MoveTo(fMainViewModel.layoutPoint[i], 0);
-                buffer.Canvas.LineTo(fMainViewModel.layoutPoint[i], numberHeight);
-            end;
-        end;
+        setupLayout();
 
         // ≈сли курсов в заданной области, то накладываем и его
         if (x >= left0) and (y >= top0) and
