@@ -6,7 +6,7 @@ uses
     EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewModel, Graphics;
 
 type
-    TMainViewModel = class(TInjectable, IMainViewModel)
+    TMainViewModel = class(TInterfacedObject, IMainViewModel)
     private
         fCurrentNumber: string;
         fCurrentNumberBitmap: TBitmap;
@@ -14,6 +14,7 @@ type
         fViewOnlyMode: boolean;
 
     public
+        constructor create();
         destructor destroy(); override;
         function getCurrentNumber(): string;
         function getCurrentNumberBitmap(): TBitmap;
@@ -35,6 +36,11 @@ uses SysUtils, Variants;
 
 { TMainViewModel }
 
+
+constructor TMainViewModel.create;
+begin
+    fViewOnlyMode := true;
+end;
 
 destructor TMainViewModel.destroy;
 begin
@@ -88,6 +94,6 @@ begin
 end;
 
 initialization
-    GetDIRegistry.RegisterFactorySingleton(ImainViewModel, TMainViewModel);
+    GetDIRegistry.RegisterFactorySingleton(ImainViewModel, TMainViewModel, @TMainViewModel.create);
 end.
 

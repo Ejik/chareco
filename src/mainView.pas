@@ -3,7 +3,7 @@ unit mainView;
 interface
 
 uses
-    Graphics, Forms, Controls;
+    Forms, Controls, WinTypes, Graphics;
 const
     kernel = 'kernel32.dll';
 
@@ -21,9 +21,10 @@ type
         ['{0E9C98BC-FD12-401D-890A-43F729F53218}']
 
         function getCursor(): TCursor;
+        function getClientArea() : TRect; 
 
         procedure setCursor(cursor: TCursor);
-        procedure setWorkspace(bitmap: TBitmap);
+        procedure setWorkspace(bitmap: Graphics.TBitmap);
     end;
 
     IMainView = interface

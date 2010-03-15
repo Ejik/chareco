@@ -127,7 +127,6 @@ end;
     Метод сохранения изображения номера в файл
   @return ResultDescription
 ------------------------------------------------------------------------------*}
-
 procedure TMainViewPresenter.saveFile;
 var
     saveFileDlg: TSaveDialog;
@@ -148,6 +147,10 @@ begin
     FreeAndNil(saveFileDlg);
 end;
 
+{*------------------------------------------------------------------------------
+    Метод установки режима разметки
+  @return ResultDescription
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.setMainViewAndSetupLayoutMode;
 var
     ws: IGUIWorkspace;
@@ -157,15 +160,27 @@ begin
     ws.setCursor(crCross);
 end;
 
+{*------------------------------------------------------------------------------
+    Метод установки режима только просмотра
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.setMainViewOnlyMode;
 var
     ws: IGUIWorkspace;
+    sb: IGUIStatusBar;
     cursor: TCursor;
 begin
     ws := fMainView.getWorkspace();
     ws.setCursor(crDefault);
+    sb := fMainView.getStatusBar;
+    sb.setStatus('');
 end;
 
+{*------------------------------------------------------------------------------
+  Метод установки режима только просмотр или просмотр и разметка
+  @param boolValue   ParameterDescription
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
 begin
     fMainViewModel.viewOnlyMode := boolValue;
@@ -176,6 +191,12 @@ begin
     end;
 end;
 
+{*------------------------------------------------------------------------------
+  Метод отображения результатов при перемещении мыши над рабочей областью                                                                              
+  @param x   ParameterDescription
+  @param y   ParameterDescription
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
 procedure TMainViewPresenter.workSpaceImageMouseMove(x, y: integer);
 var
     ws: IGUIWorkspace;
@@ -183,8 +204,12 @@ var
 begin
     if (not fMainViewModel.viewOnlyMode) then
     begin
+        ws := fMainView.getWorkspace();
+//        ws.getClientArea()
+
         statusBar := fMainView.getStatusBar();
-        statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
+        //statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
+        statusBar.setStatus('x:' + intToStr(ws.getClientArea().Right) + '  y:' + intToStr(ws.getClientArea().Bottom));
     end;
 end;
 
