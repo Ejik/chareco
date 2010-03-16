@@ -2,12 +2,12 @@ unit testsUserInputService;
 
 interface
 
-uses TestFrameWork;
+uses TestFrameWork, imageRepository;
 
 type
     TTestUserInputService = class(TTestCase)
     private
-
+    
     protected
         procedure SetUp; override;
         procedure TearDown; override;
@@ -25,7 +25,6 @@ uses
 procedure TTestUserInputService.SetUp;
 begin
   inherited;
-
 end;
 
 procedure TTestUserInputService.TearDown;

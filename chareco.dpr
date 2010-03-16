@@ -23,7 +23,10 @@ uses
   aboutViewImpl in 'src\aboutViewImpl.pas' {AboutBox},
   aboutView in 'src\aboutView.pas',
   recognitionService in 'src\recognitionService.pas',
-  recognitionServiceImpl in 'src\recognitionServiceImpl.pas';
+  recognitionServiceImpl in 'src\recognitionServiceImpl.pas',
+  recognizerBaseImpl in 'src\recognizerBaseImpl.pas',
+  imageRepository in 'src\imageRepository.pas',
+  imageRepositoryImpl in 'src\imageRepositoryImpl.pas';
 
 {$R *.res}
 

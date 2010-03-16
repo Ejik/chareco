@@ -6,7 +6,7 @@ uses TestFramework;
 
 type
     TTestRecognitionService = class(TTestCase)
-     private
+    private
 
     protected
         procedure SetUp; override;
@@ -16,27 +16,28 @@ type
     end;
     { TTestRecognitionService }
 
+implementation
+    
 procedure TTestRecognitionService.SetUp;
 begin
-  inherited;
+    inherited;
 
 end;
 
 procedure TTestRecognitionService.TearDown;
 begin
-  inherited;
+    inherited;
 
 end;
 
 procedure TTestRecognitionService.testMethodA;
 begin
 
-
-
-end;
+    
 
 end;
 
-implementation
-
+initialization
+    TestFramework.RegisterTest(TTestRecognitionService.Suite);
 end.
+

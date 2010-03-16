@@ -184,8 +184,6 @@ end;
 ------------------------------------------------------------------------------*}
 
 procedure TMainViewPresenter.setAutoLayoutMode(boolValue: boolean);
-var
-    i : integer;
 begin
     fMainViewModel.autoLayoutMode := boolValue;
     updateView();
