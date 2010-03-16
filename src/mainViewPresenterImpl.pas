@@ -324,6 +324,7 @@ begin
 
         buffer := TBitmap.create();
         buffer.Assign(fMainViewModel.currentNumberBitmapWithLayout);
+        buffer.PixelFormat := pf8bit;
 
         // Накладываем разметку
         setupLayout();

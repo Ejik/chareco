@@ -39,8 +39,10 @@ begin
     loadTemplates();
 
     bmp := TBitmap.Create;
+    bmp.PixelFormat := pf8bit;
     buffer := TBitmap.Create;
-
+    bmp.PixelFormat := pf8bit;
+    
     bmp.Width := NumberWidth;
     bmp.Height := NumberHeight;
     buffer.Width := 58;
