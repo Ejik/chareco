@@ -22,6 +22,12 @@ type
     N8: TMenuItem;
     N9: TMenuItem;
     autoLayoutMenuItem: TMenuItem;
+    C1: TMenuItem;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N21: TMenuItem;
+    N31: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
@@ -34,6 +40,8 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure N9Click(Sender: TObject);
     procedure autoLayoutMenuItemClick(Sender: TObject);
+    procedure N10Click(Sender: TObject);
+    procedure N12Click(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -151,6 +159,16 @@ end;
 procedure TForm1.autoLayoutMenuItemClick(Sender: TObject);
 begin
     presenter.setAutoLayoutMode(autoLayoutMenuItem.Checked);
+end;
+
+procedure TForm1.N10Click(Sender: TObject);
+begin
+    presenter.showAboutBox();
+end;
+
+procedure TForm1.N12Click(Sender: TObject);
+begin
+//    workspaceImage.Graphic.PixelFormat := pf8bit;
 end;
 
 initialization

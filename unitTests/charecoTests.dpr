@@ -17,7 +17,8 @@ uses
   testsUserInputService in 'testsUserInputService.pas',
   guiStatusBarMock in 'guiStatusBarMock.pas',
   numberMock in 'numberMock.pas',
-  testsNumber in 'testsNumber.pas';
+  testsNumber in 'testsNumber.pas',
+  testsRecognitionService in '..\src\testsRecognitionService.pas';
 
 {$R *.res}
 

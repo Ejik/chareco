@@ -19,7 +19,11 @@ uses
   number in 'src\number.pas',
   numberImpl in 'src\numberImpl.pas',
   systemConsts in 'src\systemConsts.pas',
-  guiThreadImpl in 'src\guiThreadImpl.pas';
+  guiThreadImpl in 'src\guiThreadImpl.pas',
+  aboutViewImpl in 'src\aboutViewImpl.pas' {AboutBox},
+  aboutView in 'src\aboutView.pas',
+  recognitionService in 'src\recognitionService.pas',
+  recognitionServiceImpl in 'src\recognitionServiceImpl.pas';
 
 {$R *.res}
 

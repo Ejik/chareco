@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 143
-  Top = 207
+  Left = 520
+  Top = 275
   Width = 600
   Height = 398
   Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1074#1072#1085#1080#1077' '#1089#1080#1084#1074#1086#1083#1086#1074
@@ -53,6 +53,19 @@ object Form1: TForm1
         OnClick = N6Click
       end
     end
+    object N11: TMenuItem
+      Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1074#1072#1085#1080#1077
+      object N12: TMenuItem
+        Caption = #1052#1077#1090#1086#1076' 1 ("'#1055#1086' '#1087#1083#1086#1097#1072#1076#1080'")'
+        OnClick = N12Click
+      end
+      object N21: TMenuItem
+        Caption = #1052#1077#1090#1086#1076' 2 ("'#1055#1086' '#1074#1077#1082#1090#1086#1088#1091' '#1087#1088#1080#1079#1085#1072#1082#1086#1074'")'
+      end
+      object N31: TMenuItem
+        Caption = #1052#1077#1090#1086#1076' 3 ("'#1052#1077#1090#1086#1076' '#1052#1072#1089#1082#1080'")'
+      end
+    end
     object N2: TMenuItem
       Caption = #1057#1077#1088#1074#1080#1089
       object viewOnlyMenuItem: TMenuItem
@@ -77,6 +90,13 @@ object Form1: TForm1
       object N3: TMenuItem
         Caption = #1057#1075#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100' '#1085#1086#1084#1077#1088
         OnClick = N3Click
+      end
+    end
+    object C1: TMenuItem
+      Caption = 'C'#1087#1088#1072#1074#1082#1072
+      object N10: TMenuItem
+        Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'...'
+        OnClick = N10Click
       end
     end
   end

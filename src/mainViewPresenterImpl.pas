@@ -31,6 +31,7 @@ type
         procedure clearLayout();
         procedure openFile();
         procedure saveFile();
+        procedure showAboutBox();
         procedure setViewOnlyMode(boolValue: boolean);
         procedure setAutoLayoutMode(boolValue: boolean);
         procedure workSpaceImageMouseDown(x, y: integer);
@@ -39,7 +40,7 @@ type
 
 implementation
 
-uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts;
+uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView;
 
 { TMainViewPresenterImpl }
 
@@ -252,6 +253,19 @@ begin
     else
         setMainViewOnlyMode();
     end;
+end;
+
+
+{*------------------------------------------------------------------------------
+  Метод отображения диалога о программу
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
+procedure TMainViewPresenter.showAboutBox;
+var
+    view : IAboutView;
+begin
+    view := Emballo.Get(IAboutView) as IAboutView;
+    view.show();
 end;
 
 {*------------------------------------------------------------------------------
