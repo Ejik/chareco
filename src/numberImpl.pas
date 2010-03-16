@@ -59,7 +59,10 @@ end;
 function TNumber.getBitmap: TBitmap;
 begin
     if (fBitmap = nil) then
+    begin
         fBitmap := TBitmap.create;
+        fBitmap.PixelFormat := pf8bit;
+    end;
 
     result := fBitmap;
 end;

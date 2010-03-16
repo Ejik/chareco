@@ -82,7 +82,10 @@ end;
 function TMainViewModel.getCurrentNumberBitmapWithLayout: TBitmap;
 begin
     if (fCurrentNumberBitmapWithLayout = nil) then
+    begin
         fCurrentNumberBitmapWithLayout := TBitmap.create;
+        fCurrentNumberBitmapWithLayout.PixelFormat := pf8bit;
+    end;
 
     result := fCurrentNumberBitmapWithLayout;
 end;
