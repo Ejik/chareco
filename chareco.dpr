@@ -30,7 +30,10 @@ uses
   recognizerByAreaImpl in 'src\recognizerByAreaImpl.pas',
   recognizer in 'src\recognizer.pas',
   reporter in 'src\reporter.pas',
-  reporterImpl in 'src\reporterImpl.pas';
+  reporterImpl in 'src\reporterImpl.pas',
+  resultViewImpl in 'src\resultViewImpl.pas' {OKBottomDlg},
+  resultView in 'src\resultView.pas',
+  MBC.Classes in 'src\MBC.Classes.pas';
 
 {$R *.res}
 

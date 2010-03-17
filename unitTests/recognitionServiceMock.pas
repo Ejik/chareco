@@ -8,7 +8,7 @@ uses
 type
     TRecognitionServiceMock = class(TInterfacedObject, IRecognitionService)
     public
-        function ExecuteMethodA() : IReporter;
+        function ExecuteMethodA(const reporter: IReporter) : IReporter;
         function ExecuteMethodB() : IReporter;
         function ExecuteMethodC() : IReporter;
         procedure Initialize(model: IMainViewModel; boolEntireNumber: boolean = false; iSectionNumber: integer = 1);
@@ -19,7 +19,7 @@ implementation
 { TRecognitionServiceMock }
 
 
-function TRecognitionServiceMock.ExecuteMethodA: IReporter;
+function TRecognitionServiceMock.ExecuteMethodA(const reporter: IReporter): IReporter;
 begin
 
 end;

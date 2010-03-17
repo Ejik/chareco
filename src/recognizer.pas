@@ -8,7 +8,7 @@ uses
 type
     IRecognizerBase = interface
         ['{9504D7F6-B2C8-42BE-9C2B-7BB554CDE8DE}']
-        function recognize(bitmap: TBitmap) : IReporter;
+        function recognize(bitmap: TBitmap; const reporter: IReporter) : IReporter;
     end;
 
     IRecognizerByArea = interface(IRecognizerBase)

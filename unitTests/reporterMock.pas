@@ -15,6 +15,8 @@ type
         function getMaxMatch(): string;
         function getMidMatch(): string;
         function getMinMatch(): string;
+        function getMaxMatchSymbol(): string;
+        function getMaxMatchPercent(): integer;
     end;
 
 implementation
@@ -34,6 +36,16 @@ end;
 function TReporterMock.getMaxMatch: string;
 begin
     result := '100%';
+end;
+
+function TReporterMock.getMaxMatchPercent: integer;
+begin
+
+end;
+
+function TReporterMock.getMaxMatchSymbol: string;
+begin
+
 end;
 
 function TReporterMock.getMidMatch: string;

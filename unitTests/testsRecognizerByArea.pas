@@ -45,8 +45,8 @@ var
     area: integer;
     resultReport : IReporter;
 begin
-    recognizer := TRecognizerByArea.create(repo, reporter);
-    resultReport := recognizer.recognize(bitmap);
+    recognizer := TRecognizerByArea.create(repo);
+    resultReport := recognizer.recognize(bitmap, reporter);
     CheckSame(reporter, resultReport);
 
     CheckTrue('100%' = resultReport.getMaxMatch());

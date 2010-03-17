@@ -10,14 +10,12 @@ type
     TRecognizerByArea = class(TRecognizerBase, IRecognizerByArea)
     private
         fPatternsRepo: IImageRepository;
-        fReporter: IReporter;
         function getPercentage(S, Si: integer): integer;
     public
-        constructor create(patternsRepo: IImageRepository;
-            reporter: IReporter); overload;
+        constructor create(patternsRepo: IImageRepository); overload;
         destructor destroy(); override;
 
-        function recognize(bitmap: TBitmap): IReporter; override;
+        function recognize(bitmap: TBitmap; const reporter: IReporter): IReporter; override;
     end;
 
 implementation
@@ -29,11 +27,9 @@ uses
 { TRecognizerByArea }
 
 
-constructor TRecognizerByArea.create(patternsRepo: IImageRepository;
-    reporter: IReporter);
+constructor TRecognizerByArea.create(patternsRepo: IImageRepository);
 begin
     fPatternsRepo := patternsRepo;
-    fReporter := reporter;
 end;
 
 destructor TRecognizerByArea.destroy;
@@ -60,7 +56,7 @@ begin
                 result := round(Si / S * 100);
 end;
 
-function TRecognizerByArea.recognize(bitmap: TBitmap): IReporter;
+function TRecognizerByArea.recognize(bitmap: TBitmap; const reporter: IReporter): IReporter;
 var
     i: integer;
     buffer: TBitmap;
@@ -82,7 +78,7 @@ begin
 
         freeAndNil(buffer);
 
-        // Будем сразу считать не расстояния, а процент совпадени, поэтому пока
+        // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
         // закомментируем расчет расстояний
         //arrD.add(strName + '=' + intToStr(numberArea - patternArea));
         percent := getPercentage(numberArea, patternArea);
@@ -102,8 +98,8 @@ begin
             i := i + 1;
     end;
     arrD.SaveToFile('extReport.txt');
-    fReporter.initReport(arrD);
-    result := fReporter;
+    reporter.initReport(arrD);
+    result := reporter;
     freeAndNil(arrD);
 end;
 

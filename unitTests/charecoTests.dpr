@@ -23,7 +23,8 @@ uses
   testsImageGeneratorService in 'testsImageGeneratorService.pas',
   recognitionServiceMock in 'recognitionServiceMock.pas',
   testsRecognizerByArea in 'testsRecognizerByArea.pas',
-  reporterMock in 'reporterMock.pas';
+  reporterMock in 'reporterMock.pas',
+  testsReporter in 'testsReporter.pas';
 
 {$R *.res}
 

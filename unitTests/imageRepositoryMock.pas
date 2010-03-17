@@ -15,6 +15,7 @@ type
         function getImage(const strName: string) : TBitmap;
         function getImageNameByIndex(index : integer) : string;
         procedure initialize();
+        function getPatternsCount() : integer;
     end;
 
 implementation
@@ -47,6 +48,11 @@ end;
 procedure TImageRepositoryMock.getImagePath(const strName: string);
 begin
 
+end;
+
+function TImageRepositoryMock.getPatternsCount: integer;
+begin
+    result := 0;
 end;
 
 procedure TImageRepositoryMock.initialize;

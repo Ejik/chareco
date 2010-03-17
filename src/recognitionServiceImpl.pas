@@ -21,7 +21,7 @@ type
     public
         destructor destroy(); override;
         procedure Initialize(model: IMainViewModel; boolEntireNumber: boolean = false; iSectionNumber: integer = 0);
-        function ExecuteMethodA(): IReporter;
+        function ExecuteMethodA(const reporter : IReporter): IReporter;
         function ExecuteMethodB(): IReporter;
         function ExecuteMethodC(): IReporter;
     end;
@@ -48,7 +48,7 @@ begin
     inherited;
 end;
 
-function TRecognitionService.ExecuteMethodA: IReporter;
+function TRecognitionService.ExecuteMethodA(const reporter : IReporter): IReporter;
 var
     i: integer;
     currentBitmap: TBitmap;
@@ -61,7 +61,7 @@ begin
     begin
         currentBitmap := getSectionByIndex(fSecNum);
         if (currentBitmap <> nil) then
-            result := fRecoByArea.recognize(currentBitmap);
+            result := fRecoByArea.recognize(currentBitmap, reporter);
     end;
 
 end;

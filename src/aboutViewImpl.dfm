@@ -5,7 +5,7 @@ object AboutBox: TAboutBox
   Caption = #1054' Chareco'
   ClientHeight = 119
   ClientWidth = 546
-  Color = clBtnFace
+  Color = clWindow
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

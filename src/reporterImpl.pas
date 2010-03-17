@@ -17,6 +17,8 @@ type
         function getMaxMatch(): string;
         function getMidMatch(): string;
         function getMinMatch(): string;
+        function getMaxMatchSymbol(): string;
+        function getMaxMatchPercent(): integer;
     end;
 
 implementation
@@ -51,6 +53,16 @@ end;
 function TReporter.getMinMatch: string;
 begin
     result := fData.Names[3] + ' ' + fData.ValueFromIndex[3];
+end;
+
+function TReporter.getMaxMatchPercent: integer;
+begin
+    result := strToInt(fData.ValueFromIndex[0]);
+end;
+
+function TReporter.getMaxMatchSymbol: string;
+begin
+    result := fData.Names[0];
 end;
 
 initialization

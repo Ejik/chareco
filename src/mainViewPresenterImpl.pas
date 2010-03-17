@@ -28,7 +28,7 @@ type
         destructor destroy(); override;
 
         procedure bindView(const mainView: IMainView);
-        procedure executeRecognition();
+        procedure executeRecognition(boolWholeNumber: boolean = false);
         procedure generateNumber();
         procedure clearLayout();
         procedure openFile();
@@ -43,7 +43,7 @@ type
 implementation
 
 uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView,
-    reporter, Classes;
+    reporter, Classes, resultView, MBC.Classes;
 
 { TMainViewPresenterImpl }
 
@@ -102,49 +102,120 @@ begin
     fRecognitionService := recognitionService;
 end;
 
+{*------------------------------------------------------------------------------
+  Деструктор
+  @return ResultDescription
+ ------------------------------------------------------------------------------*}
+
 destructor TMainViewPresenter.destroy;
 begin
     inherited;
 end;
 
-procedure TMainViewPresenter.executeRecognition();
+{*------------------------------------------------------------------------------
+  Метод распознавания изображения
+  @param boolWholeNumber   Признак распознавания всего номера
+  @return ResultDescription
+------------------------------------------------------------------------------*}
+
+procedure TMainViewPresenter.executeRecognition(boolWholeNumber: boolean = false);
 var
     reporter: IReporter;
     reportBuilder: TStringList;
     strSecNumber: string;
-begin
-    if (InputQuery('Выбор секции', 'Выберите номер секции (секиции начинаются с 0)', strSecNumber)) then
-    begin
-        if ( strToInt(strSecNumber) > fMainViewModel.layoutStep) then
-        begin
-            showMessage('Номер секции не может быть больше количества размеченных.');
-            Exit;
-        end;
 
+    percents: array[0..2] of array[0..1] of string;
+    meth, s: string;
+    i: integer;
+    resultView: IResultView;
+    log: TLog;
+begin
+    log := TLog.create();
+    if (boolWholeNumber) then
+    begin
         reportBuilder := TStringList.create();
         reportBuilder.Add('Результаты анализа:');
         reportBuilder.Add('');
 
-        fRecognitionService.Initialize(fMainViewModel, false, strToInt(strSecNumber));
+        fRecognitionService.Initialize(fMainViewModel, true);
 
-        reporter := fRecognitionService.ExecuteMethodA();
-        reportBuilder.add('Метод распознавания "по площади"');
-        reportBuilder.add(reporter.getMaxMatch());
-        reportBuilder.add(reporter.getMidMatch());
-        reportBuilder.add(reporter.getMinMatch());
-        reportBuilder.add('');
+    end
+    else
+        if (InputQuery('Выбор секции', 'Выберите номер секции (секиции начинаются с 0)', strSecNumber)) then
+        begin
+            if (strToInt(strSecNumber) > fMainViewModel.layoutStep) then
+            begin
+                showMessage('Номер секции не может быть больше количества размеченных.');
+                Exit;
+            end;
 
-        reporter := fRecognitionService.ExecuteMethodB();
-        reportBuilder.add('Метод распознавания "по вектору"');
-        reportBuilder.add('');
+            reportBuilder := TStringList.create();
+            reportBuilder.Add('Результаты анализа:');
+            reportBuilder.Add('');
 
-        reporter := fRecognitionService.ExecuteMethodC();
-        reportBuilder.add('Метод распознавания "по маске"');
-        reportBuilder.add('');
+            fRecognitionService.Initialize(fMainViewModel, false, strToInt(strSecNumber));
 
-        reportBuilder.SaveToFile('report.txt');
-        freeAndNil(reportBuilder);
-    end;
+            reporter := Emballo.get(IReporter) as IReporter;
+            reporter := fRecognitionService.ExecuteMethodA(reporter);
+            addToLog('reporter: ' + intToStr(log.getRefCount(reporter)));
+            
+            reportBuilder.add('Метод распознавания "по площади"');
+            reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
+            reportBuilder.add(reporter.getMaxMatch() + '%');
+            reportBuilder.add(reporter.getMidMatch() + '%');
+            reportBuilder.add(reporter.getMinMatch() + '%');
+            reportBuilder.add('');
+            percents[0, 0] := reporter.getMaxMatchSymbol();
+            percents[0, 1] := intToStr(reporter.getMaxMatchPercent());
+
+            addToLog('reporter: ' + intToStr(log.getRefCount(reporter)));
+            reporter := fRecognitionService.ExecuteMethodB();
+            reportBuilder.add('Метод распознавания "по вектору"');
+            reportBuilder.add('');
+            percents[1, 0] := reporter.getMaxMatchSymbol();
+            percents[1, 1] := intToStr(reporter.getMaxMatchPercent());
+
+            reporter := fRecognitionService.ExecuteMethodC();
+            reportBuilder.add('Метод распознавания "по маске"');
+            reportBuilder.add('');
+            percents[2, 0] := reporter.getMaxMatchSymbol();
+            percents[2, 1] := intToStr(reporter.getMaxMatchPercent());
+
+            reportBuilder.add('Комплексное распознавание');
+
+            // Если совпадения у 1 и 2 или у 1 и 3 методов
+            if (percents[0, 0] = percents[1, 0]) or (percents[0, 0] = percents[2, 0]) then
+                reportBuilder.add('Результат: ' + percents[0, 0])
+            else
+                // Если совпадение у 2 и 3 методов
+                if (percents[1, 0] = percents[2, 0]) then
+                    reportBuilder.add('Результат: ' + percents[1, 0])
+                else
+                    // Если нет совпадений, выбираем знак по максимальным процентам
+                begin
+                    s := percents[0, 0];
+                    meth := percents[0, 1];
+                    for i := 1 to 2 do
+                    begin
+                        if (StrToInt(percents[i, 1]) > strToInt(meth)) then
+                        begin
+                            s := percents[i, 0];
+                            meth := percents[i, 1];
+                        end;
+                    end;
+
+                    reportBuilder.add('Результат: ' + s)
+
+                end;
+            reportBuilder.add('');
+            resultView := Emballo.Get(IResultView) as IResultView;
+            resultView.bind(fMainView.getObject(), reportBuilder);
+            resultView.show();
+            reportBuilder.SaveToFile('report.txt');
+            freeAndNil(reportBuilder);
+        end;
+    addToLog('reporter: ' + intToStr(log.getRefCount(reporter)));
+    freeAndNil(log);
 end;
 
 

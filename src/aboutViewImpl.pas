@@ -57,6 +57,5 @@ end;
 initialization
     GetDIRegistry.RegisterFactorySingleton(IAboutView, TAboutView, @TAboutView.Create);
 
-
 end.
 

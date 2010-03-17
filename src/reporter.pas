@@ -12,6 +12,8 @@ type
         function getMaxMatch(): string;
         function getMidMatch(): string;
         function getMinMatch(): string;
+        function getMaxMatchSymbol() : string;
+        function getMaxMatchPercent() : integer;
     end;
 
 implementation
