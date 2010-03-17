@@ -4,7 +4,7 @@ interface
 
 uses
     TestFrameWork, imageGeneratorService, mainView, userInputService, mainViewModel,
-    MBC.Classes;
+    MBC.Classes, recognitionService;
 type
     TTestMainViewPresenter = class(TTestCase)
     private
@@ -13,6 +13,7 @@ type
         mockModel: IMainViewModel;
         mockUserInputService: IUserInputService;
         mockImageGeneratorService: IImageGeneratorService;
+        mockRecognitionService: IRecognitionService;
 
     protected
         procedure SetUp; override;
@@ -30,7 +31,8 @@ implementation
 uses
     SysUtils, mainViewPresenter, mainViewPresenterImpl, mainViewMock,
     userInputServiceImpl, userInputServiceMock, mainViewModelMock,
-    ImageGeneratorServiceImpl, imageGeneratorServiceMock, numberMock;
+    ImageGeneratorServiceImpl, imageGeneratorServiceMock, numberMock,
+      recognitionServiceMock;
 
 { TTestMainView }
 
@@ -42,6 +44,7 @@ begin
     mockModel := TMainViewModelMock.create(TNumberMock.create);
     mockUserInputService := TUserInputServiceMock.create();
     mockImageGeneratorService := TImageGeneratorServiceMock.create();
+    mockRecognitionService:= TRecognitionServiceMock.create();
 end;
 
 procedure TTestMainViewPresenter.TearDown;
@@ -56,7 +59,8 @@ begin
     presenter := TMainViewPresenter.create(mockView,
         mockModel,
         mockUserInputService,
-        mockImageGeneratorService);
+        mockImageGeneratorService,
+        mockRecognitionService);
 
     presenter.bindView(mockView);
     CheckNotNull(presenter);
@@ -88,7 +92,8 @@ begin
     presenter := TMainViewPresenter.Create(mockView,
         mockModel,
         mockUserInputService,
-        mockImageGeneratorService);
+        mockImageGeneratorService,
+        mockRecognitionService);
 
     presenter.generateNumber();
     CheckEquals('a111aa', mockModel.currentNumberName);
@@ -102,7 +107,8 @@ begin
     presenter := TMainViewPresenter.create(mockView,
         mockModel,
         mockUserInputService,
-        mockImageGeneratorService);
+        mockImageGeneratorService,
+        mockRecognitionService);
 
     presenter.setViewOnlyMode(true);
 

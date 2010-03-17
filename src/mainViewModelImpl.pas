@@ -159,6 +159,7 @@ begin
     fAutoLayoutMode := boolValue;
     if (fAutoLayoutMode) then
     begin
+        fCurrentLayoutStep := NumberLength - 1;
         for i := 0 to NumberLength - 1 do
             layoutPoint[i] := arrAutoLayout[i];
     end;

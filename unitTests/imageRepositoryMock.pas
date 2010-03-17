@@ -13,6 +13,7 @@ type
         constructor create();
         destructor destroy(); override;
         function getImage(const strName: string) : TBitmap;
+        function getImageNameByIndex(index : integer) : string;
         procedure initialize();
     end;
 
@@ -36,6 +37,11 @@ end;
 function TImageRepositoryMock.getImage(const strName: string): TBitmap;
 begin
     result := TBitmap.create();
+end;
+
+function TImageRepositoryMock.getImageNameByIndex(index: integer): string;
+begin
+
 end;
 
 procedure TImageRepositoryMock.getImagePath(const strName: string);

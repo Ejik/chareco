@@ -30,7 +30,7 @@ end;
 
 destructor TImageGeneratorService.destroy;
 begin
-
+    inherited;
 end;
 
 function TImageGeneratorService.generate(

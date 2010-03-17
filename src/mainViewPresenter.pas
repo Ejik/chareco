@@ -11,7 +11,7 @@ type
         procedure bindView(const mainView: IMainView);
         procedure generateNumber();
         procedure clearLayout();
-        procedure exit;
+        procedure executeRecognition();
         procedure openFile();
         procedure saveFile();
         procedure showAboutBox();

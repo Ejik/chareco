@@ -14,6 +14,10 @@ type
 
         procedure initialize();
         function getImage(const strName: string): TBitmap;
+        function getImageByIndex(index : integer) : TBitmap;
+        function getImageCount() : integer;
+        function getImageNameByIndex(index : integer) : string;
+        function getPatternsCount() : integer;
     end;
 
 implementation
@@ -37,6 +41,26 @@ begin
     bmp := TBitmap.create();
     bmp.LoadFromFile(fImageList.Values[strName]);
     result := bmp;
+end;
+
+function TImageRepository.getImageByIndex(index: integer): TBitmap;
+begin
+    result := getImage(fImageList.ValueFromIndex[index]);
+end;
+
+function TImageRepository.getImageCount: integer;
+begin
+    result := fImageList.Count;
+end;
+
+function TImageRepository.getImageNameByIndex(index: integer): string;
+begin
+    result := fImageList.Names[index];
+end;
+
+function TImageRepository.getPatternsCount: integer;
+begin
+    result := fImageList.Count;
 end;
 
 procedure TImageRepository.initialize;

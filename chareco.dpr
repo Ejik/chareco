@@ -26,7 +26,11 @@ uses
   recognitionServiceImpl in 'src\recognitionServiceImpl.pas',
   recognizerBaseImpl in 'src\recognizerBaseImpl.pas',
   imageRepository in 'src\imageRepository.pas',
-  imageRepositoryImpl in 'src\imageRepositoryImpl.pas';
+  imageRepositoryImpl in 'src\imageRepositoryImpl.pas',
+  recognizerByAreaImpl in 'src\recognizerByAreaImpl.pas',
+  recognizer in 'src\recognizer.pas',
+  reporter in 'src\reporter.pas',
+  reporterImpl in 'src\reporterImpl.pas';
 
 {$R *.res}
 

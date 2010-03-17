@@ -4,7 +4,7 @@ interface
 
 uses
     EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewPresenter, mainView,
-    userInputService, mainViewModel, imageGeneratorService;
+    userInputService, mainViewModel, imageGeneratorService, recognitionService;
 type
     TMainViewPresenter = class(TInjectable, IMainViewPresenter)
     private
@@ -12,6 +12,7 @@ type
         fMainViewModel: IMainViewModel;
         fUserInputService: IUserInputService;
         fImageGeneratorService: IImageGeneratorService;
+        fRecognitionService: IRecognitionService;
 
         procedure setMainViewOnlyMode();
         procedure setMainViewAndSetupLayoutMode();
@@ -22,11 +23,12 @@ type
         constructor create(const mainView: IMainView;
             const model: IMainViewModel;
             const userInputService: IUserInputService;
-            const ImageGeneratorService: IImageGeneratorService); overload;
+            const imageGeneratorService: IImageGeneratorService;
+            const recognitionService: IRecognitionService); overload;
         destructor destroy(); override;
 
         procedure bindView(const mainView: IMainView);
-        procedure exit;
+        procedure executeRecognition();
         procedure generateNumber();
         procedure clearLayout();
         procedure openFile();
@@ -40,7 +42,8 @@ type
 
 implementation
 
-uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView;
+uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView,
+    reporter, Classes;
 
 { TMainViewPresenterImpl }
 
@@ -89,12 +92,14 @@ end;
 constructor TMainViewPresenter.create(const mainView: IMainView;
     const model: IMainViewModel;
     const userInputService: IUserInputService;
-    const ImageGeneratorService: IImageGeneratorService);
+    const imageGeneratorService: IImageGeneratorService;
+    const recognitionService: IRecognitionService);
 begin
     fMainView := mainView;
     fUserInputService := userInputService;
     fMainViewModel := model;
-    fImageGeneratorService := ImageGeneratorService;
+    fImageGeneratorService := imageGeneratorService;
+    fRecognitionService := recognitionService;
 end;
 
 destructor TMainViewPresenter.destroy;
@@ -102,10 +107,46 @@ begin
     inherited;
 end;
 
-procedure TMainViewPresenter.exit;
+procedure TMainViewPresenter.executeRecognition();
+var
+    reporter: IReporter;
+    reportBuilder: TStringList;
+    strSecNumber: string;
 begin
+    if (InputQuery('Выбор секции', 'Выберите номер секции (секиции начинаются с 0)', strSecNumber)) then
+    begin
+        if ( strToInt(strSecNumber) > fMainViewModel.layoutStep) then
+        begin
+            showMessage('Номер секции не может быть больше количества размеченных.');
+            Exit;
+        end;
 
+        reportBuilder := TStringList.create();
+        reportBuilder.Add('Результаты анализа:');
+        reportBuilder.Add('');
+
+        fRecognitionService.Initialize(fMainViewModel, false, strToInt(strSecNumber));
+
+        reporter := fRecognitionService.ExecuteMethodA();
+        reportBuilder.add('Метод распознавания "по площади"');
+        reportBuilder.add(reporter.getMaxMatch());
+        reportBuilder.add(reporter.getMidMatch());
+        reportBuilder.add(reporter.getMinMatch());
+        reportBuilder.add('');
+
+        reporter := fRecognitionService.ExecuteMethodB();
+        reportBuilder.add('Метод распознавания "по вектору"');
+        reportBuilder.add('');
+
+        reporter := fRecognitionService.ExecuteMethodC();
+        reportBuilder.add('Метод распознавания "по маске"');
+        reportBuilder.add('');
+
+        reportBuilder.SaveToFile('report.txt');
+        freeAndNil(reportBuilder);
+    end;
 end;
+
 
 {*------------------------------------------------------------------------------
     Метод генерации номера
@@ -224,7 +265,7 @@ end;
 
 procedure TMainViewPresenter.setupLayout;
 var
-    i : integer;
+    i: integer;
 begin
      // Накладываем разметку
     for i := 0 to NumberLength - 1 do
@@ -239,10 +280,11 @@ begin
 end;
 
 {*------------------------------------------------------------------------------
-  Метод установки режима только просмотра                                                                              
+  Метод установки режима только просмотра
   @param boolValue   ParameterDescription
-  @return ResultDescription  
+  @return ResultDescription
 ------------------------------------------------------------------------------*}
+
 procedure TMainViewPresenter.setViewOnlyMode(boolValue: boolean);
 begin
     fMainViewModel.viewOnlyMode := boolValue;
@@ -256,11 +298,12 @@ end;
 
 {*------------------------------------------------------------------------------
   Метод отображения диалога о программу
-  @return ResultDescription  
+  @return ResultDescription
 ------------------------------------------------------------------------------*}
+
 procedure TMainViewPresenter.showAboutBox;
 var
-    view : IAboutView;
+    view: IAboutView;
 begin
     view := Emballo.Get(IAboutView) as IAboutView;
     view.show();
@@ -305,7 +348,7 @@ begin
         if (x >= left0) and (y >= top0) and
             (x <= left0 + numberWidth) and (y <= top0 + numberHeight) then
         begin
-          if (fMainViewModel.layoutStep < NumberLength - 1) then
+            if (fMainViewModel.layoutStep < NumberLength - 1) then
             begin
                 fMainViewModel.layoutPoint[fMainViewModel.layoutStep] := x - left0;
                 fMainViewModel.layoutStep := fMainViewModel.layoutStep + 1;
@@ -350,7 +393,7 @@ begin
             buffer.Canvas.LineTo(x - left0, numberHeight);
 
             statusBar := fMainView.getStatusBar();
-            statusBar.setStatus('x:' + intToStr(x - left0), 0,false);
+            statusBar.setStatus('x:' + intToStr(x - left0), 0, false);
             //statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
         end;
 

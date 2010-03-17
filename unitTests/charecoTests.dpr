@@ -18,9 +18,12 @@ uses
   guiStatusBarMock in 'guiStatusBarMock.pas',
   numberMock in 'numberMock.pas',
   testsNumber in 'testsNumber.pas',
-  testsRecognitionService in '..\src\testsRecognitionService.pas',
+  testsRecognizerBase in 'testsRecognizerBase.pas',
   imageRepositoryMock in 'imageRepositoryMock.pas',
-  testsImageGeneratorService in 'testsImageGeneratorService.pas';
+  testsImageGeneratorService in 'testsImageGeneratorService.pas',
+  recognitionServiceMock in 'recognitionServiceMock.pas',
+  testsRecognizerByArea in 'testsRecognizerByArea.pas',
+  reporterMock in 'reporterMock.pas';
 
 {$R *.res}
 

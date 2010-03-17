@@ -168,7 +168,7 @@ end;
 
 procedure TForm1.N12Click(Sender: TObject);
 begin
-//    workspaceImage.Graphic.PixelFormat := pf8bit;
+    presenter.executeRecognition();
 end;
 
 initialization
