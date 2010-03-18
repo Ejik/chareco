@@ -38,6 +38,7 @@ begin
                 or (strNumber[i] = 'e')
                 or (strNumber[i] = 'b')
                 or (strNumber[i] = 'k')
+                or (strNumber[i] = 'm')
                 or (strNumber[i] = 'n')
                 or (strNumber[i] = 'h')
                 or (strNumber[i] = 'o')
@@ -63,7 +64,7 @@ var
     inputNumDld: TfmInputNumDlg;
     mr: integer;
     isCorrect: boolean;
-    strNumber : string;
+    strNumber: string;
 begin
     result := '';
     inputNumDld := TfmInputNumDlg.Create(Application);

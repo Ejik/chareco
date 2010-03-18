@@ -60,8 +60,8 @@ var
     reporter: IReporter;
     reportBuilder: TStringList;
     percents: TResultMatrix;
-    resultNumber : string;
-    resultCell : TResultCell;
+    resultNumber: string;
+    resultCell: TResultCell;
 begin
     reportBuilder := TStringList.create();
     reportBuilder.Add('Результаты анализа:');
@@ -95,6 +95,9 @@ begin
 
             resultCell := getBestResult(percents);
 
+            if (resultCell[1] = 'bl') then
+                resultCell[1] := ' ';
+
             reportBuilder.add('Символ: ' + resultCell[1] +
                 ' ' + resultCell[2] + '%');
 
@@ -102,7 +105,7 @@ begin
 
         end;
         reportBuilder.Insert(2, 'Результат: ' + resultNumber);
-    end  // if (fboolEntireNumber) then
+    end // if (fboolEntireNumber) then
     else
     begin
         reporter := Emballo.get(IReporter) as IReporter;
@@ -207,7 +210,7 @@ end; // procedure TRecognitionService.
 function TRecognitionService.getBestResult(
     const matrix: TResultMatrix): TResultCell;
 var
-    i : integer;
+    i: integer;
 begin
 
     // Если совпадения у 1 и 2 или у 1 и 3 методов
