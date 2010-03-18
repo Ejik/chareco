@@ -12,10 +12,10 @@ type
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
     public
-        constructor create(patternsRepo: IImageRepository); overload;
+        constructor create(const patternsRepo: IImageRepository); overload;
         destructor destroy(); override;
 
-        function recognize(bitmap: TBitmap; const reporter: IReporter): IReporter; override;
+        function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
 implementation
@@ -27,7 +27,7 @@ uses
 { TRecognizerByArea }
 
 
-constructor TRecognizerByArea.create(patternsRepo: IImageRepository);
+constructor TRecognizerByArea.create(const patternsRepo: IImageRepository);
 begin
     fPatternsRepo := patternsRepo;
 end;
@@ -56,7 +56,7 @@ begin
                 result := round(Si / S * 100);
 end;
 
-function TRecognizerByArea.recognize(bitmap: TBitmap; const reporter: IReporter): IReporter;
+function TRecognizerByArea.recognize(bitmap: TBitmap; var reporter: IReporter): boolean;
 var
     i: integer;
     buffer: TBitmap;
@@ -67,6 +67,7 @@ var
     percent: integer; // процент совпадения
 begin
     inherited;
+    result := true;
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
@@ -101,7 +102,7 @@ begin
     end;
     arrD.SaveToFile('extReport.txt');
     reporter.initReport(arrD);
-    result := reporter;
+
     freeAndNil(arrD);
 end;
 

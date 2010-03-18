@@ -132,26 +132,35 @@ begin
 
     if (boolWholeNumber) then
     begin
-        reportBuilder := TStringList.create();
-        reportBuilder.Add('Результаты анализа:');
-        reportBuilder.Add('');
+    
+        fMainView.getStatusBar.setStatus('Выполняется распознавание', 2000, true);
 
         fRecognitionService.Initialize(fMainViewModel, true);
 
-        //reporter := Emballo.get(IReporter) as IReporter;
-        //reporter := fRecognitionService.ExecuteMethodA(reporter);
+        reportBuilder := fRecognitionService.getReport();
+        resultView := Emballo.Get(IResultView) as IResultView;
+        resultView.bind(fMainView.getObject(), reportBuilder);
+        resultView.show();
+        //reportBuilder.SaveToFile('report.txt');
 
+        freeAndNil(reportBuilder);
     end
     else
         if (InputQuery('Выбор секции', 'Выберите номер секции(секиции начинаются с 0)', strSecNumber)) then
         begin
-            fMainView.getStatusBar.setStatus('Выполняется распознавание', 3000, true);
-
+            if (Trim(strSecNumber) = '') then
+            begin
+                freeAndNil(log);
+                exit;
+            end;
             if (strToInt(strSecNumber) > fMainViewModel.layoutStep) then
             begin
                 showMessage('Номер секции не может быть больше количества размеченных.');
-                Exit;
+                freeAndNil(log);
+                exit;
             end;
+
+            fMainView.getStatusBar.setStatus('Выполняется распознавание', 2000, true);
 
             fRecognitionService.Initialize(fMainViewModel, false, strToInt(strSecNumber));
 

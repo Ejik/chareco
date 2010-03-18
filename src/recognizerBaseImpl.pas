@@ -11,7 +11,7 @@ type
 
     public
         function calculateArea(bitmap: TBitmap) : integer; virtual;
-        function recognize(bitmap: TBitmap; const reporter: IReporter) : IReporter; virtual; abstract;
+        function recognize(bitmap: TBitmap; var reporter: IReporter) : boolean; virtual; abstract;
     end;
 
 implementation

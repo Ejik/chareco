@@ -60,6 +60,8 @@ var
     reporter: IReporter;
     reportBuilder: TStringList;
     percents: TResultMatrix;
+    resultNumber : string;
+    resultCell : TResultCell;
 begin
     reportBuilder := TStringList.create();
     reportBuilder.Add('Результаты анализа:');
@@ -68,16 +70,16 @@ begin
 
     if (fboolEntireNumber) then
     begin
-
+        reportBuilder.add('Комплексное распознавание');
+        resultNumber := '';
         for i := 0 to NumberLength - 1 do
         begin
             reporter := Emballo.get(IReporter) as IReporter;
-
             currentBitmap := getSectionByIndex(i);
 
             // Метод 1
-            reporter := fRecoByArea.recognize(currentBitmap, reporter);
-            //report.initReport();
+            fRecoByArea.recognize(currentBitmap, reporter);
+
             percents[1, 1] := reporter.getMaxMatchSymbol();
             percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
 
@@ -91,16 +93,23 @@ begin
             percents[3, 1] := reporter.getMaxMatchSymbol();
             percents[3, 2] := intToStr(reporter.getMaxMatchPercent());
 
-        end;
+            resultCell := getBestResult(percents);
 
-    end
+            reportBuilder.add('Символ: ' + resultCell[1] +
+                ' ' + resultCell[2] + '%');
+
+            resultNumber := resultNumber + resultCell[1];
+
+        end;
+        reportBuilder.Insert(2, 'Результат: ' + resultNumber);
+    end  // if (fboolEntireNumber) then
     else
     begin
         reporter := Emballo.get(IReporter) as IReporter;
 
         currentBitmap := getSectionByIndex(fSecNum);
         if (currentBitmap <> nil) then
-            reporter := fRecoByArea.recognize(currentBitmap, reporter);
+            fRecoByArea.recognize(currentBitmap, reporter);
 
         reportBuilder.add('Метод распознавания "по площади"');
         reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
@@ -198,7 +207,7 @@ end; // procedure TRecognitionService.
 function TRecognitionService.getBestResult(
     const matrix: TResultMatrix): TResultCell;
 var
-    i: integer;
+    i : integer;
 begin
 
     // Если совпадения у 1 и 2 или у 1 и 3 методов
