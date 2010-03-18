@@ -3,12 +3,12 @@ unit recognitionServiceMock;
 interface
 
 uses
-    recognitionService, mainViewModel, reporter;
+    recognitionService, mainViewModel, reporter, Classes;
 
 type
     TRecognitionServiceMock = class(TInterfacedObject, IRecognitionService)
     public
-        function ExecuteMethodA(const reporter: IReporter) : IReporter;
+        function getReport() : TStringList;
         function ExecuteMethodB() : IReporter;
         function ExecuteMethodC() : IReporter;
         procedure Initialize(model: IMainViewModel; boolEntireNumber: boolean = false; iSectionNumber: integer = 1);
@@ -19,17 +19,17 @@ implementation
 { TRecognitionServiceMock }
 
 
-function TRecognitionServiceMock.ExecuteMethodA(const reporter: IReporter): IReporter;
-begin
-
-end;
-
 function TRecognitionServiceMock.ExecuteMethodB: IReporter;
 begin
 
 end;
 
 function TRecognitionServiceMock.ExecuteMethodC: IReporter;
+begin
+
+end;
+
+function TRecognitionServiceMock.getReport: TStringList;
 begin
 
 end;

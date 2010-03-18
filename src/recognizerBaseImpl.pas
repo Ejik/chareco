@@ -10,7 +10,7 @@ type
     TRecognizerBase = class(TInjectable, IRecognizerBase)
 
     public
-        function calculateArea(bitmap: TBitmap) : integer;
+        function calculateArea(bitmap: TBitmap) : integer; virtual;
         function recognize(bitmap: TBitmap; const reporter: IReporter) : IReporter; virtual; abstract;
     end;
 
