@@ -130,7 +130,10 @@ var
     resultView: IResultView;
     log: TLog;
 begin
+    if (fMainViewModel.currentNumberBitmap.Empty) then
+        exit;
     log := TLog.create();
+
     if (boolWholeNumber) then
     begin
         reportBuilder := TStringList.create();
@@ -139,10 +142,16 @@ begin
 
         fRecognitionService.Initialize(fMainViewModel, true);
 
+        reporter := Emballo.get(IReporter) as IReporter;
+        reporter := fRecognitionService.ExecuteMethodA(reporter);
+        addToLog('reporter: ' + intToStr(log.getRefCount(reporter)));
+
     end
     else
         if (InputQuery('Выбор секции', 'Выберите номер секции (секиции начинаются с 0)', strSecNumber)) then
         begin
+            fMainView.getStatusBar.setStatus('Выполняется распознавание', 3000, true);
+
             if (strToInt(strSecNumber) > fMainViewModel.layoutStep) then
             begin
                 showMessage('Номер секции не может быть больше количества размеченных.');

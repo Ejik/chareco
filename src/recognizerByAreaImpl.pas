@@ -67,6 +67,8 @@ var
     percent: integer; // процент совпадения
 begin
     inherited;
+    fPatternsRepo.initialize();
+
     arrD := TStringList.create();
     numberArea := calculateArea(bitmap);
 
