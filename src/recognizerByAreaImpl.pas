@@ -81,6 +81,8 @@ begin
 
         freeAndNil(buffer);
 
+        if (strName = 'bl') then
+                strName := ' ';
         // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
         // закомментируем расчет расстояний
         //arrD.add(strName + '=' + intToStr(numberArea - patternArea));

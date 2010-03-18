@@ -261,9 +261,11 @@ procedure TMainViewPresenter.setMainViewAndSetupLayoutMode;
 var
     ws: IGUIWorkspace;
     cursor: TCursor;
+    i : integer;
 begin
     ws := fMainView.getWorkspace();
     ws.setCursor(crCross);
+    updateView();
 end;
 
 {*------------------------------------------------------------------------------
@@ -282,6 +284,8 @@ begin
 
     sb := fMainView.getStatusBar();
     sb.setStatus('');
+
+    updateView();
 end;
 
 {*------------------------------------------------------------------------------

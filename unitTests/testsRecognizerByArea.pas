@@ -43,13 +43,11 @@ procedure TTestRecognizerByArea.testRecogize;
 var
     recognizer: IRecognizerByArea;
     area: integer;
-    resultReport : IReporter;
 begin
     recognizer := TRecognizerByArea.create(repo);
-    resultReport := recognizer.recognize(bitmap, reporter);
-    CheckSame(reporter, resultReport);
+    recognizer.recognize(bitmap, reporter);
 
-    CheckTrue('100%' = resultReport.getMaxMatch());
+    CheckTrue('100%' = reporter.getMaxMatch());
 end;
 
 

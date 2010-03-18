@@ -22,6 +22,7 @@ type
 
         function getSectionByIndex(index: integer): TBitmap;
         function getBestResult(const matrix: TResultMatrix): TResultCell;
+        procedure clearSectionList();
         procedure prepareSections();
     public
         destructor destroy(); override;
@@ -39,16 +40,9 @@ uses
 { TRecognitionService }
 
 destructor TRecognitionService.destroy;
-var
-    i: integer;
-    bmp: TBitmap;
 begin
     if (fInitialiazed) then
-        for i := 0 to fSectionList.Count - 1 do
-        begin
-            bmp := TBitmap(fSectionList[i]);
-            freeAndNil(bmp);
-        end;
+        clearSectionList();
     freeAndNil(fSectionList);
     inherited;
 end;
@@ -76,6 +70,10 @@ begin
         begin
             reporter := Emballo.get(IReporter) as IReporter;
             currentBitmap := getSectionByIndex(i);
+            if (currentBitmap = nil) then
+            begin
+                  exit;
+            end;
 
             // Метод 1
             fRecoByArea.recognize(currentBitmap, reporter);
@@ -95,8 +93,8 @@ begin
 
             resultCell := getBestResult(percents);
 
-            if (resultCell[1] = 'bl') then
-                resultCell[1] := ' ';
+            {if (resultCell[1] = 'bl') then
+                resultCell[1] := ' ';}
 
             reportBuilder.add('Символ: ' + resultCell[1] +
                 ' ' + resultCell[2] + '%');
@@ -112,8 +110,9 @@ begin
 
         currentBitmap := getSectionByIndex(fSecNum);
         if (currentBitmap <> nil) then
-            fRecoByArea.recognize(currentBitmap, reporter);
-
+            fRecoByArea.recognize(currentBitmap, reporter)
+        else
+            exit;
         reportBuilder.add('Метод распознавания "по площади"');
         reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
         reportBuilder.add(reporter.getMaxMatch() + '%');
@@ -172,8 +171,9 @@ begin
     if (fSectionList = nil) then
     begin
         fSectionList := TList.create();
-        prepareSections();
     end;
+    clearSectionList();
+    prepareSections();
 end;
 
 procedure TRecognitionService.prepareSections();
@@ -181,6 +181,8 @@ procedure TRecognitionService.prepareSections();
     var
         buffer: TBitmap;
     begin
+        if (width <= 0) then
+            exit;
         buffer := TBitmap.create();
         buffer.Width := width;
         buffer.Height := NumberHeight;
@@ -190,20 +192,21 @@ procedure TRecognitionService.prepareSections();
             fModel.currentNumberBitmap.Canvas,
             Rect(left, 0, left + width, NumberHeight)
             );
+
         fSectionList.Add(buffer);
     end; //  procedure addBitmap;
 
 begin // procedure TRecognitionService.
 
-    addBitmap(0, LettersWidth);
-    addBitmap(fModel.layoutPoint[0], NumbersWidth);
-    addBitmap(fModel.layoutPoint[1], NumbersWidth);
-    addBitmap(fModel.layoutPoint[2], NumbersWidth);
-    addBitmap(fModel.layoutPoint[3], LettersWidth);
-    addBitmap(fModel.layoutPoint[4], LettersWidth);
-    addBitmap(fModel.layoutPoint[5], NumbersWidth);
-    addBitmap(fModel.layoutPoint[6], NumbersWidth);
-    addBitmap(fModel.layoutPoint[7], NumbersWidth);
+    addBitmap(0, fModel.layoutPoint[0]);
+    addBitmap(fModel.layoutPoint[0], fModel.layoutPoint[1] - fModel.layoutPoint[0]);
+    addBitmap(fModel.layoutPoint[1], fModel.layoutPoint[2] - fModel.layoutPoint[1]);
+    addBitmap(fModel.layoutPoint[2], fModel.layoutPoint[3] - fModel.layoutPoint[2]);
+    addBitmap(fModel.layoutPoint[3], fModel.layoutPoint[4] - fModel.layoutPoint[3]);
+    addBitmap(fModel.layoutPoint[4], fModel.layoutPoint[5] - fModel.layoutPoint[4]);
+    addBitmap(fModel.layoutPoint[5], fModel.layoutPoint[6] - fModel.layoutPoint[5]);
+    addBitmap(fModel.layoutPoint[6], fModel.layoutPoint[7] - fModel.layoutPoint[6]);
+    addBitmap(fModel.layoutPoint[7], NumberWidth - fModel.layoutPoint[7]);
 
 end; // procedure TRecognitionService.
 
@@ -241,6 +244,19 @@ begin
             end;
         end;
 
+end;
+
+procedure TRecognitionService.clearSectionList;
+var
+    i: integer;
+    bmp: TBitmap;
+begin
+    for i := 0 to fSectionList.Count - 1 do
+    begin
+        bmp := TBitmap(fSectionList[i]);
+        freeAndNil(bmp);
+    end;
+    fSectionList.clear();
 end;
 
 initialization
