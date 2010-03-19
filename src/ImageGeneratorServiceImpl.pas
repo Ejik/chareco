@@ -53,7 +53,7 @@ begin
 
     // x width = 45
     buffer := fImageRepository.getImage(strNumber[1]);
-    bmp.Canvas.Draw(0, 32, buffer);
+    bmp.Canvas.Draw(0, 0, buffer);
     freeAndNil(buffer);
 
     // 7 width = 58
@@ -73,12 +73,12 @@ begin
 
     // a
     buffer := fImageRepository.getImage(strNumber[5]);
-    bmp.Canvas.Draw(arrAutoLayout[3], 32, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[3], 0, buffer);
     freeAndNil(buffer);
 
     // a
     buffer := fImageRepository.getImage(strNumber[6]);
-    bmp.Canvas.Draw(arrAutoLayout[4], 32, buffer);
+    bmp.Canvas.Draw(arrAutoLayout[4], 0, buffer);
     freeAndNil(buffer);
 
     // 1

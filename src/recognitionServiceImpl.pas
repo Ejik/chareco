@@ -18,6 +18,8 @@ type
         fSecNum: integer;
         fInitialiazed: boolean;
         fRecoByArea: IRecognizerByArea;
+        fRecoByVector: IRecognizerByVector;
+        fRecoByMask: IRecognizerByMask;
         fSectionList: TList;
 
         function getSectionByIndex(index: integer): TBitmap;
@@ -68,33 +70,33 @@ begin
         resultNumber := '';
         for i := 0 to NumberLength - 1 do
         begin
-            reporter := Emballo.get(IReporter) as IReporter;
+
             currentBitmap := getSectionByIndex(i);
             if (currentBitmap = nil) then
             begin
-                  exit;
+                exit;
             end;
 
             // Метод 1
+            reporter := Emballo.get(IReporter) as IReporter;
             fRecoByArea.recognize(currentBitmap, reporter);
 
             percents[1, 1] := reporter.getMaxMatchSymbol();
             percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
 
             // Метод 2
-            //reporter := fRecognitionService.ExecuteMethodB();
+            reporter := Emballo.get(IReporter) as IReporter;
+            fRecoByVector.recognize(currentBitmap, reporter);
             percents[2, 1] := reporter.getMaxMatchSymbol();
             percents[2, 2] := intToStr(reporter.getMaxMatchPercent());
 
             // Метод 3
-            //reporter := fRecognitionService.ExecuteMethodB();
+            reporter := Emballo.get(IReporter) as IReporter;
+            fRecoByMask.recognize(currentBitmap, reporter);
             percents[3, 1] := reporter.getMaxMatchSymbol();
             percents[3, 2] := intToStr(reporter.getMaxMatchPercent());
 
             resultCell := getBestResult(percents);
-
-            {if (resultCell[1] = 'bl') then
-                resultCell[1] := ' ';}
 
             reportBuilder.add('Символ: ' + resultCell[1] +
                 ' ' + resultCell[2] + '%');
@@ -110,7 +112,10 @@ begin
 
         currentBitmap := getSectionByIndex(fSecNum);
         if (currentBitmap <> nil) then
-            fRecoByArea.recognize(currentBitmap, reporter)
+        begin
+            reporter := Emballo.get(IReporter) as IReporter;
+            fRecoByArea.recognize(currentBitmap, reporter);
+        end
         else
             exit;
         reportBuilder.add('Метод распознавания "по площади"');
@@ -122,14 +127,35 @@ begin
         percents[1, 1] := reporter.getMaxMatchSymbol();
         percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
 
-        //reporter := fRecognitionService.ExecuteMethodB();
+        if (currentBitmap <> nil) then
+        begin
+            reporter := Emballo.get(IReporter) as IReporter;
+            fRecoByVector.recognize(currentBitmap, reporter);
+        end
+        else
+            exit;
         reportBuilder.add('Метод распознавания "по вектору"');
+        reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
+        reportBuilder.add(reporter.getMaxMatch() + '%');
+        reportBuilder.add(reporter.getMidMatch() + '%');
+        reportBuilder.add(reporter.getMinMatch() + '%');
         reportBuilder.add('');
         percents[2, 1] := reporter.getMaxMatchSymbol();
         percents[2, 2] := intToStr(reporter.getMaxMatchPercent());
 
-        //reporter := fRecognitionService.ExecuteMethodC();
+        if (currentBitmap <> nil) then
+        begin
+            reporter := Emballo.get(IReporter) as IReporter;
+            fRecoByMask.recognize(currentBitmap, reporter);
+        end
+        else
+            exit;
+
         reportBuilder.add('Метод распознавания "по маске"');
+        reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
+        reportBuilder.add(reporter.getMaxMatch() + '%');
+        reportBuilder.add(reporter.getMidMatch() + '%');
+        reportBuilder.add(reporter.getMinMatch() + '%');
         reportBuilder.add('');
         percents[3, 1] := reporter.getMaxMatchSymbol();
         percents[3, 2] := intToStr(reporter.getMaxMatchPercent());
@@ -262,4 +288,5 @@ end;
 initialization
     GetDIRegistry.RegisterFactorySingleton(IRecognitionService, TRecognitionService);
 end.
+
 

@@ -33,7 +33,9 @@ uses
   reporterImpl in 'src\reporterImpl.pas',
   resultViewImpl in 'src\resultViewImpl.pas' {OKBottomDlg},
   resultView in 'src\resultView.pas',
-  MBC.Classes in 'src\MBC.Classes.pas';
+  MBC.Classes in 'src\MBC.Classes.pas',
+  recognizerByVectorImpl in 'unitTests\recognizerByVectorImpl.pas',
+  recognizerByMaskImpl in 'src\recognizerByMaskImpl.pas';
 
 {$R *.res}
 

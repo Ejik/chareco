@@ -1,46 +1,46 @@
-unit recognizerByAreaImpl;
+unit recognizerByVectorImpl;
 
 interface
 
 uses
-    recognizerBaseImpl, Graphics, recognizer, reporter, imageRepository;
+    recognizer, recognizerBaseImpl, Graphics, reporter, imageRepository;
 
 type
-
-    TRecognizerByArea = class(TRecognizerBase, IRecognizerByArea)
+    TRecognizerByVector = class(TRecognizerBase, IRecognizerByVector)
     private
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
     public
-        constructor create(const patternsRepo: IImageRepository); overload;
-        destructor destroy(); override;
-
-        function calculateSign(bitmap: TBitmap) : integer;
+        function calculateSign(bitmap: TBitmap): integer; override;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
+
 
 implementation
 
 uses
-    EBDIRegistry, EBDependencyInjection, SysUtils, systemConsts,
-    Classes;
+    SysUtils, Classes, EBDIRegistry;
 
-{ TRecognizerByArea }
+{ TRecognizerByVector }
 
-
-constructor TRecognizerByArea.create(const patternsRepo: IImageRepository);
+function TRecognizerByVector.calculateSign(bitmap: TBitmap): integer;
+var
+    scanLine: PByteArray;
+    x, y: integer;
 begin
-    fPatternsRepo := patternsRepo;
+    result := 0;
+    bitmap.PixelFormat := pf8bit;
+    for y := 0 to bitmap.Height - 1 do
+    begin
+        scanLine := bitmap.ScanLine[y];
+        for x := 0 to bitmap.Width - 1 do
+            if (scanLine^[x] = 0) then
+                result := result + 1;
+    end;
+
 end;
 
-destructor TRecognizerByArea.destroy;
-begin
-
-    inherited;
-end;
-
-
-function TRecognizerByArea.getPercentage(S, Si: integer): integer;
+function TRecognizerByVector.getPercentage(S, Si: integer): integer;
 var
     difference: integer;
 begin
@@ -57,7 +57,9 @@ begin
                 result := round(Si / S * 100);
 end;
 
-function TRecognizerByArea.recognize(bitmap: TBitmap; var reporter: IReporter): boolean;
+
+function TRecognizerByVector.recognize(bitmap: TBitmap;
+    var reporter: IReporter): boolean;
 var
     i: integer;
     buffer: TBitmap;
@@ -83,7 +85,7 @@ begin
         freeAndNil(buffer);
 
         if (strName = 'bl') then
-                strName := ' ';
+            strName := ' ';
         // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
         // закомментируем расчет расстояний
         //arrD.add(strName + '=' + intToStr(numberArea - patternArea));
@@ -109,26 +111,7 @@ begin
     freeAndNil(arrD);
 end;
 
-function TRecognizerByArea.calculateSign(bitmap: TBitmap) : integer;
-var
-    scanLine: PByteArray;
-    x, y: integer;
-begin
-    result := 0;
-    bitmap.PixelFormat := pf8bit;
-    for y := 0 to bitmap.Height - 1 do
-    begin
-        scanLine := bitmap.ScanLine[y];
-        for x := 0 to bitmap.Width - 1 do
-            if (scanLine^[x] = 0) then
-                result := result + 1;
-    end;
-
-end;
-
-
 initialization
-    GetDIRegistry.RegisterFactorySingleton(IRecognizerByArea, TRecognizerByArea);
-
+    GetDIRegistry.RegisterFactorySingleton(IRecognizerByVector, TRecognizerByVector);
 end.
 
