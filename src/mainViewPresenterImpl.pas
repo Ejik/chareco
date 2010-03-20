@@ -140,7 +140,7 @@ begin
         resultView := Emballo.Get(IResultView) as IResultView;
         resultView.bind(fMainView.getObject(), reportBuilder);
         resultView.show();
-        //reportBuilder.SaveToFile('report.txt');
+        reportBuilder.SaveToFile('report.txt');
 
         freeAndNil(reportBuilder);
     end
