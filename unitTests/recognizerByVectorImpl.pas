@@ -9,11 +9,11 @@ type
     TRecognizerByVector = class(TRecognizerBase, IRecognizerByVector)
     private
         fPatternsRepo: IImageRepository;
-        function getPercentage(S, Si: integer): integer;
+        procedure serializeVector(const vector: TVector);
     protected
         function calculateFormula(D: integer; width: integer; height: integer): integer; reintroduce; virtual;
     public
-        function calculateSign(bitmap: TBitmap): TVector;  reintroduce; virtual;
+        function calculateSign(bitmap: TBitmap): TVector; reintroduce; virtual;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
@@ -42,6 +42,9 @@ begin
     bitmap.PixelFormat := pf8bit;
     setLength(result, bitmap.Width + bitmap.Height);
 
+    for x := 0 to bitmap.Width + bitmap.Height - 1 do
+        result[x] := 0;
+
     k := 0;
     for y := 0 to bitmap.Height - 1 do
     begin
@@ -63,24 +66,6 @@ begin
 
 end;
 
-function TRecognizerByVector.getPercentage(S, Si: integer): integer;
-var
-    difference: integer;
-begin
-    result := 0;
-    difference := S - Si;
-
-    if (difference = 0) then
-        result := 100
-    else
-        if (difference < 0) then
-            result := round(S / Si * 100)
-        else
-            if (difference > 0) then
-                result := round(Si / S * 100);
-end;
-
-
 function TRecognizerByVector.recognize(bitmap: TBitmap;
     var reporter: IReporter): boolean;
 var
@@ -99,6 +84,7 @@ begin
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
+
     numberSign := calculateSign(bitmap);
 
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
@@ -106,7 +92,7 @@ begin
         strName := fPatternsRepo.getImageNameByIndex(i);
         pattern := fPatternsRepo.getImage(strName);
         patternSign := calculateSign(pattern);
-
+        
         if (strName = 'bl') then
             strName := ' ';
         // эталон и образец могут быть разными по размеру
@@ -117,11 +103,10 @@ begin
 
         d := 0;
         for j := 0 to length(minVictorLength) do
-            D := D + (patternSign[j] - numberSign[j]) * (patternSign[j] - numberSign[j]);
+            D := D + abs(numberSign[j] - patternSign[j]);// * (numberSign[j] - patternSign[j]);
 
         arrD.add(strName + '=' + intToStr(calculateFormula(D, pattern.Width, pattern.Height)));
 
-        //arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
         freeAndNil(pattern);
     end;
 
@@ -141,6 +126,20 @@ begin
     reporter.initReport(arrD);
 
     freeAndNil(arrD);
+end;
+
+procedure TRecognizerByVector.serializeVector(const vector: TVector);
+var
+    i: integer;
+    buffer: TStringList;
+begin
+    buffer := TStringList.create();
+    for i := 0 to length(vector) - 1 do
+    begin
+        buffer.Add(intToStr(vector[i]));
+    end;
+    buffer.SaveToFile('vector.txt');
+    freeAndNil(buffer);
 end;
 
 initialization
