@@ -84,7 +84,7 @@ begin
         fImageList.Add('y=images\tpl_y.bmp');
         fImageList.Add('x=images\tpl_x.bmp');
         fImageList.Add('d=images\tpl_d.bmp');
-        fImageList.Add('r=images\tpl_tr.bmp');
+        //fImageList.Add('r=images\tpl_tr.bmp');
         fImageList.Add('bl=images\tpl_blank.bmp');
 
         for i := 0 to 9 do
