@@ -47,6 +47,7 @@ begin
         guiThread.bindStatusBar(fStatusBar);
         guiThread.FreeOnTerminate := true;
         guiThread.Resume;
+        Application.ProcessMessages;
     end
     else
     begin

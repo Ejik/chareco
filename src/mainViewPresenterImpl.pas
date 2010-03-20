@@ -132,8 +132,7 @@ begin
 
     if (boolWholeNumber) then
     begin
-    
-        fMainView.getStatusBar.setStatus('Выполняется распознавание', 2000, true);
+        fMainView.getStatusBar.setStatus('Выполняется распознавание', 1000, true);
 
         fRecognitionService.Initialize(fMainViewModel, true);
 

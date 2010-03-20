@@ -99,7 +99,7 @@ begin
             resultCell := getBestResult(percents);
 
             reportBuilder.add('Символ: ' + resultCell[1] +
-                ' ' + resultCell[2]);
+                ' ' + resultCell[2] + '%');
 
             resultNumber := resultNumber + resultCell[1];
 
@@ -120,9 +120,9 @@ begin
             exit;
         reportBuilder.add('Метод распознавания "по площади"');
         reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
-        reportBuilder.add(reporter.getMaxMatch());
-        reportBuilder.add(reporter.getMidMatch());
-        reportBuilder.add(reporter.getMinMatch());
+        reportBuilder.add(reporter.getMaxMatch() + '%');
+        reportBuilder.add(reporter.getMidMatch() + '%');
+        reportBuilder.add(reporter.getMinMatch() + '%');
         reportBuilder.add('');
         percents[1, 1] := reporter.getMaxMatchSymbol();
         percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
