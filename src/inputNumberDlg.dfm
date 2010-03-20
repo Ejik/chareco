@@ -41,13 +41,13 @@ object fmInputNumDlg: TfmInputNumDlg
   object MaskEdit: TMaskEdit
     Left = 10
     Top = 30
-    Width = 296
+    Width = 293
     Height = 21
-    EditMask = 'L 000 LL 000;1;_'
+    EditMask = '>L 000 LL 000;1;_'
     ImeName = 'Russian'
     MaxLength = 12
     TabOrder = 2
-    Text = 'x 777 aa 177'
+    Text = 'X 777 AA 177'
   end
   object Button1: TButton
     Left = 230

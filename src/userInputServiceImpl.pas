@@ -34,20 +34,20 @@ begin
     begin
         boolOK := TryStrToInt(strNumber[i], n);
         if not boolOK then
-            if (strNumber[i] = 'a')
-                or (strNumber[i] = 'e')
-                or (strNumber[i] = 'b')
-                or (strNumber[i] = 'k')
-                or (strNumber[i] = 'm')
-                or (strNumber[i] = 'n')
-                or (strNumber[i] = 'h')
-                or (strNumber[i] = 'o')
-                or (strNumber[i] = 'p')
-                or (strNumber[i] = 'c')
-                or (strNumber[i] = 't')
-                or (strNumber[i] = 'y')
-                or (strNumber[i] = 'x')
-                or (strNumber[i] = 'd') then
+            if (strNumber[i] = 'A')
+                or (strNumber[i] = 'E')
+                or (strNumber[i] = 'B')
+                or (strNumber[i] = 'K')
+                or (strNumber[i] = 'M')
+                or (strNumber[i] = 'N')
+                or (strNumber[i] = 'H')
+                or (strNumber[i] = 'O')
+                or (strNumber[i] = 'P')
+                or (strNumber[i] = 'C')
+                or (strNumber[i] = 'T')
+                or (strNumber[i] = 'Y')
+                or (strNumber[i] = 'X')
+                or (strNumber[i] = 'D') then
             begin
                 result := true;
             end

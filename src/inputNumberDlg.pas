@@ -1,29 +1,29 @@
-    unit inputNumberDlg;
+unit inputNumberDlg;
 
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, 
-  Buttons, Mask;
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+    Buttons, Mask;
 
 type
-  TfmInputNumDlg = class(TForm)
-    Label1: TLabel;
-    OKBtn: TButton;
-    CancelBtn: TButton;
-    MaskEdit: TMaskEdit;
-    Button1: TButton;
-  private
+    TfmInputNumDlg = class(TForm)
+        Label1: TLabel;
+        OKBtn: TButton;
+        CancelBtn: TButton;
+        MaskEdit: TMaskEdit;
+        Button1: TButton;
+    private
     { Private declarations }
-  public
+    public
     { Public declarations }
-  end;
+    end;
 
 var
-  fmInputNumDlg: TfmInputNumDlg;
+    fmInputNumDlg: TfmInputNumDlg;
 
 implementation
 
 {$R *.dfm}
 
 end.
- 
+
