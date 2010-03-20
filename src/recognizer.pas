@@ -6,10 +6,11 @@ uses
     Graphics, reporter;
 
 type
+    TVector = array of byte;
+
     IRecognizerBase = interface
         ['{9504D7F6-B2C8-42BE-9C2B-7BB554CDE8DE}']
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean;
-        function calculateSign(bitmap: TBitmap): integer; 
     end;
 
     IRecognizerByArea = interface(IRecognizerBase)

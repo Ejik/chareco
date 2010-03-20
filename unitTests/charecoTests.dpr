@@ -18,7 +18,6 @@ uses
   guiStatusBarMock in 'guiStatusBarMock.pas',
   numberMock in 'numberMock.pas',
   testsNumber in 'testsNumber.pas',
-  testsRecognizerBase in 'testsRecognizerBase.pas',
   imageRepositoryMock in 'imageRepositoryMock.pas',
   testsImageGeneratorService in 'testsImageGeneratorService.pas',
   recognitionServiceMock in 'recognitionServiceMock.pas',

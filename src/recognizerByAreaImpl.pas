@@ -11,11 +11,13 @@ type
     private
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
+    protected
+        function calculateFormula(numberValue: integer; patternValue: integer; width: integer; height: integer): integer;
     public
         constructor create(const patternsRepo: IImageRepository); overload;
         destructor destroy(); override;
 
-        function calculateSign(bitmap: TBitmap) : integer;
+        function calculateSign(bitmap: TBitmap): integer;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
@@ -60,7 +62,7 @@ end;
 function TRecognizerByArea.recognize(bitmap: TBitmap; var reporter: IReporter): boolean;
 var
     i: integer;
-    buffer: TBitmap;
+    pattern: TBitmap;
     patternArea: integer; // площадь Si i-го паттерна
     numberArea: integer; // площадь распознаваемого символа
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
@@ -77,21 +79,21 @@ begin
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
     begin
         strName := fPatternsRepo.getImageNameByIndex(i);
-        buffer := fPatternsRepo.getImage(strName);
-        patternArea := calculateSign(buffer);
-
-        freeAndNil(buffer);
+        pattern := fPatternsRepo.getImage(strName);
+        patternArea := calculateSign(pattern);
 
         if (strName = 'bl') then
-                strName := ' ';
+            strName := ' ';
+
         // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
-        // закомментируем расчет расстояний
-        //arrD.add(strName + '=' + intToStr(numberArea - patternArea));
-        percent := getPercentage(numberArea, patternArea);
-        arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
+        arrD.add(strName + '=' + intToStr(calculateFormula(numberArea, patternArea, pattern.Width, pattern.Height)));
+
+        //percent := getPercentage(numberArea, patternArea);
+        //arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
+        freeAndNil(pattern);
     end;
 
-    // Отсортируем массив расстояний по убыванию
+    // Отсортируем массив расстояний по возрастанию
     i := 0;
     while (i < arrD.Count - 1) do
     begin
@@ -103,13 +105,13 @@ begin
         else
             i := i + 1;
     end;
-    arrD.SaveToFile('extReport.txt');
+    arrD.SaveToFile('areaExtReport.txt');
     reporter.initReport(arrD);
 
     freeAndNil(arrD);
 end;
 
-function TRecognizerByArea.calculateSign(bitmap: TBitmap) : integer;
+function TRecognizerByArea.calculateSign(bitmap: TBitmap): integer;
 var
     scanLine: PByteArray;
     x, y: integer;
@@ -120,12 +122,20 @@ begin
     begin
         scanLine := bitmap.ScanLine[y];
         for x := 0 to bitmap.Width - 1 do
-            if (scanLine^[x] = 0) then
+            if (scanLine^[x] = clBlack) then
                 result := result + 1;
     end;
 
 end;
 
+
+function TRecognizerByArea.calculateFormula(numberValue,
+    patternValue: integer; width: integer; height: integer): integer;
+begin
+    result := round(
+        (1 - abs(patternValue - numberValue)
+        / (width * height)) * 100);
+end;
 
 initialization
     GetDIRegistry.RegisterFactorySingleton(IRecognizerByArea, TRecognizerByArea);

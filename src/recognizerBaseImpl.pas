@@ -8,16 +8,19 @@ uses
 type
 
     TRecognizerBase = class(TInjectable, IRecognizerBase)
+    protected
+        function calculateFormula(numberValue: integer; patternValue: integer; width: integer; height: integer): integer; virtual; abstract;
 
     public
-        function calculateSign(bitmap: TBitmap) : integer; virtual; abstract;
-        function recognize(bitmap: TBitmap; var reporter: IReporter) : boolean; virtual; abstract;
+        function calculateSign(bitmap: TBitmap): integer; virtual; abstract;
+        function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; virtual; abstract;
+
     end;
 
 implementation
 
 uses
-  SysUtils;
+    SysUtils;
 
 { TRecognizerBase }
 

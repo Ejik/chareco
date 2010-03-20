@@ -10,8 +10,10 @@ type
     private
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
+    protected
+        function calculateFormula(D: integer; width: integer; height: integer): integer; reintroduce; virtual;
     public
-        function calculateSign(bitmap: TBitmap): integer; override;
+        function calculateSign(bitmap: TBitmap): TVector;  reintroduce; virtual;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
@@ -23,19 +25,40 @@ uses
 
 { TRecognizerByVector }
 
-function TRecognizerByVector.calculateSign(bitmap: TBitmap): integer;
+
+function TRecognizerByVector.calculateFormula(D: integer; width, height: integer): integer;
+begin
+    result := round((1 - D / (Height * Width)) * 100);
+    //result := round((1 - (Height * Width) / D) * 100);
+end;
+
+function TRecognizerByVector.calculateSign(bitmap: TBitmap): TVector;
 var
+    k: integer; // k-й элемент вектора
     scanLine: PByteArray;
     x, y: integer;
+    sumRow: integer; // сумма пикселей в строке
 begin
-    result := 0;
     bitmap.PixelFormat := pf8bit;
+    setLength(result, bitmap.Width + bitmap.Height);
+
+    k := 0;
     for y := 0 to bitmap.Height - 1 do
     begin
+        sumRow := 0;
         scanLine := bitmap.ScanLine[y];
         for x := 0 to bitmap.Width - 1 do
-            if (scanLine^[x] = 0) then
-                result := result + 1;
+        begin
+            if (scanLine^[x] = clBlack) then
+            begin
+                sumRow := sumRow + 1;
+                result[x] := result[x] + 1;
+            end;
+        end;
+
+        result[bitmap.Width + k] := sumRow;
+
+        k := k + 1;
     end;
 
 end;
@@ -61,39 +84,48 @@ end;
 function TRecognizerByVector.recognize(bitmap: TBitmap;
     var reporter: IReporter): boolean;
 var
-    i: integer;
-    buffer: TBitmap;
-    patternArea: integer; // площадь Si i-го паттерна
-    numberArea: integer; // площадь распознаваемого символа
+    i, j: integer;
+    pattern: TBitmap;
+    patternSign: TVector; // вектор Si i-го паттерна
+    numberSign: TVector; // вектор распознаваемого символа
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
     strName: string;
     percent: integer; // процент совпадения
+    D: integer; // расстояние между эталоном и рапознаваемым символом
+    minVictorLength: TVector; // вектор минимальной длины
 begin
     inherited;
     result := true;
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
-    numberArea := calculateSign(bitmap);
+    numberSign := calculateSign(bitmap);
 
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
     begin
         strName := fPatternsRepo.getImageNameByIndex(i);
-        buffer := fPatternsRepo.getImage(strName);
-        patternArea := calculateSign(buffer);
-
-        freeAndNil(buffer);
+        pattern := fPatternsRepo.getImage(strName);
+        patternSign := calculateSign(pattern);
 
         if (strName = 'bl') then
             strName := ' ';
-        // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
-        // закомментируем расчет расстояний
-        //arrD.add(strName + '=' + intToStr(numberArea - patternArea));
-        percent := getPercentage(numberArea, patternArea);
-        arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
+        // эталон и образец могут быть разными по размеру
+        if (length(numberSign) > length(patternSign)) then
+            minVictorLength := patternSign
+        else
+            minVictorLength := numberSign;
+
+        d := 0;
+        for j := 0 to length(minVictorLength) do
+            D := D + (patternSign[j] - numberSign[j]) * (patternSign[j] - numberSign[j]);
+
+        arrD.add(strName + '=' + intToStr(calculateFormula(D, pattern.Width, pattern.Height)));
+
+        //arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
+        freeAndNil(pattern);
     end;
 
-    // Отсортируем массив расстояний по убыванию
+    // Отсортируем массив расстояний по возрастанию
     i := 0;
     while (i < arrD.Count - 1) do
     begin
@@ -105,7 +137,7 @@ begin
         else
             i := i + 1;
     end;
-    arrD.SaveToFile('extReport.txt');
+    arrD.SaveToFile('vectorExtReport.txt');
     reporter.initReport(arrD);
 
     freeAndNil(arrD);
