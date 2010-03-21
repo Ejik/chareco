@@ -9,7 +9,7 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = chareco.exe charecoTests.exe
+PROJECTS = chareco.exe charecoTests.exe core.dll
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -17,7 +17,10 @@ default: $(PROJECTS)
 chareco.exe: chareco.dpr
   $(DCC)
 
-charecoTests.exe: unitTests\charecoTests.dpr
+charecoTests.exe: charecoTests.dpr
+  $(DCC)
+
+core.dll: core.dpr
   $(DCC)
 
 
