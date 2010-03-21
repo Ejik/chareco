@@ -11,7 +11,7 @@ type
         fPatternsRepo: IImageRepository;
         procedure serializeVector(const vector: TVector);
     protected
-        function calculateFormula(D: integer; width: integer; height: integer): integer; reintroduce; virtual;
+        function calculateFormula(D: extended; width: integer; height: integer): extended; reintroduce; virtual;
     public
         function calculateSign(bitmap: TBitmap): TVector; reintroduce; virtual;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
@@ -26,9 +26,9 @@ uses
 { TRecognizerByVector }
 
 
-function TRecognizerByVector.calculateFormula(D: integer; width, height: integer): integer;
+function TRecognizerByVector.calculateFormula(D: extended; width, height: integer): extended;
 begin
-    result := round((1 - D / (Height * Width)) * 100);
+    result := (1 - D / (Height * Width)) * 100;
     //result := round((1 - (Height * Width) / D) * 100);
 end;
 
@@ -76,7 +76,7 @@ var
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
     strName: string;
     percent: integer; // процент совпадения
-    D: integer; // расстояние между эталоном и рапознаваемым символом
+    D: extended; // расстояние между эталоном и рапознаваемым символом
     minVictorLength: TVector; // вектор минимальной длины
 begin
     inherited;
@@ -92,7 +92,7 @@ begin
         strName := fPatternsRepo.getImageNameByIndex(i);
         pattern := fPatternsRepo.getImage(strName);
         patternSign := calculateSign(pattern);
-        
+
         if (strName = 'bl') then
             strName := ' ';
         // эталон и образец могут быть разными по размеру
@@ -103,9 +103,9 @@ begin
 
         d := 0;
         for j := 0 to length(minVictorLength) do
-            D := D + abs(numberSign[j] - patternSign[j]);// * (numberSign[j] - patternSign[j]);
+            D := D + abs(numberSign[j] - patternSign[j]); // * (numberSign[j] - patternSign[j]);
 
-        arrD.add(strName + '=' + intToStr(calculateFormula(D, pattern.Width, pattern.Height)));
+        arrD.add(strName + '=' + floatToStr(calculateFormula(D, pattern.Width, pattern.Height)));
 
         freeAndNil(pattern);
     end;
@@ -114,7 +114,7 @@ begin
     i := 0;
     while (i < arrD.Count - 1) do
     begin
-        if (strToInt(arrD.ValueFromIndex[i]) < strToInt(arrD.ValueFromIndex[i + 1])) then
+        if (strToFloat(arrD.ValueFromIndex[i]) < strToFloat(arrD.ValueFromIndex[i + 1])) then
         begin
             arrD.Exchange(i, i + 1);
             i := 0;

@@ -12,12 +12,12 @@ type
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
     protected
-        function calculateFormula(numberValue: integer; patternValue: integer; width: integer; height: integer): integer;
+        function calculateFormula(numberValue: extended; patternValue: extended; width: integer; height: integer): extended;
     public
         constructor create(const patternsRepo: IImageRepository); overload;
         destructor destroy(); override;
 
-        function calculateSign(bitmap: TBitmap): integer;
+        function calculateSign(bitmap: TBitmap): extended;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
@@ -63,8 +63,8 @@ function TRecognizerByArea.recognize(bitmap: TBitmap; var reporter: IReporter): 
 var
     i: integer;
     pattern: TBitmap;
-    patternArea: integer; // площадь Si i-го паттерна
-    numberArea: integer; // площадь распознаваемого символа
+    patternArea: extended; // площадь Si i-го паттерна
+    numberArea: extended; // площадь распознаваемого символа
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
     strName: string;
     percent: integer; // процент совпадения
@@ -86,7 +86,7 @@ begin
             strName := ' ';
 
         // Будем сразу считать не расстояния, а процент совпадения, поэтому пока
-        arrD.add(strName + '=' + intToStr(calculateFormula(numberArea, patternArea, pattern.Width, pattern.Height)));
+        arrD.add(strName + '=' + floatToStr(calculateFormula(numberArea, patternArea, pattern.Width, pattern.Height)));
 
         //percent := getPercentage(numberArea, patternArea);
         //arrD.add(strName + '=' + intToStr(getPercentage(numberArea, patternArea)));
@@ -97,7 +97,7 @@ begin
     i := 0;
     while (i < arrD.Count - 1) do
     begin
-        if (strToInt(arrD.ValueFromIndex[i]) < strToInt(arrD.ValueFromIndex[i + 1])) then
+        if (strToFloat(arrD.ValueFromIndex[i]) < strToFloat(arrD.ValueFromIndex[i + 1])) then
         begin
             arrD.Exchange(i, i + 1);
             i := 0;
@@ -111,7 +111,7 @@ begin
     freeAndNil(arrD);
 end;
 
-function TRecognizerByArea.calculateSign(bitmap: TBitmap): integer;
+function TRecognizerByArea.calculateSign(bitmap: TBitmap): extended;
 var
     scanLine: PByteArray;
     x, y: integer;
@@ -130,11 +130,11 @@ end;
 
 
 function TRecognizerByArea.calculateFormula(numberValue,
-    patternValue: integer; width: integer; height: integer): integer;
+    patternValue: extended; width: integer; height: integer): extended;
 begin
-    result := round(
+    result :=
         (1 - abs(patternValue - numberValue)
-        / (width * height)) * 100);
+        / (width * height)) * 100;
 end;
 
 initialization

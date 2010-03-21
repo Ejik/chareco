@@ -9,7 +9,7 @@ type
     TReporter = class(TInjectable, IReporter)
     private
         fData: TStringList;
-
+        function valueToInt(const value : string) : string;
     public
         destructor Destroy(); override;
 
@@ -42,27 +42,35 @@ end;
 
 function TReporter.getMaxMatch: string;
 begin
-    result := fData.Names[0] + ' ' + fData.ValueFromIndex[0];
+    result := fData.Names[0] + ' ' + valueToInt(fData.ValueFromIndex[0]);
 end;
 
 function TReporter.getMidMatch: string;
 begin
-    result := fData.Names[1] + ' ' + fData.ValueFromIndex[1];
+    result := fData.Names[1] + ' ' + valueToInt(fData.ValueFromIndex[1]);
 end;
 
 function TReporter.getMinMatch: string;
 begin
-    result := fData.Names[3] + ' ' + fData.ValueFromIndex[3];
+    result := fData.Names[3] + ' ' + valueToInt(fData.ValueFromIndex[3]);
 end;
 
 function TReporter.getMaxMatchPercent: integer;
 begin
-    result := strToInt(fData.ValueFromIndex[0]);
+    result := strToInt(valueToInt(fData.ValueFromIndex[0]));
 end;
 
 function TReporter.getMaxMatchSymbol: string;
 begin
     result := fData.Names[0];
+end;
+
+function TReporter.valueToInt(const value: string): string;
+var
+    buffer : Extended;
+begin
+    buffer := StrToFloat(value);
+    result := intToStr(round(buffer));
 end;
 
 initialization

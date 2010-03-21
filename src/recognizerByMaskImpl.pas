@@ -11,9 +11,9 @@ type
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
     protected
-        function calculateFormula(maskValue: integer; width: integer; height: integer): integer; reintroduce; virtual;
+        function calculateFormula(maskValue: extended; width: integer; height: integer): extended; reintroduce; virtual;
     public
-        function calculateSign(bitmap: TBitmap): integer; override;
+        function calculateSign(bitmap: TBitmap): extended; override;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 
@@ -25,13 +25,13 @@ uses
 
 { TRecognizerByVector }
 
-function TRecognizerByMask.calculateFormula(maskValue, width,
-  height: integer): integer;
+function TRecognizerByMask.calculateFormula(maskValue: extended; width,
+    height: integer): extended;
 begin
-    result := round((1 - maskValue / (height * width)) * 100);
+    result := (1 - maskValue / (height * width)) * 100;
 end;
 
-function TRecognizerByMask.calculateSign(bitmap: TBitmap): integer;
+function TRecognizerByMask.calculateSign(bitmap: TBitmap): extended;
 var
     scanLine: PByteArray;
     x, y: integer;
@@ -76,7 +76,7 @@ var
     numberArea: integer; // площадь распознаваемого символа
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
     strName: string;
-    maskValue: integer; // процент совпадения
+    maskValue: extended; // процент совпадения
 begin
     inherited;
     result := true;
@@ -98,7 +98,7 @@ begin
         if (strName = 'bl') then
             strName := ' ';
 
-        arrD.add(strName + '=' + intToStr(calculateFormula(maskValue, pattern.Width, pattern.Height)));
+        arrD.add(strName + '=' + floatToStr(calculateFormula(maskValue, pattern.Width, pattern.Height)));
         freeAndNil(pattern);
 
     end;
@@ -107,7 +107,7 @@ begin
     i := 0;
     while (i < arrD.Count - 1) do
     begin
-        if (strToInt(arrD.ValueFromIndex[i]) < strToInt(arrD.ValueFromIndex[i + 1])) then
+        if (strToFloat(arrD.ValueFromIndex[i]) < strToFloat(arrD.ValueFromIndex[i + 1])) then
         begin
             arrD.Exchange(i, i + 1);
             i := 0;
