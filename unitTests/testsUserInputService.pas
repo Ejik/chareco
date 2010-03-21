@@ -39,11 +39,11 @@ var
 begin
     userInputService := TUserInputService.create();
 
-    CheckTrue(userInputService.checkNumber('x777xx'));
+    CheckTrue(userInputService.checkNumber('X777XX177'));
 
-    CheckFalse(userInputService.checkNumber('l777lk'));
+    CheckFalse(userInputService.checkNumber('L777LK'));
 
-    CheckFalse(userInputService.checkNumber('l777lkl'));
+    CheckFalse(userInputService.checkNumber('L777LKL178'));
 
     freeAndNil( userInputService);
 end;
