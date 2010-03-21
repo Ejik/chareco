@@ -1,7 +1,7 @@
 program chareco;
 
 uses
-    FastMM4,
+    //FastMM4,
     Forms,
     mainViewImpl in 'src\mainViewImpl.pas' {Form1},
     mainViewModelImpl in 'src\mainViewModelImpl.pas',
