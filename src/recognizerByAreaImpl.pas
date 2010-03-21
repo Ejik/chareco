@@ -12,12 +12,12 @@ type
         fPatternsRepo: IImageRepository;
         function getPercentage(S, Si: integer): integer;
     protected
-        function calculateFormula(numberValue: extended; patternValue: extended; width: integer; height: integer): extended;
+        function calculateFormula(numberValue: extended; patternValue: extended; width: integer; height: integer): extended; override;
     public
         constructor create(const patternsRepo: IImageRepository); overload;
         destructor destroy(); override;
 
-        function calculateSign(bitmap: TBitmap): extended;
+        function calculateSign(bitmap: TBitmap): extended; override;
         function recognize(bitmap: TBitmap; var reporter: IReporter): boolean; override;
     end;
 

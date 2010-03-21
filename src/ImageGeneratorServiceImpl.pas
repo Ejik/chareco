@@ -16,6 +16,8 @@ type
         function generate(const strNumber: string): TBitmap;
     end;
 
+function getImageRepository(): IImageRepository; external 'CORE';
+    
 implementation
 
 uses SysUtils, systemConsts;
@@ -39,6 +41,8 @@ var
     bmp: TBitmap;
     buffer: TBitmap;
 begin
+    if (fImageRepository) = nil then
+        fImageRepository := getImageRepository();
     fImageRepository.initialize();
 
     bmp := TBitmap.Create;

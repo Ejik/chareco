@@ -28,10 +28,9 @@ type
         procedure prepareSections();
     public
         destructor destroy(); override;
-        procedure Initialize(model: IMainViewModel; boolEntireNumber: boolean = false; iSectionNumber: integer = 0);
+        procedure initialize(model: IMainViewModel; boolEntireNumber: boolean = false; iSectionNumber: integer = 0);
         function getReport(): TStringList;
-        function ExecuteMethodB(): IReporter;
-        function ExecuteMethodC(): IReporter;
+        procedure unregister();
     end;
 
 implementation
@@ -168,16 +167,6 @@ begin
 
 end;
 
-function TRecognitionService.ExecuteMethodB: IReporter;
-begin
-
-end;
-
-function TRecognitionService.ExecuteMethodC: IReporter;
-begin
-
-end;
-
 function TRecognitionService.getSectionByIndex(index: integer): TBitmap;
 begin
     try
@@ -285,8 +274,12 @@ begin
     fSectionList.clear();
 end;
 
+procedure TRecognitionService.unregister;
+begin
+    fModel := nil;
+end;
+
 initialization
     GetDIRegistry.RegisterFactorySingleton(IRecognitionService, TRecognitionService);
 end.
-
 

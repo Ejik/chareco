@@ -12,7 +12,6 @@ type
         fMainViewModel: IMainViewModel;
         fUserInputService: IUserInputService;
         fImageGeneratorService: IImageGeneratorService;
-        fRecognitionService: IRecognitionService;
 
         procedure setMainViewOnlyMode();
         procedure setMainViewAndSetupLayoutMode();
@@ -40,10 +39,12 @@ type
         procedure workSpaceImageMouseMove(x, y: integer);
     end;
 
+function getRecognitionService() : IRecognitionService; external 'CORE';    
+
 implementation
 
 uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView,
-    reporter, Classes, resultView, MBC.Classes;
+    Classes, resultView, MBC.Classes;
 
 { TMainViewPresenterImpl }
 
@@ -99,7 +100,6 @@ begin
     fUserInputService := userInputService;
     fMainViewModel := model;
     fImageGeneratorService := imageGeneratorService;
-    fRecognitionService := recognitionService;
 end;
 
 {*------------------------------------------------------------------------------
@@ -125,11 +125,14 @@ var
     i: integer;
     resultView: IResultView;
     log: TLog;
+    fRecognitionService: IRecognitionService;
 begin
     if (fMainViewModel.currentNumberBitmap.Empty) then
         exit;
     log := TLog.create();
 
+    fRecognitionService := getRecognitionService();
+    
     if (boolWholeNumber) then
     begin
         fMainView.getStatusBar.setStatus('Выполняется распознавание', 1000, true);
@@ -170,6 +173,7 @@ begin
             reportBuilder.SaveToFile('report.txt');
             freeAndNil(reportBuilder);
         end;
+    fRecognitionService.unregister();        
     freeAndNil(log);
 end;
 
@@ -213,7 +217,7 @@ begin
         fMainViewModel.currentNumberBitmap.LoadFromFile(openDialog.FileName);
         fMainViewModel.currentNumberName := '';
         fMainView.getWorkspace().setWorkspaceBitmap(fMainViewModel.currentNumberBitmap);
-        fMainView.getStatusBar().setStatus('Изображение открыто', 2000);
+        fMainView.getStatusBar().setStatus('Изображение открыто', 1000);
         updateView();
     end;
 
@@ -240,7 +244,7 @@ begin
     if (saveFileDlg.Execute()) then
     begin
         fMainViewModel.currentNumberBitmap.SaveToFile(saveFileDlg.FileName);
-        fMainView.getStatusBar().setStatus('Изображение сохранено', 2000);
+        fMainView.getStatusBar().setStatus('Изображение сохранено', 1000);
     end;
     FreeAndNil(saveFileDlg);
 end;

@@ -72,8 +72,6 @@ function TRecognizerByMask.recognize(bitmap: TBitmap;
 var
     i: integer;
     pattern: TBitmap;
-    patternArea: integer; // площадь Si i-го паттерна
-    numberArea: integer; // площадь распознаваемого символа
     arrD: TStringList; // массив расстояний между эталонными и распознаваемым символами
     strName: string;
     maskValue: extended; // процент совпадения

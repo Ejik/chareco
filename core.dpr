@@ -12,9 +12,36 @@ library core;
 
 uses
   SysUtils,
-  Classes;
+  Classes,
+  recognitionService in 'src\recognitionService.pas',
+  recognitionServiceImpl in 'src\recognitionServiceImpl.pas',
+  recognizer in 'src\recognizer.pas',
+  recognizerBaseImpl in 'src\recognizerBaseImpl.pas',
+  recognizerByAreaImpl in 'src\recognizerByAreaImpl.pas',
+  recognizerByMaskImpl in 'src\recognizerByMaskImpl.pas',
+  recognizerByVectorImpl in 'unitTests\recognizerByVectorImpl.pas',
+  reporter in 'src\reporter.pas',
+  reporterImpl in 'src\reporterImpl.pas',
+  EBDependencyInjection,
+  imageRepositoryImpl in 'src\imageRepositoryImpl.pas',
+  imageRepository in 'src\imageRepository.pas';
 
+function getRecognitionService(): IRecognitionService; export;
+begin
+    result := Emballo.get(IRecognitionService) as IRecognitionService;
+end;
+
+function getImageRepository(): IImageRepository; export;
+begin
+    result := Emballo.get(IImageRepository) as IImageRepository;
+end;
+
+exports
+    getRecognitionService,
+    getImageRepository;
+    
 {$R *.res}
 
 begin
 end.
+
