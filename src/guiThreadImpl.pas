@@ -3,7 +3,7 @@ unit guiThreadImpl;
 interface
 
 uses
-    Classes, mainView, ComCtrls, Controls, Windows, Forms;
+    Classes, mainView, ComCtrls, Controls, Windows, Forms, ExtCtrls;
 
 type
     TGUIThread = class(TThread)
@@ -15,16 +15,20 @@ type
 
         procedure updateStatusBar();
         procedure delay(ms: longint);
-
     protected
         procedure Execute; override;
 
     public
         constructor Create(CreateSuspended: Boolean; const msg: string; timeout: integer);
+        destructor destroy(); override;
+
         procedure bindStatusBar(control: TStatusBar);
     end;
 
 implementation
+
+uses
+    SysUtils;
 
 
 { Important: Methods and properties of objects in visual components can only be
@@ -52,6 +56,7 @@ begin
     inherited Create(CreateSuspended);
     fMessage := msg;
     fTimeOut := timeout;
+
 end;
 
 procedure TGUIThread.delay(ms: Integer);
@@ -62,6 +67,12 @@ begin
     while GetTickCount < TheTime do
         Application.ProcessMessages;
 
+end;
+
+destructor TGUIThread.destroy;
+begin
+
+  inherited;
 end;
 
 procedure TGUIThread.Execute;

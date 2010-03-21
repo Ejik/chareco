@@ -69,7 +69,11 @@ begin
     result := '';
     inputNumDld := TfmInputNumDlg.Create(Application);
     repeat
-        mr := inputNumDld.ShowModal();
+        try
+            mr := inputNumDld.ShowModal();
+        except
+            showMessage('Не правильно введен номер');
+        end;
         if (mr = mrOk) then
         begin
             strNumber := StringReplace(inputNumDld.MaskEdit.Text, ' ', '', [rfReplaceAll]);
