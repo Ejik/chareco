@@ -27,6 +27,7 @@ type
     N11: TMenuItem;
     N12: TMenuItem;
     N21: TMenuItem;
+    Help1: TMenuItem;
         procedure N3Click(Sender: TObject);
         procedure FormCreate(Sender: TObject);
         procedure N4Click(Sender: TObject);
@@ -42,6 +43,7 @@ type
     procedure N10Click(Sender: TObject);
     procedure N12Click(Sender: TObject);
     procedure N21Click(Sender: TObject);
+    procedure Help1Click(Sender: TObject);
     private
     { Private declarations }
         presenter: IMainViewPresenter;
@@ -174,6 +176,11 @@ end;
 procedure TForm1.N21Click(Sender: TObject);
 begin
     presenter.executeRecognition(true);
+end;
+
+procedure TForm1.Help1Click(Sender: TObject);
+begin
+    presenter.openHelp();
 end;
 
 initialization

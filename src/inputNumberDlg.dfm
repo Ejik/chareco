@@ -54,9 +54,11 @@ object fmInputNumDlg: TfmInputNumDlg
     Top = 74
     Width = 75
     Height = 25
+    HelpContext = 6
     Cancel = True
     Caption = #1055#1086#1084#1086#1097#1100
     ModalResult = 2
     TabOrder = 3
+    OnClick = Button1Click
   end
 end

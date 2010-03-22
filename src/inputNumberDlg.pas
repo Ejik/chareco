@@ -12,6 +12,7 @@ type
         CancelBtn: TButton;
         MaskEdit: TMaskEdit;
         Button1: TButton;
+    procedure Button1Click(Sender: TObject);
     private
     { Private declarations }
     public
@@ -23,7 +24,16 @@ var
 
 implementation
 
+uses
+  hh;
+
 {$R *.dfm}
+
+procedure TfmInputNumDlg.Button1Click(Sender: TObject);
+begin
+    HtmlHelp(GetDesktopWindow, 'chareco help.chm', HH_HELP_CONTEXT, 5);
+
+end;
 
 end.
 

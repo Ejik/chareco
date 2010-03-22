@@ -14,6 +14,7 @@ type
         procedure executeRecognition(boolWholeNumber: boolean = false);
         procedure openFile();
         procedure saveFile();
+        procedure openHelp();
         procedure showAboutBox();
         procedure setViewOnlyMode(boolValue: boolean);
         procedure setAutoLayoutMode(boolValue: boolean);

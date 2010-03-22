@@ -4,7 +4,13 @@ interface
 
 uses
     EBInjectable, EBDIRegistry, EBDependencyInjection, mainViewPresenter, mainView,
-    userInputService, mainViewModel, imageGeneratorService, recognitionService;
+    userInputService, mainViewModel, imageGeneratorService,
+{$IFDEF DELPHI_6_UP}
+    D6OnHelpFix,
+{$ENDIF}
+    recognitionService, hh;
+
+
 type
     TMainViewPresenter = class(TInjectable, IMainViewPresenter)
     private
@@ -32,6 +38,7 @@ type
         procedure clearLayout();
         procedure openFile();
         procedure saveFile();
+        procedure openHelp();
         procedure showAboutBox();
         procedure setViewOnlyMode(boolValue: boolean);
         procedure setAutoLayoutMode(boolValue: boolean);
@@ -39,12 +46,12 @@ type
         procedure workSpaceImageMouseMove(x, y: integer);
     end;
 
-function getRecognitionService() : IRecognitionService; external 'CORE';    
+function getRecognitionService(): IRecognitionService; external 'CORE';
 
 implementation
 
 uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView,
-    Classes, resultView, MBC.Classes;
+    Classes, resultView, Windows, MBC.Classes;
 
 { TMainViewPresenterImpl }
 
@@ -109,6 +116,7 @@ end;
 
 destructor TMainViewPresenter.destroy;
 begin
+    //HtmlHelp(GetDesktopWindow, nil, HH_CLOSE_ALL, 0);
     inherited;
 end;
 
@@ -132,7 +140,7 @@ begin
     log := TLog.create();
 
     fRecognitionService := getRecognitionService();
-    
+
     if (boolWholeNumber) then
     begin
         fMainView.getStatusBar.setStatus('¬ыполн€етс€ распознавание', 1000, true);
@@ -173,7 +181,7 @@ begin
             reportBuilder.SaveToFile('report.txt');
             freeAndNil(reportBuilder);
         end;
-    fRecognitionService.unregister();        
+    fRecognitionService.unregister();
     freeAndNil(log);
 end;
 
@@ -229,6 +237,11 @@ end;
   @return ResultDescription
 ------------------------------------------------------------------------------*}
 
+procedure TMainViewPresenter.openHelp;
+begin
+    HtmlHelp(GetDesktopWindow, 'chareco help.chm', HH_DISPLAY_TOPIC, 0);
+end;
+
 procedure TMainViewPresenter.saveFile;
 var
     saveFileDlg: TSaveDialog;
@@ -264,7 +277,7 @@ procedure TMainViewPresenter.setMainViewAndSetupLayoutMode;
 var
     ws: IGUIWorkspace;
     cursor: TCursor;
-    i : integer;
+    i: integer;
 begin
     ws := fMainView.getWorkspace();
     ws.setCursor(crCross);
@@ -370,7 +383,7 @@ var
     i: integer;
     w, h: integer;
     left0, top0: integer;
-    buffer: TBitmap;
+    buffer: Graphics.TBitmap;
 begin
     if (not fMainViewModel.viewOnlyMode) then
     begin
@@ -398,7 +411,7 @@ var
     i: integer;
     w, h: integer;
     left0, top0: integer;
-    buffer: TBitmap;
+    buffer: Graphics.TBitmap;
 begin
     if (not fMainViewModel.viewOnlyMode) then
     begin
@@ -411,7 +424,7 @@ begin
         // ќбновл€ем отображение. иначе не будет видно номера
         updateView();
 
-        buffer := TBitmap.create();
+        buffer := Graphics.TBitmap.create();
         buffer.Assign(fMainViewModel.currentNumberBitmapWithLayout);
         buffer.PixelFormat := pf8bit;
 
