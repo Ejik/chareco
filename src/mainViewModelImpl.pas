@@ -85,6 +85,8 @@ begin
     begin
         fCurrentNumberBitmapWithLayout := TBitmap.create;
         fCurrentNumberBitmapWithLayout.PixelFormat := pf8bit;
+        fCurrentNumberBitmapWithLayout.Width :=fCurrentNumber.width;
+        fCurrentNumberBitmapWithLayout.height := fCurrentNumber.height;
     end;
 
     result := fCurrentNumberBitmapWithLayout;

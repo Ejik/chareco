@@ -366,7 +366,7 @@ end;
 
 procedure TMainViewPresenter.updateView;
 begin
-    fMainViewModel.currentNumberBitmapWithLayout.Assign(fMainViewModel.currentNumberBitmap);
+    fMainViewModel.currentNumberBitmapWithLayout.Canvas.Draw(0, 0, fMainViewModel.currentNumberBitmap);
     setupLayout();
     fMainView.getWorkspace.setWorkspaceBitmap(fMainViewModel.currentNumberBitmapWithLayout);
 end;
@@ -427,10 +427,6 @@ begin
         // ќбновл€ем отображение. иначе не будет видно номера
         updateView();
 
-        buffer := TBitmap.create();
-        buffer.Assign(fMainViewModel.currentNumberBitmapWithLayout);
-        buffer.PixelFormat := pf8bit;
-
         // Ќакладываем разметку
         setupLayout();
 
@@ -438,17 +434,16 @@ begin
         if (x >= left0) and (y >= top0) and
             (x <= left0 + numberWidth) and (y <= top0 + numberHeight) then
         begin
-            buffer.Canvas.Pen.Style := psDot;
-            buffer.Canvas.MoveTo(x - left0, 0);
-            buffer.Canvas.LineTo(x - left0, numberHeight);
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.Pen.Style := psDot;
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.MoveTo(x - left0, 0);
+            fMainViewModel.currentNumberBitmapWithLayout.Canvas.LineTo(x - left0, numberHeight);
 
             statusBar := fMainView.getStatusBar();
             statusBar.setStatus('x:' + intToStr(x - left0), 0, false);
             //statusBar.setStatus('x:' + intToStr(x) + '  y:' + intToStr(y));
         end;
 
-        ws.setWorkspaceBitmap(buffer);
-        fMainViewModel.currentNumberBitmapWithLayout := buffer;
+        ws.setWorkspaceBitmap(fMainViewModel.currentNumberBitmapWithLayout);
     end;
 end;
 
