@@ -51,7 +51,7 @@ function getRecognitionService(): IRecognitionService; external 'CORE';
 implementation
 
 uses SysUtils, Dialogs, Controls, Graphics, number, systemConsts, aboutView,
-    Classes, resultView, Windows, MBC.Classes;
+    Classes, resultView, MBC.Classes;
 
 { TMainViewPresenterImpl }
 
@@ -233,15 +233,18 @@ begin
 end;
 
 {*------------------------------------------------------------------------------
+  Метод открытия справки из главного меню                                                                              
+  @return ResultDescription  
+------------------------------------------------------------------------------*}
+procedure TMainViewPresenter.openHelp;
+begin
+    HtmlHelp(0, 'chareco help.chm', HH_DISPLAY_TOPIC, 0);
+end;
+
+{*------------------------------------------------------------------------------
     Метод сохранения изображения номера в файл
   @return ResultDescription
 ------------------------------------------------------------------------------*}
-
-procedure TMainViewPresenter.openHelp;
-begin
-    HtmlHelp(GetDesktopWindow, 'chareco help.chm', HH_DISPLAY_TOPIC, 0);
-end;
-
 procedure TMainViewPresenter.saveFile;
 var
     saveFileDlg: TSaveDialog;
@@ -383,7 +386,7 @@ var
     i: integer;
     w, h: integer;
     left0, top0: integer;
-    buffer: Graphics.TBitmap;
+    buffer: TBitmap;
 begin
     if (not fMainViewModel.viewOnlyMode) then
     begin
@@ -411,7 +414,7 @@ var
     i: integer;
     w, h: integer;
     left0, top0: integer;
-    buffer: Graphics.TBitmap;
+    buffer: TBitmap;
 begin
     if (not fMainViewModel.viewOnlyMode) then
     begin
@@ -424,7 +427,7 @@ begin
         // Обновляем отображение. иначе не будет видно номера
         updateView();
 
-        buffer := Graphics.TBitmap.create();
+        buffer := TBitmap.create();
         buffer.Assign(fMainViewModel.currentNumberBitmapWithLayout);
         buffer.PixelFormat := pf8bit;
 
