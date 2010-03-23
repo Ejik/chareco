@@ -1,7 +1,6 @@
 program chareco;
 
 uses
-  FASTMM4,
   Forms,
   mainViewImpl in 'src\mainViewImpl.pas' {Form1},
   mainViewModelImpl in 'src\mainViewModelImpl.pas',
@@ -27,9 +26,7 @@ uses
   resultView in 'src\resultView.pas',
   MBC.Classes in 'src\MBC.Classes.pas',
   recognitionService in 'src\recognitionService.pas',
-  D6OnHelpFix in '..\..\Frameworks\delphikit\D6OnHelpFix.pas',
-  hh in '..\..\Frameworks\delphikit\hh.pas',
-  hh_funcs in '..\..\Frameworks\delphikit\hh_funcs.pas';
+  hh in '..\..\Frameworks\delphikit\hh.pas';
 
 {$R *.res}
 
