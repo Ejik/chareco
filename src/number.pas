@@ -1,3 +1,11 @@
+{*------------------------------------------------------------------------------
+  Интерфейс бизнес-объекта "автомобильный номер"
+  Распознавание символов 
+  Курсовая работа по дисциплине "Технология программирования"
+  @Author    Студент гр. ВС1-06 Горчакова М. М.
+  @Version   2010.03.23   Горчакова М. М.	Initial revision                                       
+-------------------------------------------------------------------------------}
+
 unit number;
 
 interface
@@ -13,7 +21,6 @@ type
         function getName(): string;
         function getWidth(): integer;
 
-        //procedure assign(source: TPersistent);
         procedure setBitmap(value: TBitmap);
         procedure setHeight(iValue: integer);
         procedure setName(const strValue: string);

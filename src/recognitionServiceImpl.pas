@@ -62,12 +62,14 @@ begin
     reportBuilder.Add('Результаты анализа:');
     reportBuilder.Add('');
     result := reportBuilder;
-
+    // Если разметки совем нет, выходим
+    if (fModel.layoutStep = 0) then
+        exit;
     if (fboolEntireNumber) then
     begin
         reportBuilder.add('Комплексное распознавание');
         resultNumber := '';
-        for i := 0 to NumberLength - 1 do
+        for i := 0 to fModel.layoutStep do
         begin
 
             currentBitmap := getSectionByIndex(i);
