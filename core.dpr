@@ -24,7 +24,8 @@ uses
   reporterImpl in 'src\reporterImpl.pas',
   EBDependencyInjection,
   imageRepositoryImpl in 'src\imageRepositoryImpl.pas',
-  imageRepository in 'src\imageRepository.pas';
+  imageRepository in 'src\imageRepository.pas',
+  recogizerThreadImpl in 'src\recogizerThreadImpl.pas';
 
 function getRecognitionService(): IRecognitionService; export;
 begin

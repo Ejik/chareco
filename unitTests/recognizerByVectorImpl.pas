@@ -107,6 +107,7 @@ begin
 
         arrD.add(strName + '=' + floatToStr(calculateFormula(D, pattern.Width, pattern.Height)));
 
+        patternSign := nil;
         freeAndNil(pattern);
     end;
 

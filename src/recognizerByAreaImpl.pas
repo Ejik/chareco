@@ -125,7 +125,7 @@ begin
             if (scanLine^[x] = clBlack) then
                 result := result + 1;
     end;
-
+    FreeMemory(scanLine);
 end;
 
 

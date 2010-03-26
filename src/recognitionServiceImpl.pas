@@ -36,7 +36,8 @@ type
 implementation
 
 uses
-    EBDIRegistry, TypInfo, SysUtils, Dialogs, systemConsts;
+    EBDIRegistry, TypInfo, SysUtils, Dialogs, systemConsts, recogizerThreadImpl,
+      recognizerByMaskImpl, recognizerByVectorImpl, Forms;
 
 { TRecognitionService }
 
@@ -52,11 +53,13 @@ function TRecognitionService.getReport(): TStringList;
 var
     i: integer;
     currentBitmap: TBitmap;
-    reporter: IReporter;
+    reporter1, reporter2, reporter3: IReporter;
+
     reportBuilder: TStringList;
     percents: TResultMatrix;
     resultNumber: string;
     resultCell: TResultCell;
+    thread : TRecognizerThread;
 begin
     reportBuilder := TStringList.create();
     reportBuilder.Add('Результаты анализа:');
@@ -79,23 +82,43 @@ begin
             end;
 
             // Метод 1
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByArea.recognize(currentBitmap, reporter);
-
-            percents[1, 1] := reporter.getMaxMatchSymbol();
-            percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
+            reporter1 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;
+            thread.initialiaze(TRecognizerByVector, currentBitmap, reporter1);
+            thread.Resume();
+            //fRecoByArea.recognize(currentBitmap, reporter1);
 
             // Метод 2
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByVector.recognize(currentBitmap, reporter);
-            percents[2, 1] := reporter.getMaxMatchSymbol();
-            percents[2, 2] := intToStr(reporter.getMaxMatchPercent());
+            reporter2 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;
+            thread.initialiaze(TRecognizerByVector, currentBitmap, reporter2);
+            thread.Resume();
+            //fRecoByVector.recognize(currentBitmap, reporter2);
+
 
             // Метод 3
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByMask.recognize(currentBitmap, reporter);
-            percents[3, 1] := reporter.getMaxMatchSymbol();
-            percents[3, 2] := intToStr(reporter.getMaxMatchPercent());
+            reporter3 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;
+            thread.initialiaze(TRecognizerByMask, currentBitmap, reporter3);
+            thread.Resume();
+            //fRecoByMask.recognize(currentBitmap, reporter3);
+
+            while (reporter1.getMaxMatchSymbol() = '')
+            AND (reporter2.getMaxMatchSymbol() = '')
+            AND (reporter3.getMaxMatchSymbol() = '') do
+                Application.ProcessMessages;
+
+            percents[1, 1] := reporter1.getMaxMatchSymbol();
+            percents[1, 2] := intToStr(reporter2.getMaxMatchPercent());
+
+            percents[2, 1] := reporter2.getMaxMatchSymbol();
+            percents[2, 2] := intToStr(reporter2.getMaxMatchPercent());
+
+            percents[3, 1] := reporter3.getMaxMatchSymbol();
+            percents[3, 2] := intToStr(reporter3.getMaxMatchPercent());
 
             resultCell := getBestResult(percents);
 
@@ -109,64 +132,82 @@ begin
     end // if (fboolEntireNumber) then
     else
     begin
-        reporter := Emballo.get(IReporter) as IReporter;
-
         currentBitmap := getSectionByIndex(fSecNum);
         if (currentBitmap <> nil) then
         begin
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByArea.recognize(currentBitmap, reporter);
+            reporter1 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;
+            thread.initialiaze(TRecognizerByArea, currentBitmap, reporter1);
+            thread.Resume();
+            //fRecoByArea.recognize(currentBitmap, reporter1);
         end
         else
             exit;
+
+        if (currentBitmap <> nil) then
+        begin
+            reporter2 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;
+            thread.initialiaze(TRecognizerByVector, currentBitmap, reporter2);
+            thread.Resume();
+            //fRecoByVector.recognize(currentBitmap, reporter2);
+        end
+        else
+            exit;
+
+        if (currentBitmap <> nil) then
+        begin
+            reporter3 := Emballo.get(IReporter) as IReporter;
+            thread := TRecognizerThread.Create(true);
+            thread.FreeOnTerminate := true;            
+            thread.initialiaze(TRecognizerByMask, currentBitmap, reporter3);
+            thread.Resume();
+            fRecoByMask.recognize(currentBitmap, reporter3);
+        end
+        else
+            exit;
+
+        // ожидание окончания работы потоков
+        while (reporter1.getMaxMatchSymbol() = '')
+            AND (reporter2.getMaxMatchSymbol() = '')
+            AND (reporter3.getMaxMatchSymbol() = '') do
+                Application.ProcessMessages;
+
         reportBuilder.add('Метод распознавания "по площади"');
-        reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
-        reportBuilder.add(reporter.getMaxMatch() + '%');
-        reportBuilder.add(reporter.getMidMatch() + '%');
-        reportBuilder.add(reporter.getMinMatch() + '%');
+        reportBuilder.add('Результат: ' + reporter1.getMaxMatchSymbol());
+        reportBuilder.add(reporter1.getMaxMatch() + '%');
+        reportBuilder.add(reporter1.getMidMatch() + '%');
+        reportBuilder.add(reporter1.getMinMatch() + '%');
         reportBuilder.add('');
-        percents[1, 1] := reporter.getMaxMatchSymbol();
-        percents[1, 2] := intToStr(reporter.getMaxMatchPercent());
+        percents[1, 1] := reporter1.getMaxMatchSymbol();
+        percents[1, 2] := intToStr(reporter1.getMaxMatchPercent());
 
-        if (currentBitmap <> nil) then
-        begin
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByVector.recognize(currentBitmap, reporter);
-        end
-        else
-            exit;
         reportBuilder.add('Метод распознавания "по вектору"');
-        reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
-        reportBuilder.add(reporter.getMaxMatch());
-        reportBuilder.add(reporter.getMidMatch());
-        reportBuilder.add(reporter.getMinMatch());
+        reportBuilder.add('Результат: ' + reporter2.getMaxMatchSymbol());
+        reportBuilder.add(reporter2.getMaxMatch() + '%');
+        reportBuilder.add(reporter2.getMidMatch() + '%');
+        reportBuilder.add(reporter2.getMinMatch() + '%');
         reportBuilder.add('');
-        percents[2, 1] := reporter.getMaxMatchSymbol();
-        percents[2, 2] := intToStr(reporter.getMaxMatchPercent());
-
-        if (currentBitmap <> nil) then
-        begin
-            reporter := Emballo.get(IReporter) as IReporter;
-            fRecoByMask.recognize(currentBitmap, reporter);
-        end
-        else
-            exit;
+        percents[2, 1] := reporter2.getMaxMatchSymbol();
+        percents[2, 2] := intToStr(reporter2.getMaxMatchPercent());
 
         reportBuilder.add('Метод распознавания "по маске"');
-        reportBuilder.add('Результат: ' + reporter.getMaxMatchSymbol());
-        reportBuilder.add(reporter.getMaxMatch() + '%');
-        reportBuilder.add(reporter.getMidMatch() + '%');
-        reportBuilder.add(reporter.getMinMatch() + '%');
+        reportBuilder.add('Результат: ' + reporter3.getMaxMatchSymbol());
+        reportBuilder.add(reporter3.getMaxMatch() + '%');
+        reportBuilder.add(reporter3.getMidMatch() + '%');
+        reportBuilder.add(reporter3.getMinMatch() + '%');
         reportBuilder.add('');
-        percents[3, 1] := reporter.getMaxMatchSymbol();
-        percents[3, 2] := intToStr(reporter.getMaxMatchPercent());
+        percents[3, 1] := reporter3.getMaxMatchSymbol();
+        percents[3, 2] := intToStr(reporter3.getMaxMatchPercent());
 
         reportBuilder.add('Комплексное распознавание');
         reportBuilder.add('Результат: ' + getBestResult(percents)[1, 1]);
 
         reportBuilder.add('');
-    end;
 
+    end;
 end;
 
 function TRecognitionService.getSectionByIndex(index: integer): TBitmap;
