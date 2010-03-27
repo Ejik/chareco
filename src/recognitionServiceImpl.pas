@@ -164,7 +164,7 @@ begin
             thread.FreeOnTerminate := true;            
             thread.initialiaze(TRecognizerByMask, currentBitmap, reporter3);
             thread.Resume();
-            fRecoByMask.recognize(currentBitmap, reporter3);
+            //fRecoByMask.recognize(currentBitmap, reporter3);
         end
         else
             exit;

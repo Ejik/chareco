@@ -84,7 +84,8 @@ begin
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
-
+    reporter.initReport(arrD);
+    
     numberSign := calculateSign(bitmap);
 
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
@@ -107,7 +108,7 @@ begin
 
         arrD.add(strName + '=' + floatToStr(calculateFormula(D, pattern.Width, pattern.Height)));
 
-        patternSign := nil;
+        SetLength(patternSign, 0);
         freeAndNil(pattern);
     end;
 
@@ -124,7 +125,6 @@ begin
             i := i + 1;
     end;
     arrD.SaveToFile('vectorExtReport.txt');
-    reporter.initReport(arrD);
 
     freeAndNil(arrD);
 end;

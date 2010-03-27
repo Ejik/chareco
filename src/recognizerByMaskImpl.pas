@@ -81,7 +81,7 @@ begin
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
-
+    reporter.initReport(arrD);
 
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
     begin
@@ -114,7 +114,6 @@ begin
             i := i + 1;
     end;
     arrD.SaveToFile('maskExtReport.txt');
-    reporter.initReport(arrD);
 
     freeAndNil(arrD);
 end;

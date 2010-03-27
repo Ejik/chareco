@@ -62,7 +62,10 @@ end;
 
 function TReporter.getMaxMatchSymbol: string;
 begin
-    result := fData.Names[0];
+    if fData.Count = 0 then
+        result := ''
+    else
+        result := fData.Names[0];
 end;
 
 function TReporter.valueToInt(const value: string): string;

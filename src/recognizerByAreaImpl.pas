@@ -74,6 +74,8 @@ begin
     fPatternsRepo.initialize();
 
     arrD := TStringList.create();
+    reporter.initReport(arrD);
+
     numberArea := calculateSign(bitmap);
 
     for i := 0 to fPatternsRepo.getPatternsCount() - 1 do
@@ -106,7 +108,6 @@ begin
             i := i + 1;
     end;
     arrD.SaveToFile('areaExtReport.txt');
-    reporter.initReport(arrD);
 
     freeAndNil(arrD);
 end;
