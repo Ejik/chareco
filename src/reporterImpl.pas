@@ -62,7 +62,7 @@ end;
 
 function TReporter.getMaxMatchSymbol: string;
 begin
-    if fData.Count = 0 then
+    if ((fData = nil) OR (fData.Count = 0)) then
         result := ''
     else
         result := fData.Names[0];

@@ -14,7 +14,9 @@ type
         fRecogizer: TRecognizerType;
         fBitmap: TBitmap;
         fReporter: IReporter;
+        fRecognizerInst : IRecognizerBase;
         function Factory(ClassType: TRecognizerType): IRecognizerBase;
+        procedure executeRecognition();
     protected
         procedure Execute; override;
     public
@@ -34,8 +36,14 @@ end;
 
 procedure TRecognizerThread.Execute;
 begin
-    inherited;
-    Factory(fRecogizer).recognize(fBitmap, fReporter);
+    //Synchronize(executeRecognition);
+    executeRecognition;
+end;
+
+procedure TRecognizerThread.executeRecognition;
+begin
+    fRecognizerInst:= Factory(fRecogizer);
+    fRecognizerInst.recognize(fBitmap, fReporter)
 end;
 
 function TRecognizerThread.Factory(

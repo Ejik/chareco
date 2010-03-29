@@ -11,6 +11,7 @@ library core;
   using PChar or ShortString parameters. }
 
 uses
+//    FASTMM4,
   SysUtils,
   Classes,
   recognitionService in 'src\recognitionService.pas',
@@ -27,12 +28,12 @@ uses
   imageRepository in 'src\imageRepository.pas',
   recogizerThreadImpl in 'src\recogizerThreadImpl.pas';
 
-function getRecognitionService(): IRecognitionService; export;
+function getRecognitionService(): IRecognitionService; stdcall;
 begin
     result := Emballo.get(IRecognitionService) as IRecognitionService;
 end;
 
-function getImageRepository(): IImageRepository; export;
+function getImageRepository(): IImageRepository; stdcall; 
 begin
     result := Emballo.get(IImageRepository) as IImageRepository;
 end;

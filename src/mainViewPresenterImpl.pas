@@ -54,7 +54,7 @@ type
         procedure workSpaceImageMouseMove(x, y: integer);
     end;
 
-function getRecognitionService(): IRecognitionService; external 'CORE';
+function getRecognitionService(): IRecognitionService; stdcall; external 'CORE';
 
 implementation
 

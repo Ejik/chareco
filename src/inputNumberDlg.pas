@@ -32,6 +32,9 @@ var
 
 implementation
 
+uses
+  hh;
+
 
 {$R *.dfm}
 

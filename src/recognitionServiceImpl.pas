@@ -37,7 +37,7 @@ implementation
 
 uses
     EBDIRegistry, TypInfo, SysUtils, Dialogs, systemConsts, recogizerThreadImpl,
-      recognizerByMaskImpl, recognizerByVectorImpl, Forms;
+    recognizerByMaskImpl, recognizerByVectorImpl, Forms;
 
 { TRecognitionService }
 
@@ -59,7 +59,7 @@ var
     percents: TResultMatrix;
     resultNumber: string;
     resultCell: TResultCell;
-    thread : TRecognizerThread;
+    thread, thread1, thread2, thread3: TRecognizerThread;
 begin
     reportBuilder := TStringList.create();
     reportBuilder.Add('Результаты анализа:');
@@ -107,8 +107,8 @@ begin
             //fRecoByMask.recognize(currentBitmap, reporter3);
 
             while (reporter1.getMaxMatchSymbol() = '')
-            AND (reporter2.getMaxMatchSymbol() = '')
-            AND (reporter3.getMaxMatchSymbol() = '') do
+                and (reporter2.getMaxMatchSymbol() = '')
+                and (reporter3.getMaxMatchSymbol() = '') do
                 Application.ProcessMessages;
 
             percents[1, 1] := reporter1.getMaxMatchSymbol();
@@ -136,22 +136,22 @@ begin
         if (currentBitmap <> nil) then
         begin
             reporter1 := Emballo.get(IReporter) as IReporter;
-            thread := TRecognizerThread.Create(true);
-            thread.FreeOnTerminate := true;
-            thread.initialiaze(TRecognizerByArea, currentBitmap, reporter1);
-            thread.Resume();
+            thread1 := TRecognizerThread.Create(true);
+            //thread1.FreeOnTerminate := true;
+            thread1.initialiaze(TRecognizerByArea, currentBitmap, reporter1);
+            thread1.Resume();
             //fRecoByArea.recognize(currentBitmap, reporter1);
         end
         else
             exit;
 
-        if (currentBitmap <> nil) then
+        {if (currentBitmap <> nil) then
         begin
             reporter2 := Emballo.get(IReporter) as IReporter;
-            thread := TRecognizerThread.Create(true);
-            thread.FreeOnTerminate := true;
-            thread.initialiaze(TRecognizerByVector, currentBitmap, reporter2);
-            thread.Resume();
+            thread2 := TRecognizerThread.Create(true);
+            thread2.FreeOnTerminate := true;
+            thread2.initialiaze(TRecognizerByVector, currentBitmap, reporter2);
+            thread2.Resume();
             //fRecoByVector.recognize(currentBitmap, reporter2);
         end
         else
@@ -160,20 +160,28 @@ begin
         if (currentBitmap <> nil) then
         begin
             reporter3 := Emballo.get(IReporter) as IReporter;
-            thread := TRecognizerThread.Create(true);
-            thread.FreeOnTerminate := true;            
-            thread.initialiaze(TRecognizerByMask, currentBitmap, reporter3);
-            thread.Resume();
+            thread3 := TRecognizerThread.Create(true);
+            thread3.FreeOnTerminate := true;
+            thread3.initialiaze(TRecognizerByMask, currentBitmap, reporter3);
+            thread3.Resume();
             //fRecoByMask.recognize(currentBitmap, reporter3);
         end
         else
             exit;
-
+        }
         // ожидание окончания работы потоков
-        while (reporter1.getMaxMatchSymbol() = '')
+        thread1.WaitFor;
+        CheckSynchronize;
+        //thread2.WaitFor;
+        //thread3.WaitFor;
+
+        thread1.Terminate;
+        thread1 := nil;
+        {while (reporter1.getMaxMatchSymbol() = '')
             AND (reporter2.getMaxMatchSymbol() = '')
             AND (reporter3.getMaxMatchSymbol() = '') do
-                Application.ProcessMessages;
+                CheckSynchronize;
+                }
 
         reportBuilder.add('Метод распознавания "по площади"');
         reportBuilder.add('Результат: ' + reporter1.getMaxMatchSymbol());

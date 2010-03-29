@@ -39,10 +39,12 @@ object Form1: TForm1
       Caption = #1060#1072#1081#1083
       object N4: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100
+        ShortCut = 16463
         OnClick = N4Click
       end
       object N5: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        ShortCut = 16467
         OnClick = N5Click
       end
       object N7: TMenuItem
@@ -57,10 +59,12 @@ object Form1: TForm1
       Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1074#1072#1085#1080#1077
       object N12: TMenuItem
         Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1090#1100' '#1089#1077#1082#1094#1080#1102
+        ShortCut = 49234
         OnClick = N12Click
       end
       object N21: TMenuItem
         Caption = #1056#1072#1089#1087#1086#1079#1085#1072#1090#1100' '#1074#1077#1089#1100' '#1085#1086#1084#1077#1088
+        ShortCut = 16466
         OnClick = N21Click
       end
     end
@@ -87,13 +91,15 @@ object Form1: TForm1
       end
       object N3: TMenuItem
         Caption = #1057#1075#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100' '#1085#1086#1084#1077#1088
+        ShortCut = 16455
         OnClick = N3Click
       end
     end
     object C1: TMenuItem
       Caption = 'C'#1087#1088#1072#1074#1082#1072
       object Help1: TMenuItem
-        Caption = #1055#1086#1084#1086#1097#1100
+        Caption = #1057#1087#1088#1072#1074#1082#1072' Chareco'
+        ShortCut = 112
         OnClick = Help1Click
       end
       object N10: TMenuItem

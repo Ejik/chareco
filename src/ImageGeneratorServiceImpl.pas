@@ -16,7 +16,7 @@ type
         function generate(const strNumber: string): TBitmap;
     end;
 
-function getImageRepository(): IImageRepository; external 'CORE';
+function getImageRepository(): IImageRepository; stdcall; external 'CORE';
     
 implementation
 
